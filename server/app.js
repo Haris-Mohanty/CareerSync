@@ -5,6 +5,7 @@ import morgan from "morgan";
 import colors from "colors";
 import cookieParser from "cookie-parser";
 import connectDb from "./config/db.js";
+import userRoutes from "./routes/userRoutes.js";
 
 //**** Dotenv config ***/
 dotenv.config();
@@ -27,7 +28,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 //********* Middleware Routes ******/
-
+app.use("/api/v1/user", userRoutes);
 
 //********* Port and Listen ******/
 const port = process.env.PORT || 8080;

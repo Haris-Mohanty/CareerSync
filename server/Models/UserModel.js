@@ -23,58 +23,130 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required!"],
       minlength: [6, "Password must be at least 6 characters long!"],
     },
+    phoneNumber: {
+      type: String,
+      required: [true, "Phone number is required!"],
+      validate: {
+        validator: (value) =>
+          validator.isMobilePhone(value, undefined, { strictMode: true }),
+        message: "Please enter a valid phone number",
+      },
+    },
     profilePhoto: {
       type: String,
-      validate: [validator.isURL, "Please enter a valid URL"],
       default: null,
     },
-    isRecruiter: {
-      type: Boolean,
-      default: false,
+    role: {
+      type: String,
+      enum: ["user", "recruiter"],
+      required: [true, "Role is required!"],
     },
     bio: {
       type: String,
       default: "",
+      maxlength: [200, "Bio cannot be longer than 500 characters"],
     },
     skills: {
       type: [String],
       default: [],
-    },
-    phoneNumber: {
-      type: String,
-      validate: [validator.isMobilePhone, "Please enter a valid phone number"],
-      default: null,
     },
     location: {
       type: String,
       default: "",
     },
     appliedJobs: {
-      type: [String],
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Company",
       default: [],
     },
-    experience: {
-      type: Number,
-      default: 0,
-    },
-    education: [
-      {
-        institution: String,
-        degree: String,
-        fieldOfStudy: String,
-        startDate: Date,
-        endDate: Date,
-      },
-    ],
     resume: {
       type: String,
-      validate: [validator.isURL, "Please enter a valid URL"],
+      default: null,
+    },
+    resumeName: {
+      type: String,
       default: null,
     },
     savedJobs: {
-      type: [String],
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Job",
       default: [],
     },
+    totalExperienceYears: {
+      type: Number,
+      default: 0,
+      min: [0, "Experience years cannot be negative"],
+    },
+    experience: [
+      {
+        company: {
+          type: String,
+          required: [true, "Company name is required"],
+          maxlength: [100, "Company name cannot be longer than 100 characters"],
+        },
+        jobTitle: {
+          type: String,
+          required: [true, "Job title is required"],
+          maxlength: [100, "Job title cannot be longer than 100 characters"],
+        },
+        startDate: {
+          type: Date,
+          required: [true, "Start date is required"],
+          validate: {
+            validator: function (value) {
+              return value <= new Date();
+            },
+            message: "Start date cannot be in the future",
+          },
+        },
+        endDate: {
+          type: Date,
+          validate: {
+            validator: function (value) {
+              return !value || value >= this.startDate;
+            },
+            message: "End date cannot be before start date",
+          },
+        },
+      },
+    ],
+    education: [
+      {
+        institution: {
+          type: String,
+          required: [true, "Institution name is required"],
+          maxlength: [
+            100,
+            "Institution name cannot be longer than 100 characters",
+          ],
+        },
+        degree: {
+          type: String,
+          required: [true, "Degree is required"],
+          maxlength: [100, "Degree cannot be longer than 100 characters"],
+        },
+        fieldOfStudy: {
+          type: String,
+          maxlength: [
+            100,
+            "Field of study cannot be longer than 100 characters",
+          ],
+        },
+        startDate: {
+          type: Date,
+          required: [true, "Start date is required"],
+        },
+        endDate: {
+          type: Date,
+          validate: {
+            validator: function (value) {
+              return !value || value >= this.startDate;
+            },
+            message: "End date cannot be before start date",
+          },
+        },
+      },
+    ],
     seenNotifications: {
       type: Array,
       default: [],
