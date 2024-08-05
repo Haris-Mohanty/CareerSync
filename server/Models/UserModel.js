@@ -108,6 +108,10 @@ const userSchema = new mongoose.Schema(
             message: "End date cannot be before start date",
           },
         },
+        isCurrent: {
+          type: Boolean,
+          default: false,
+        },
       },
     ],
     education: [
@@ -144,6 +148,10 @@ const userSchema = new mongoose.Schema(
             },
             message: "End date cannot be before start date",
           },
+        },
+        isCurrent: {
+          type: Boolean,
+          default: false,
         },
       },
     ],
