@@ -113,10 +113,10 @@ export const userRegisterController = async (req, res) => {
 //********* LOGIN USER CONTROLLER FUNCTION ************/
 export const userLoginController = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     // Validation
-    if (!email || !password) {
+    if (!email || !password || !role) {
       return handleResponse(res, false, "Please provide all fields!", 422);
     }
 
@@ -140,6 +140,17 @@ export const userLoginController = async (req, res) => {
       );
     }
 
+    // Role validation
+    const validRoles = ["user", "recruiter"];
+    if (!validRoles.includes(role)) {
+      return handleResponse(
+        res,
+        false,
+        "Role must be either 'user' or 'recruiter'.",
+        422
+      );
+    }
+
     // Check user
     const user = await UserModel.findOne({ email });
     if (!user) {
@@ -157,6 +168,11 @@ export const userLoginController = async (req, res) => {
       );
     }
 
+    // Check role (If role is user but use recruiter)
+    if (role !== user.role) {
+      return handleResponse(res, false, "Role mismatch!", 403);
+    }
+
     // Check for JWT secret
     if (!process.env.JWT_SECRET) {
       return handleResponse(
@@ -168,17 +184,17 @@ export const userLoginController = async (req, res) => {
     }
 
     // Generate token
-    const token = jwt.sign(
-      { userId: user._id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
 
     // Login Success
     return res
-      .status(201)
+      .status(200)
       .cookie("token", token, {
+        maxAge: 1 * 24 * 60 * 60 * 1000, // 1 Day
         httpOnly: true,
+        sameSite: "strict",
       })
       .json({
         success: true,
