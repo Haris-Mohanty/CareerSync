@@ -51,6 +51,18 @@ const companySchema = new mongoose.Schema(
       ref: "User",
       required: [true, "Owner id is required!"],
     },
+    openJobs: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Job",
+      },
+    ],
+    closedJobs: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Job",
+      },
+    ],
     isDeleted: {
       type: Boolean,
       default: false,
