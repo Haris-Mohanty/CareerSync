@@ -7,6 +7,7 @@ const companySchema = new mongoose.Schema(
     companyName: {
       type: String,
       trim: true,
+      unique: true,
       required: [true, "Company Name is required!"],
       minlength: [3, "TiCompany Nametle must be at least 3 characters long."],
       maxlength: [100, "Company Name cannot exceed 100 characters."],
@@ -42,7 +43,7 @@ const companySchema = new mongoose.Schema(
       required: [true, "Industry type is required!"],
     },
     companySize: {
-      type: [String],
+      type: String,
       enum: ["1-10", "11-50", "51-200", "201-500", "501-1000", "1001+"],
       default: ["1-10"],
     },

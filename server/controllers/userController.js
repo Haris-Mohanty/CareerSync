@@ -264,10 +264,11 @@ export const updateUserProfileDetails = async (req, res) => {
       return handleResponse(
         res,
         false,
-        "Name must be between 3 and 40 characters long!",
+        "Name must be between 2 and 40 characters long!",
         422
       );
     }
+    
 
     // Phone number validation
     if (
