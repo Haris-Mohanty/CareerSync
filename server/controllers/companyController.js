@@ -177,10 +177,10 @@ export const getCompanyDetailsController = async (req, res) => {
     }
 
     // Get company
-    const getCompany = await CompanyModel.find({ ownerId: userId }).populate(
-      "ownerId",
-      "name email"
-    );
+    const getCompany = await CompanyModel.find({
+      ownerId: userId,
+      isDeleted: false,
+    }).populate("ownerId", "name email");
     if (!getCompany || getCompany.length === 0) {
       return res.status(404).json({
         success: false,
@@ -209,10 +209,10 @@ export const getCompanyByIdController = async (req, res) => {
     const { id } = req.params;
 
     // Find company by id
-    const company = await CompanyModel.findById(id).populate(
-      "ownerId",
-      "name email"
-    );
+    const company = await CompanyModel.findOne({
+      _id: id,
+      isDeleted: false,
+    }).populate("ownerId", "name email");
     if (!company) {
       return res.status(404).json({
         success: false,
@@ -393,6 +393,51 @@ export const updateCompanyDetailsController = async (req, res) => {
       success: true,
       message: "Company details updated successfully!",
       data: updatedCompany,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!",
+      error: err.message,
+    });
+  }
+};
+
+//*************** DELETE COMPANY CONTROLLER ***************/
+export const deleteCompanyController = async (req, res) => {
+  try {
+    // Extract company id from params
+    const { id } = req.params;
+
+    // Get company
+    const company = await CompanyModel.findById(id);
+    if (!company) {
+      return res.status(404).json({
+        success: false,
+        message: "Company not found!",
+      });
+    }
+
+    // Check if the company is already deleted
+    if (company.isDeleted) {
+      return res.status(400).json({
+        success: false,
+        message: "Company is already deleted!",
+      });
+    }
+
+    // Find Company and mark as delete
+    const deletedCompany = await CompanyModel.findByIdAndUpdate(
+      id,
+      { isDeleted: true },
+      { new: true }
+    );
+
+    // Success Response
+    return res.status(200).json({
+      success: true,
+      message: "Company deleted successfully!",
+      data: deletedCompany,
     });
   } catch (err) {
     return res.status(500).json({

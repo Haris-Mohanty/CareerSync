@@ -4,6 +4,7 @@ import {
   getCompanyDetailsController,
   getCompanyByIdController,
   updateCompanyDetailsController,
+  deleteCompanyController,
 } from "../controllers/companyController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
@@ -25,6 +26,9 @@ router.put(
   authMiddleware,
   updateCompanyDetailsController
 );
+
+// Delete Company
+router.put("/delete-company/:id", authMiddleware, deleteCompanyController);
 
 // Export
 export default router;
