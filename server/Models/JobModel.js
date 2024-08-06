@@ -26,14 +26,14 @@ const jobSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Salary is required!"],
       min: [0, "Salary must be a positive number."],
-      validate: [
-        validator.isLength,
-        "Location must be at least 2 characters long.",
-      ],
     },
     location: {
       type: String,
       required: [true, "Location is required!"],
+      validate: [
+        validator.isLength,
+        "Location must be at least 2 characters long.",
+      ],
     },
     jobType: {
       type: String,

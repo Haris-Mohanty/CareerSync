@@ -1,0 +1,180 @@
+import validator from "validator";
+import CompanyModel from "../Models/CompanyModel.js";
+import JobModel from "../Models/JobModel.js";
+import UserModel from "../Models/UserModel.js";
+
+//*************** CREATE JOB CONTROLLER  ***************/
+export const createJobController = async (req, res) => {
+  try {
+    // Get user
+    const userId = req.user;
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found!",
+      });
+    }
+
+    // Extract data from request body
+    const {
+      title,
+      description,
+      requirements,
+      salary,
+      location,
+      jobType,
+      numberOfVacancies,
+      experienceLevel,
+      remote,
+      company,
+      deadline,
+      status,
+    } = req.body;
+
+    // Validation
+    if (
+      !title ||
+      !description ||
+      !requirements ||
+      !salary ||
+      !location ||
+      !jobType ||
+      !numberOfVacancies ||
+      !experienceLevel ||
+      !company ||
+      !deadline
+    ) {
+      return res.status(422).json({
+        success: false,
+        message: "Please provide all required fields!",
+      });
+    }
+
+    // Title Validation
+    if (!validator.isLength(title, { min: 3, max: 100 })) {
+      return res.status(422).json({
+        success: false,
+        message: "Title must be between 3 and 100 characters long.",
+      });
+    }
+
+    // Description Validation
+    if (!validator.isLength(description, { min: 10, max: 500 })) {
+      return res.status(422).json({
+        success: false,
+        message: "Description must be between 10 and 500 characters long.",
+      });
+    }
+
+    // Requirements Validation
+    if (!Array.isArray(requirements) || requirements.length === 0) {
+      return res.status(422).json({
+        success: false,
+        message: "Requirements must be a non-empty array.",
+      });
+    }
+
+    // Salary Validation
+    if (typeof salary !== "number" || salary < 0) {
+      return res.status(422).json({
+        success: false,
+        message: "Salary must be a positive number.",
+      });
+    }
+
+    // Location Validation
+    if (!validator.isLength(location, { min: 2, max: 100 })) {
+      return res.status(422).json({
+        success: false,
+        message: "Location must be between 2 and 100 characters long.",
+      });
+    }
+
+    // Job Type Validation
+    const validJobTypes = ["Full-time", "Part-time", "Contract", "Internship"];
+    if (!validJobTypes.includes(jobType)) {
+      return res.status(422).json({
+        success: false,
+        message:
+          "Job type must be one of the following: Full-time, Part-time, Contract, Internship.",
+      });
+    }
+
+    // Number of Vacancies Validation
+    if (typeof numberOfVacancies !== "number" || numberOfVacancies < 1) {
+      return res.status(422).json({
+        success: false,
+        message: "Number of vacancies must be at least 1.",
+      });
+    }
+
+    // Experience Level Validation
+    const validExperienceLevels = ["Entry", "Mid", "Senior"];
+    if (!validExperienceLevels.includes(experienceLevel)) {
+      return res.status(422).json({
+        success: false,
+        message:
+          "Experience level must be one of the following: Entry, Mid, Senior.",
+      });
+    }
+
+    // Deadline Validation
+    const deadlineDate = new Date(deadline);
+    if (isNaN(deadlineDate.getTime()) || deadlineDate <= Date.now()) {
+      return res.status(422).json({
+        success: false,
+        message: "Application deadline must be a future date.",
+      });
+    }
+
+    // Status Validation
+    const validStatuses = ["Open", "Closed", "On Hold"];
+    if (status && !validStatuses.includes(status)) {
+      return res.status(422).json({
+        success: false,
+        message: "Status must be one of the following: Open, Closed, On Hold.",
+      });
+    }
+
+    // Check if company exist or not
+    const existingCompany = await CompanyModel.findById(company);
+    if (!existingCompany) {
+      return res.status(404).json({
+        success: false,
+        message: "Company not found!",
+      });
+    }
+
+    // Create new job
+    const newJob = new JobModel({
+      title,
+      description,
+      requirements,
+      salary,
+      location,
+      jobType,
+      numberOfVacancies,
+      experienceLevel,
+      remote,
+      company,
+      createdBy: userId,
+      deadline,
+      status,
+    });
+    const savedJob = await newJob.save();
+
+    // Success Response
+    return res.status(201).json({
+      success: true,
+      message: "Job Created Successfully!",
+      data: savedJob,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!",
+      error: err.message,
+    });
+  }
+};

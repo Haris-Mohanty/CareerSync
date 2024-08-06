@@ -7,7 +7,6 @@ const companySchema = new mongoose.Schema(
     companyName: {
       type: String,
       trim: true,
-      unique: true,
       required: [true, "Company Name is required!"],
       minlength: [3, "TiCompany Nametle must be at least 3 characters long."],
       maxlength: [100, "Company Name cannot exceed 100 characters."],
@@ -33,7 +32,6 @@ const companySchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      unique: true,
       required: [true, "Company email is required!"],
       validate: [validator.isEmail, "Please enter a valid email address."],
     },

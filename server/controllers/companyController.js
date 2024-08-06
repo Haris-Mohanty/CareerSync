@@ -15,7 +15,7 @@ export const createCompanyController = async (req, res) => {
       });
     }
 
-    // Get data
+    // Extract data from request body
     const {
       companyName,
       description,
@@ -346,6 +346,7 @@ export const updateCompanyDetailsController = async (req, res) => {
     const existingCompanyName = await CompanyModel.findOne({
       companyName,
       _id: { $ne: id },
+      isDeleted: false,
     });
     if (existingCompanyName) {
       return res.status(409).json({
@@ -358,6 +359,7 @@ export const updateCompanyDetailsController = async (req, res) => {
     const existingEmail = await CompanyModel.findOne({
       email,
       _id: { $ne: id },
+      isDeleted: false,
     });
     if (existingEmail) {
       return res.status(409).json({
