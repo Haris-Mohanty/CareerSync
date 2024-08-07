@@ -43,7 +43,7 @@ const companySchema = new mongoose.Schema(
     companySize: {
       type: String,
       enum: ["1-10", "11-50", "51-200", "201-500", "501-1000", "1001+"],
-      default: ["1-10"],
+      default: "1-10",
     },
     ownerId: {
       type: mongoose.Schema.Types.ObjectId,

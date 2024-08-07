@@ -8,6 +8,7 @@ import connectDb from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import companyRoutes from "./routes/companyRoutes.js";
 import jobRoutes from "./routes/jobRoutes.js";
+import applicationRoutes from "./routes/applicationRoutes.js";
 
 //**** Dotenv config ***/
 dotenv.config();
@@ -33,6 +34,7 @@ app.use(cookieParser());
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/company", companyRoutes);
 app.use("/api/v1/job", jobRoutes);
+app.use("/api/v1/application", applicationRoutes);
 
 //********* Port and Listen ******/
 const port = process.env.PORT || 8080;

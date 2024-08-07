@@ -148,6 +148,15 @@ export const createJobController = async (req, res) => {
       });
     }
 
+    // Check if the user owns the company
+    if (existingCompany.ownerId.toString() !== userId) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "Access denied. You can only create jobs for your own company.",
+      });
+    }
+
     // Create new job
     const newJob = new JobModel({
       title,
@@ -165,6 +174,10 @@ export const createJobController = async (req, res) => {
       status,
     });
     const savedJob = await newJob.save();
+
+    // Add the job in the company's openJob array
+    existingCompany.openJobs.push(savedJob._id);
+    await existingCompany.save();
 
     // Success Response
     return res.status(201).json({
@@ -562,6 +575,16 @@ export const deleteJobController = async (req, res) => {
     // Soft delete the job by setting isDeleted to true
     job.isDeleted = true;
     await job.save();
+
+    // Remove the job from the company's openJobs or closedJobs array
+    const company = await CompanyModel.findById(job.company);
+    if (company) {
+      company.openJobs = company.openJobs.filter(
+        (jobId) => jobId.toString() !== id
+      );
+      company.closedJobs.push(id);
+      await company.save();
+    }
 
     // Success response
     return res.status(200).json({
