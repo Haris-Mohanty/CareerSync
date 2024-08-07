@@ -8,13 +8,6 @@ export const createJobController = async (req, res) => {
   try {
     // Get user
     const userId = req.user;
-    const user = await UserModel.findById(userId);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found!",
-      });
-    }
 
     // Extract data from request body
     const {
@@ -258,6 +251,70 @@ export const getAllJobsController = async (req, res) => {
       success: true,
       totalJobs: jobs.length,
       data: jobs,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!",
+      error: err.message,
+    });
+  }
+};
+
+//********* GET ALL JOBS OF LOGGED IN USER (RECRUITER) CONTROLLER  *******/
+export const getAllJobsOfLoggedInUser = async (req, res) => {
+  try {
+    // Get user (Recruiter)
+    const userId = req.user;
+
+    // Get jobs of logged in user (Recruiter)
+    const jobs = await JobModel.find({ createdBy: userId })
+      .populate("company")
+      .sort({ createdAt: -1 });
+
+    // Check if any jobs were found
+    if (!jobs || jobs.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No jobs found for this user.",
+      });
+    }
+
+    // Success response
+    return res.status(200).json({
+      success: true,
+      totalJobs: jobs.length,
+      data: jobs,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!",
+      error: err.message,
+    });
+  }
+};
+
+//********** GET JOB BY ID (JOB ID) CONTROLLER  ***********/
+export const getJobsByIdController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Get Job
+    const job = await JobModel.findById(id).populate("company");
+
+    // Check if job was found
+    if (!job) {
+      return res.status(404).json({
+        success: false,
+        message: "Job not found.",
+      });
+    }
+
+    // Success Response
+    return res.status(200).json({
+      success: true,
+      data: job,
     });
   } catch (err) {
     return res.status(500).json({
