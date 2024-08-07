@@ -8,10 +8,12 @@ export const createCompanyController = async (req, res) => {
     // Get user
     const userId = req.user;
     const user = await UserModel.findById(userId);
-    if (!user) {
-      return res.status(404).json({
+
+    // Check if user is a recruiter
+    if (user.role !== "recruiter") {
+      return res.status(403).json({
         success: false,
-        message: "User not found!",
+        message: "Access denied. Only recruiters can create companies.",
       });
     }
 
@@ -168,13 +170,6 @@ export const getCompanyDetailsController = async (req, res) => {
   try {
     // Get user
     const userId = req.user;
-    const user = await UserModel.findById(userId);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found!",
-      });
-    }
 
     // Get company
     const getCompany = await CompanyModel.find({
@@ -239,6 +234,17 @@ export const updateCompanyDetailsController = async (req, res) => {
   try {
     // Extract company id from params
     const { id } = req.params;
+
+    const userId = req.user;
+    const user = await UserModel.findById(userId);
+
+    // Check if user is a recruiter
+    if (user.role !== "recruiter") {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied. Only recruiters can update companies.",
+      });
+    }
 
     // Extract data from request body
     const {
@@ -408,6 +414,17 @@ export const updateCompanyDetailsController = async (req, res) => {
 //*************** DELETE COMPANY CONTROLLER ***************/
 export const deleteCompanyController = async (req, res) => {
   try {
+    const userId = req.user;
+    const user = await UserModel.findById(userId);
+
+    // Check if user is a recruiter
+    if (user.role !== "recruiter") {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied. Only recruiters can delete company.",
+      });
+    }
+
     // Extract company id from params
     const { id } = req.params;
 

@@ -8,6 +8,15 @@ export const createJobController = async (req, res) => {
   try {
     // Get user
     const userId = req.user;
+    const user = await UserModel.findById(userId);
+
+    // Check if user is a recruiter
+    if (user.role !== "recruiter") {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied. Only recruiters can create jobs.",
+      });
+    }
 
     // Extract data from request body
     const {
@@ -266,6 +275,15 @@ export const getAllJobsOfLoggedInUser = async (req, res) => {
   try {
     // Get user (Recruiter)
     const userId = req.user;
+    const user = await UserModel.findById(userId);
+
+    // Check if user is a recruiter
+    if (user.role !== "recruiter") {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied. Only recruiters can get jobs.",
+      });
+    }
 
     // Get jobs of logged in user (Recruiter)
     const jobs = await JobModel.find({ createdBy: userId })
