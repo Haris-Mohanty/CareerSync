@@ -189,7 +189,7 @@ export const getAllJobsController = async (req, res) => {
       req.query;
 
     // Query obj
-    let query = {};
+    let query = { isDeleted: false }; //Excluding Deleted jobs
 
     if (title) {
       query.title = { $regex: title, $options: "i" };
@@ -286,7 +286,7 @@ export const getAllJobsOfLoggedInUser = async (req, res) => {
     }
 
     // Get jobs of logged in user (Recruiter)
-    const jobs = await JobModel.find({ createdBy: userId })
+    const jobs = await JobModel.find({ createdBy: userId, isDeleted: false })
       .populate("company")
       .sort({ createdAt: -1 });
 
@@ -322,7 +322,7 @@ export const getJobsByIdController = async (req, res) => {
     const job = await JobModel.findById(id).populate("company");
 
     // Check if job was found
-    if (!job) {
+    if (!job || job.isDeleted) {
       return res.status(404).json({
         success: false,
         message: "Job not found.",
@@ -333,6 +333,240 @@ export const getJobsByIdController = async (req, res) => {
     return res.status(200).json({
       success: true,
       data: job,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!",
+      error: err.message,
+    });
+  }
+};
+
+//*************** UPDATE JOB DETAILS CONTROLLER  ***************/
+export const updateJobDetailsController = async (req, res) => {
+  try {
+    // Get userId
+    const userId = req.user;
+
+    // Extract Job Id from params
+    const { id } = req.params;
+
+    // Check if job exist or not
+    const job = await JobModel.findById(id);
+    if (!job || job.isDeleted) {
+      return res.status(404).json({
+        success: false,
+        message: "Job not found!",
+      });
+    }
+
+    // Check if the logged in user is the create of job
+    if (job.createdBy.toString() !== userId) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied. You can only update your own jobs.",
+      });
+    }
+
+    // Extract update fields from body
+    const {
+      title,
+      description,
+      requirements,
+      salary,
+      location,
+      jobType,
+      numberOfVacancies,
+      experienceLevel,
+      remote,
+      company,
+      deadline,
+      status,
+    } = req.body;
+
+    // Validation
+    if (
+      !title ||
+      !description ||
+      !requirements ||
+      !salary ||
+      !location ||
+      !jobType ||
+      !numberOfVacancies ||
+      !experienceLevel ||
+      !company ||
+      !deadline
+    ) {
+      return res.status(422).json({
+        success: false,
+        message: "Please provide all required fields!",
+      });
+    }
+
+    // Title Validation
+    if (!validator.isLength(title, { min: 3, max: 100 })) {
+      return res.status(422).json({
+        success: false,
+        message: "Title must be between 3 and 100 characters long.",
+      });
+    }
+
+    // Description Validation
+    if (!validator.isLength(description, { min: 10, max: 500 })) {
+      return res.status(422).json({
+        success: false,
+        message: "Description must be between 10 and 500 characters long.",
+      });
+    }
+
+    // Requirements Validation
+    if (!Array.isArray(requirements) || requirements.length === 0) {
+      return res.status(422).json({
+        success: false,
+        message: "Requirements must be a non-empty array.",
+      });
+    }
+
+    // Salary Validation
+    if (typeof salary !== "number" || salary < 0) {
+      return res.status(422).json({
+        success: false,
+        message: "Salary must be a positive number.",
+      });
+    }
+
+    // Location Validation
+    if (!validator.isLength(location, { min: 2, max: 100 })) {
+      return res.status(422).json({
+        success: false,
+        message: "Location must be between 2 and 100 characters long.",
+      });
+    }
+
+    // Job Type Validation
+    const validJobTypes = ["Full-time", "Part-time", "Contract", "Internship"];
+    if (!validJobTypes.includes(jobType)) {
+      return res.status(422).json({
+        success: false,
+        message:
+          "Job type must be one of the following: Full-time, Part-time, Contract, Internship.",
+      });
+    }
+
+    // Number of Vacancies Validation
+    if (typeof numberOfVacancies !== "number" || numberOfVacancies < 1) {
+      return res.status(422).json({
+        success: false,
+        message: "Number of vacancies must be at least 1.",
+      });
+    }
+
+    // Experience Level Validation
+    const validExperienceLevels = ["Entry", "Mid", "Senior"];
+    if (!validExperienceLevels.includes(experienceLevel)) {
+      return res.status(422).json({
+        success: false,
+        message:
+          "Experience level must be one of the following: Entry, Mid, Senior.",
+      });
+    }
+
+    // Deadline Validation
+    const deadlineDate = new Date(deadline);
+    if (isNaN(deadlineDate.getTime()) || deadlineDate <= Date.now()) {
+      return res.status(422).json({
+        success: false,
+        message: "Application deadline must be a future date.",
+      });
+    }
+
+    // Status Validation
+    const validStatuses = ["Open", "Closed", "On Hold"];
+    if (status && !validStatuses.includes(status)) {
+      return res.status(422).json({
+        success: false,
+        message: "Status must be one of the following: Open, Closed, On Hold.",
+      });
+    }
+
+    // Update the job details
+    const updatedJob = await JobModel.findByIdAndUpdate(
+      id,
+      {
+        title,
+        description,
+        requirements,
+        salary,
+        location,
+        jobType,
+        numberOfVacancies,
+        experienceLevel,
+        remote,
+        company,
+        deadline,
+        status,
+      },
+      { new: true }
+    );
+
+    // Success Response
+    return res.status(200).json({
+      success: true,
+      message: "Job updated successfully!",
+      data: updatedJob,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!",
+      error: err.message,
+    });
+  }
+};
+
+//*************** DELETE JOB CONTROLLER  ***************/
+export const deleteJobController = async (req, res) => {
+  try {
+    // Get userId
+    const userId = req.user;
+
+    // Extract Job Id from params
+    const { id } = req.params;
+
+    // Check if job exist or not
+    const job = await JobModel.findById(id);
+    if (!job) {
+      return res.status(404).json({
+        success: false,
+        message: "Job not found!",
+      });
+    }
+
+    // Check if the job is already deleted
+    if (job.isDeleted) {
+      return res.status(400).json({
+        success: false,
+        message: "This job has already been deleted.",
+      });
+    }
+
+    // Check if the logged in user is the create of job
+    if (job.createdBy.toString() !== userId) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied. You can only delete your own jobs.",
+      });
+    }
+
+    // Soft delete the job by setting isDeleted to true
+    job.isDeleted = true;
+    await job.save();
+
+    // Success response
+    return res.status(200).json({
+      success: true,
+      message: "Job deleted successfully!",
     });
   } catch (err) {
     return res.status(500).json({
