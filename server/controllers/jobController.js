@@ -178,3 +178,92 @@ export const createJobController = async (req, res) => {
     });
   }
 };
+
+//************ GET ALL JOB CONTROLLER  ***************/
+export const getAllJobsController = async (req, res) => {
+  try {
+    // Extarct query parameter for sorting and filtering
+    const { title, location, jobType, experienceLevel, status, remote } =
+      req.query;
+
+    // Query obj
+    let query = {};
+
+    if (title) {
+      query.title = { $regex: title, $options: "i" };
+    }
+
+    if (location) {
+      query.location = { $regex: location, $options: "i" };
+    }
+
+    if (jobType) {
+      const validJobTypes = [
+        "Full-time",
+        "Part-time",
+        "Contract",
+        "Internship",
+      ];
+      if (!validJobTypes.includes(jobType)) {
+        return res.status(422).json({
+          success: false,
+          message: "Invalid job type provided!",
+        });
+      }
+      query.jobType = jobType;
+    }
+
+    if (experienceLevel) {
+      const validExperienceLevels = ["Entry", "Mid", "Senior"];
+      if (!validExperienceLevels.includes(experienceLevel)) {
+        return res.status(422).json({
+          success: false,
+          message: "Invalid experience level provided!",
+        });
+      }
+      query.experienceLevel = experienceLevel;
+    }
+
+    if (status) {
+      const validStatuses = ["Open", "Closed", "On Hold"];
+      if (!validStatuses.includes(status)) {
+        return res.status(422).json({
+          success: false,
+          message: "Invalid status provided!",
+        });
+      }
+      query.status = status;
+    }
+
+    if (remote) {
+      query.remote = remote === "true";
+    }
+
+    // Get job
+    const jobs = await JobModel.find(query)
+      .populate("company")
+      .sort({ createdAt: -1 });
+
+    if (!jobs || jobs.length === 0) {
+      return res.status(404).json({
+        success: true,
+        message: "No jobs found!",
+        totalJobs: 0,
+        data: [],
+      });
+    }
+
+    // Success response
+    return res.status(200).json({
+      success: true,
+      totalJobs: jobs.length,
+      data: jobs,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!",
+      error: err.message,
+    });
+  }
+};
