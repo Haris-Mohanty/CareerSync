@@ -79,6 +79,19 @@ export const applyJobController = async (req, res) => {
     jobExists.applications.push(savedApplication._id);
     await jobExists.save();
 
+    // Get the recruiter (Creator of this job)
+    const recruiterId = jobExists.createdBy;
+    const recruiter = await UserModel.findById(recruiterId);
+
+    // Push Notifications
+    const notification = {
+      type: "newApplication",
+      message: `A new application has been submitted for your job: ${jobExists.title}.`,
+      date: new Date(),
+    };
+    recruiter.unSeenNotifications.push(notification);
+    await recruiter.save();
+
     // Success res
     return res.status(201).json({
       success: true,

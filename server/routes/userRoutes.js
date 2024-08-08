@@ -4,6 +4,8 @@ import {
   userLoginController,
   userLogoutController,
   updateUserProfileDetails,
+  markAllNotificationsAsSeen,
+  deleteAllSeenNotifications,
 } from "../controllers/userController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
@@ -21,6 +23,20 @@ router.post("/logout", authMiddleware, userLogoutController);
 
 // Update user profile details
 router.put("/update-user-profile", authMiddleware, updateUserProfileDetails);
+
+// Mark all notifications as seen
+router.post(
+  "/mark-all-notifications-as-seen",
+  authMiddleware,
+  markAllNotificationsAsSeen
+);
+
+// Delete all seen notification
+router.post(
+  "/delete-all-seen-notifications",
+  authMiddleware,
+  deleteAllSeenNotifications
+);
 
 // Export
 export default router;

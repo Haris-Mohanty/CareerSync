@@ -268,7 +268,6 @@ export const updateUserProfileDetails = async (req, res) => {
         422
       );
     }
-    
 
     // Phone number validation
     if (
@@ -484,6 +483,66 @@ export const updateUserProfileDetails = async (req, res) => {
       success: true,
       message: "User details updated successfully",
       data: updatedUser,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!",
+      error: err.message,
+    });
+  }
+};
+
+//************ MARK ALL NOTIFICATIONS AS SEEN ****************/
+export const markAllNotificationsAsSeen = async (req, res) => {
+  try {
+    // Get user
+    const userId = req.user;
+    const user = await UserModel.findById(userId);
+
+    // Get unSeenNotifications
+    const unSeenNotifications = user.unSeenNotifications;
+
+    // Append unSeenNotifications to seenSeenNotifications
+    user.seenNotifications.push(...unSeenNotifications);
+
+    // Clear the unSeenNotifications array
+    user.unSeenNotifications = [];
+
+    // Save the updated user
+    await user.save();
+
+    // Success Res
+    return res.status(200).json({
+      success: true,
+      message: "All notifications marked as seen",
+      data: user.seenNotifications,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!",
+      error: err.message,
+    });
+  }
+};
+
+//************ DELETE ALL SEEN NOTIFICATIONS *******************/
+export const deleteAllSeenNotifications = async (req, res) => {
+  try {
+    // Get user
+    const userId = req.user;
+    const user = await UserModel.findById(userId);
+
+    // Clear the seenNotifications array
+    user.seenNotifications = [];
+
+    await user.save();
+
+    // success res
+    return res.status(200).json({
+      success: true,
+      message: "All seen notifications have been deleted",
     });
   } catch (err) {
     return res.status(500).json({
