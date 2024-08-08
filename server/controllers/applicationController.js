@@ -106,3 +106,49 @@ export const applyJobController = async (req, res) => {
     });
   }
 };
+
+//************** GET ALL APPLICATIONS OF A JOB **************/
+export const getAllApplicationsOfAJob = async (req, res) => {
+  try {
+    // Extract Job id from params
+    const jobId = req.params.id;
+
+    //  Fetch all applications
+    const job = await JobModel.findById(jobId).populate({
+      path: "applications",
+      populate: {
+        path: "applicant",
+        model: "User",
+        select:
+          "-password -appliedJobs -savedJobs -seenNotifications -unSeenNotifications",
+      },
+    });
+
+    // Check if job exists
+    if (!job || job.isDeleted) {
+      return res.status(404).json({
+        success: false,
+        message: "Job not found",
+      });
+    }
+
+    // Check if applications array is empty
+    if (job.applications.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No applications found for this job",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: job,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!",
+      error: err.message,
+    });
+  }
+};

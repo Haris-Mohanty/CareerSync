@@ -567,6 +567,7 @@ export const getUserInfoController = async (req, res) => {
           model: "Company", // The name of the Company model
           select: "companyName location", // Fetch these data only
         },
+        select: "-applications -createdBy", // Exclude from job
       })
       .populate({
         path: "savedJobs",
@@ -575,6 +576,7 @@ export const getUserInfoController = async (req, res) => {
           model: "Company",
           select: "companyName location",
         },
+        select: "-applications -createdBy",
       })
       .select("-password");
 
@@ -585,6 +587,10 @@ export const getUserInfoController = async (req, res) => {
         message: "User not found!",
       });
     }
+
+    // Reverse the appliedJobs and savedJobs array for fetch latest
+    user.appliedJobs.reverse();
+    user.savedJobs.reverse();
 
     // Success response with user data
     return res.status(200).json({
