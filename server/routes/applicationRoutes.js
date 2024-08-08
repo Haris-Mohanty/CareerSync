@@ -3,6 +3,7 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 import {
   applyJobController,
   getAllApplicationsOfAJob,
+  updateApplicationStatus,
 } from "../controllers/applicationController.js";
 
 // Router obj
@@ -16,6 +17,13 @@ router.get(
   "/get-all-applications/:id",
   authMiddleware,
   getAllApplicationsOfAJob
+);
+
+// Update application status
+router.put(
+  "/update-application-status/:id",
+  authMiddleware,
+  updateApplicationStatus
 );
 
 // Export

@@ -152,3 +152,49 @@ export const getAllApplicationsOfAJob = async (req, res) => {
     });
   }
 };
+
+//**** UPDATE APPLICATION STATUS (ACCEPTED | REJECTED) *****/
+export const updateApplicationStatus = async (req, res) => {
+  try {
+    //Extract application id from params
+    const applicationId = req.params.id;
+
+    // Extract status from body
+    const { status } = req.body;
+
+    // Validate status
+    if (!status || !["accepted", "rejected"].includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status. Status must be 'accepted' or 'rejected'.",
+      });
+    }
+
+    // Get application
+    const application = await ApplicationModel.findById(applicationId);
+    if (!application) {
+      return res.status(404).json({
+        success: false,
+        message: "Application not found!",
+      });
+    }
+
+    // Update application status
+    application.status = status;
+    await application.save();
+
+    // Success res
+    return res.status(200).json({
+      success: true,
+      message: "Application status updated successfully!",
+      data: application,
+      
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!",
+      error: err.message,
+    });
+  }
+};
