@@ -56,7 +56,7 @@ const userSchema = new mongoose.Schema(
     },
     appliedJobs: {
       type: [mongoose.Schema.Types.ObjectId],
-      ref: "Company",
+      ref: "Job",
       default: [],
     },
     resume: {

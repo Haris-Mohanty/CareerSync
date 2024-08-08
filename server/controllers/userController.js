@@ -552,3 +552,51 @@ export const deleteAllSeenNotifications = async (req, res) => {
     });
   }
 };
+
+//******** GET USER INFORMATION (LOGGEDIN USER) ***********/
+export const getUserInfoController = async (req, res) => {
+  try {
+    // Get user
+    const userId = req.user;
+
+    const user = await UserModel.findById(userId)
+      .populate({
+        path: "appliedJobs",
+        populate: {
+          path: "company",
+          model: "Company", // The name of the Company model
+          select: "companyName location", // Fetch these data only
+        },
+      })
+      .populate({
+        path: "savedJobs",
+        populate: {
+          path: "company",
+          model: "Company",
+          select: "companyName location",
+        },
+      })
+      .select("-password");
+
+    // Check if user exists
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found!",
+      });
+    }
+
+    // Success response with user data
+    return res.status(200).json({
+      success: true,
+      message: "User information retrieved successfully.",
+      data: user,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!",
+      error: err.message,
+    });
+  }
+};
