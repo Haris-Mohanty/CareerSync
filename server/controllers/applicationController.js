@@ -171,7 +171,9 @@ export const updateApplicationStatus = async (req, res) => {
     }
 
     // Get application
-    const application = await ApplicationModel.findById(applicationId);
+    const application = await ApplicationModel.findById(applicationId)
+      .populate("applicant")
+      .populate("job");
     if (!application) {
       return res.status(404).json({
         success: false,
@@ -179,16 +181,41 @@ export const updateApplicationStatus = async (req, res) => {
       });
     }
 
+    // Check if the status is already set
+    if (application.status === status) {
+      return res.status(400).json({
+        success: false,
+        message: `Application status is already '${status}'. No update required.`,
+      });
+    }
+
     // Update application status
     application.status = status;
     await application.save();
+
+    // Get the user (applicant)
+    const applicant = application.applicant;
+    if (!applicant) {
+      return res.status(404).json({
+        success: false,
+        message: "Applicant not found!",
+      });
+    }
+
+    // Push Notification
+    const notification = {
+      type: "application-status",
+      message: `Your application for the job ${application.job.title} has been ${status}.`,
+      date: new Date(),
+    };
+
+    applicant.unSeenNotifications.push(notification);
+    await applicant.save();
 
     // Success res
     return res.status(200).json({
       success: true,
       message: "Application status updated successfully!",
-      data: application,
-      
     });
   } catch (err) {
     return res.status(500).json({

@@ -1,11 +1,13 @@
-import "./App.css";
-import { Button } from "./components/ui/button";
+import { Route, Routes } from "react-router-dom";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <>
-      <Button>Hello</Button>
-      <h1 className="text-blue-500">hudhbd</h1>
+      <Navbar />
+      <Routes>
+        <Route path="/" />
+      </Routes>
     </>
   );
 }
