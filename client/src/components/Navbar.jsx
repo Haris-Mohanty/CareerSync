@@ -17,7 +17,7 @@ import { Button } from "./ui/button";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const user = true;
+  const user = false;
   const notifications = 3;
   const name = "Haris Mohanty";
   const bio =
@@ -57,7 +57,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-white dark:bg-gray-800 shadow shadow-gray-300 w-100 px-2 md:px-auto">
+      <nav className="bg-white dark:bg-gray-800 shadow-md dark:shadow dark:shadow-blue-300 shadow-gray-300 w-100 px-2 md:px-auto fixed top-0 right-0 left-0 z-50">
         <div className="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap">
           {/* Logo */}
           <Link to={"/"} className="md:order-1">
