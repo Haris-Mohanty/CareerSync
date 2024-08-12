@@ -1,9 +1,163 @@
-import React from 'react'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import loginImage from "../../assets/login.jpg";
+
+// Form Validation
+const formSchema = z.object({
+  email: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
+  password: z
+    .string()
+    .min(6, {
+      message: "Password must be at least 6 characters.",
+    })
+    .max(18, {
+      message: "Password must not exceed 18 characters.",
+    }),
+  role: z.enum(["user", "recruiter"], {
+    message: "Role must be either 'user' or 'recruiter'.",
+  }),
+});
 
 const Login = () => {
-  return (
-    <div>Login</div>
-  )
-}
+  //********* FORM VALUE ************/
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      role: "",
+    },
+  });
 
-export default Login
+  //********** FORM SUBMIT **********/
+  function onSubmit(values) {
+    console.log(values);
+  }
+
+  return (
+    <>
+      <div className="flex flex-col md:flex-row mt-32 md:mt-14 justify-center items-center">
+        <div className="w-[90%] md:w-[75%] flex justify-center items-center p-1 md:p-6">
+          <img
+            src={loginImage}
+            alt="Login"
+            className="w-full h-full object-cover rounded-lg shadow-lg"
+          />
+        </div>
+        <div className="md:w-1/2 p-1 md:p-4">
+          <div className=" px-2 md:px-6 py-2 md:py-5 w-full max-w-lg mx-auto rounded-lg">
+            <h1 className="text-2xl font-bold flex text-center justify-center mb-4">Welcome Back!</h1>
+            <h2 className="text-lg font-semibold text-gray-500 flex text-center justify-center mb-4">
+              Login your account
+            </h2>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Enter Email*</FormLabel>
+                      <FormControl>
+                        <Input placeholder="example@gmail.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Enter Password*</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="******"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Role*</FormLabel>
+                      <FormControl>
+                        <div className="flex gap-6">
+                          <label className="flex items-center space-x-1 cursor-pointer">
+                            <input
+                              type="radio"
+                              value="user"
+                              checked={field.value === "user"}
+                              onChange={() => field.onChange("user")}
+                            />
+                            <span>User</span>
+                          </label>
+                          <label className="flex items-center space-x-1 cursor-pointer">
+                            <input
+                              type="radio"
+                              value="recruiter"
+                              checked={field.value === "recruiter"}
+                              onChange={() => field.onChange("recruiter")}
+                            />
+                            <span>Recruiter</span>
+                          </label>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button className="flex w-full" type="submit">
+                  Login
+                </Button>
+              </form>
+            </Form>
+
+            {/***************** LOGIN ***********/}
+            <div className="mt-3 text-center">
+              <p className="text-gray-600 dark:text-white">
+                Dont have an account?{" "}
+                <Link
+                  to={"/register"}
+                  className="text-indigo-500 hover:underline"
+                >
+                  Register
+                </Link>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Login;

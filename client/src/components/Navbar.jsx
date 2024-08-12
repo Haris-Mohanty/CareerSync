@@ -174,7 +174,7 @@ const Navbar = () => {
             ) : (
               <Button
                 onClick={() => navigate("/login")}
-                className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2"
+                className="px-4 py-2 rounded-xl flex items-center gap-2"
               >
                 <ArrowRightEndOnRectangleIcon className="h-6 w-6" />
                 <span>Login</span>
