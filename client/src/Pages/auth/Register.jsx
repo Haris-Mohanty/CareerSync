@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,8 +13,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useState } from "react";
 import uploadImage from "@/helper/UploadImage";
+import registerImage from "../../assets/register.jpg";
 
 // Form Validation
 const formSchema = z.object({
@@ -50,8 +49,6 @@ const formSchema = z.object({
 });
 
 const Register = () => {
-  const [profilePicPreview, setProfilePicPreview] = useState(null);
-
   //********* FORM VALUE ************/
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -60,7 +57,7 @@ const Register = () => {
       email: "",
       password: "",
       phoneNumber: "",
-      profilePhoto: "",
+      profilePhoto: null,
       role: "user",
     },
   });
@@ -90,149 +87,161 @@ const Register = () => {
 
   return (
     <>
-      <div className="container mx-auto py-4 px-2 mt-28 md:mt-14">
-        <div className="bg-white shadow-md dark:bg-gray-800 px-6 py-5 w-full max-w-lg mx-auto rounded-lg">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Enter Your Full Name*</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John Doe" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+      <div className="flex flex-col md:flex-row mt-32 md:mt-12 justify-center items-center">
+        <div className="w-[90%] md:w-[75%] flex justify-center items-center p-1 md:p-6 dark:p-1 dark:md:p-3">
+          <img
+            src={registerImage}
+            alt="Register"
+            className="w-full h-full object-cover rounded-lg shadow-lg"
+          />
+        </div>
+        <div className="md:w-1/2 p-1 md:p-4">
+          <div className=" px-2 md:px-6 py-2 md:py-5 w-full max-w-lg mx-auto rounded-lg">
+            <h1 className="text-xl font-bold flex text-center justify-center mb-4">
+              Create account
+            </h1>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Enter Your Full Name*</FormLabel>
+                      <FormControl>
+                        <Input placeholder="John Doe" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Enter Your Email*</FormLabel>
-                    <FormControl>
-                      <Input placeholder="example@gmail.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Enter Your Email*</FormLabel>
+                      <FormControl>
+                        <Input placeholder="example@gmail.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Set Password*</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="******" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="phoneNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Enter Your Phone Number*</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="1234567890"
-                        {...field}
-                        onChange={(e) => {
-                          // Ensure that the value starts with +91
-                          let value = e.target.value;
-                          if (!value.startsWith("+91")) {
-                            value = "+91" + value.replace(/^\+?91/, "");
-                          }
-                          field.onChange(value);
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="profilePhoto"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Choose Your Profile Photo</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleUploadProfilePhoto}
-                      />
-                      {/* {profilePicPreview && (
-                        <img
-                          src={profilePicPreview}
-                          alt="Profile Preview"
-                          className="mt-2 h-20 w-20 rounded-full object-cover"
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Set Password*</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="******"
+                          {...field}
                         />
-                      )} */}
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Role</FormLabel>
-                    <FormControl>
-                      <div className="flex gap-6">
-                        <label className="flex items-center space-x-1 cursor-pointer">
-                          <input
-                            type="radio"
-                            value="user"
-                            checked={field.value === "user"}
-                            onChange={() => field.onChange("user")}
-                          />
-                          <span>User</span>
-                        </label>
-                        <label className="flex items-center space-x-1 cursor-pointer">
-                          <input
-                            type="radio"
-                            value="recruiter"
-                            checked={field.value === "recruiter"}
-                            onChange={() => field.onChange("recruiter")}
-                          />
-                          <span>Recruiter</span>
-                        </label>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="phoneNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Enter Your Phone Number*</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="1234567890"
+                          {...field}
+                          onChange={(e) => {
+                            // Ensure that the value starts with +91
+                            let value = e.target.value;
+                            if (!value.startsWith("+91")) {
+                              value = "+91" + value.replace(/^\+?91/, "");
+                            }
+                            field.onChange(value);
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <Button className="flex w-full" type="submit">
-                Submit
-              </Button>
-            </form>
-          </Form>
+                <FormField
+                  control={form.control}
+                  name="profilePhoto"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Choose Your Profile Photo</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleUploadProfilePhoto}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-          {/***************** LOGIN ***********/}
-          <div className="mt-3 text-center">
-            <p className="text-gray-600 dark:text-white">
-              Already have an account?{" "}
-              <Link to={"/login"} className="text-indigo-500 hover:underline">
-                Login
-              </Link>
-            </p>
+                <FormField
+                  control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Role</FormLabel>
+                      <FormControl>
+                        <div className="flex gap-6">
+                          <label className="flex items-center space-x-1 cursor-pointer">
+                            <input
+                              type="radio"
+                              value="user"
+                              checked={field.value === "user"}
+                              onChange={() => field.onChange("user")}
+                            />
+                            <span>User</span>
+                          </label>
+                          <label className="flex items-center space-x-1 cursor-pointer">
+                            <input
+                              type="radio"
+                              value="recruiter"
+                              checked={field.value === "recruiter"}
+                              onChange={() => field.onChange("recruiter")}
+                            />
+                            <span>Recruiter</span>
+                          </label>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button className="flex w-full" type="submit">
+                  Register
+                </Button>
+              </form>
+            </Form>
+
+            {/***************** LOGIN ***********/}
+            <div className="mt-3 text-center">
+              <p className="text-gray-600 dark:text-white">
+                Already have an account?{" "}
+                <Link to={"/login"} className="text-indigo-500 hover:underline">
+                  Login
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>
