@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import uploadImage from "@/helper/UploadImage";
 
 // Form Validation
 const formSchema = z.object({
@@ -59,44 +60,27 @@ const Register = () => {
       email: "",
       password: "",
       phoneNumber: "",
-      profilePhoto: null,
+      profilePhoto: "",
       role: "user",
     },
   });
 
-  // **************** CONVERT IMAGE TO BASE 64 *************/
-  const imageTobase64 = async (image) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(image);
-
-    const data = await new Promise((resolve, reject) => {
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-
-    return data;
-  };
-
   // **************** PROFILE PHOTO UPLOAD *****************/
-  //   // Check if file type is either JPG or PNG
-  //   if (file.type !== "image/jpeg" && file.type !== "image/png") {
-  //     toast.error("Please upload a JPG or PNG image.");
-  //     return;
-  //   }
-
   const handleUploadProfilePhoto = async (e) => {
     const file = e.target.files[0];
 
     // Check if file size is under 75KB
-    if (file.size > 75 * 1024) {
-      toast.error("Please upload an image under 75KB.");
+    if (file.size > 300 * 1024) {
+      toast.error("Please upload an image under 300KB.");
       return;
     }
-
-    const imagePic = await imageTobase64(file);
-    setProfilePicPreview(imagePic);
-
-    form.setValue("profilePhoto", imagePic);
+    try {
+      // Upload Image Cloudinary
+      const uploadImageCloudinary = await uploadImage(file);
+      form.setValue("profilePhoto", uploadImageCloudinary.secure_url);
+    } catch (err) {
+      toast.error("Failed to upload image!");
+    }
   };
 
   //********** FORM SUBMIT **********/
@@ -187,38 +171,20 @@ const Register = () => {
                       <Input
                         type="file"
                         accept="image/*"
-                        onChange={(e) => field.onChange(e.target.files[0])}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* <FormField
-                control={form.control}
-                name="profilePhoto"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Choose Your Profile Photo</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="file"
-                        accept="image/*"
                         onChange={handleUploadProfilePhoto}
                       />
-                      {profilePicPreview && (
+                      {/* {profilePicPreview && (
                         <img
                           src={profilePicPreview}
                           alt="Profile Preview"
                           className="mt-2 h-20 w-20 rounded-full object-cover"
                         />
-                      )}
+                      )} */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
-              /> */}
+              />
 
               <FormField
                 control={form.control}
