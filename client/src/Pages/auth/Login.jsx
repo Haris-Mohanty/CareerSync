@@ -14,7 +14,6 @@ import { Input } from "@/components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
 import loginImage from "@/assets/login.jpg";
 import { loginUserApi } from "@/api/api";
-// import { toast } from "sonner";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";

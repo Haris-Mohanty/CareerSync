@@ -1,14 +1,16 @@
 import { getUserApi } from "@/api/api";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { clearUser, setUser } from "@/redux/userSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
-const Home = () => {
+const ProtectedRoute = ({ children }) => {
   const { user } = useSelector((state) => state.user);
+  const [redirect, setRedirect] = useState(false);
   const dispatch = useDispatch();
 
-  //******** Fetch User Info ****/
+  //******** FETCH USER INFO ******/
   const fetchUserInfo = async () => {
     try {
       dispatch(showLoading());
@@ -17,10 +19,12 @@ const Home = () => {
       if (res.success) {
         dispatch(setUser(res.data));
       } else {
+        setRedirect(true);
         dispatch(clearUser());
       }
     } catch (err) {
       dispatch(hideLoading());
+      setRedirect(true);
       dispatch(clearUser());
     }
   };
@@ -31,11 +35,11 @@ const Home = () => {
     }
   }, [user, dispatch]);
 
-  return (
-    <>
-      <div>Home</div>
-    </>
-  );
+  if (redirect) {
+    return <Navigate to={"/"} />;
+  }
+
+  return user ? children : null;
 };
 
-export default Home;
+export default ProtectedRoute;

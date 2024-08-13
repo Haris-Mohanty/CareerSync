@@ -39,3 +39,33 @@ export const loginUserApi = async (data) => {
     throw err;
   }
 };
+
+//***************** GET USER API ****************/
+export const getUserApi = async () => {
+  try {
+    const response = await axios.get("/user/get-user-info", {
+      withCredentials: true,
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};
+
+//**************** USER LOGOUT API ****************/
+export const logoutUserApi = async () => {
+  try {
+    const response = await axios.get("/user/logout", {
+      withCredentials: true,
+    });
+
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+};

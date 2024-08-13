@@ -14,14 +14,17 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { hideLoading, showLoading } from "@/redux/spinnerSlice";
+import { logoutUserApi } from "@/api/api";
+import { toast } from "sonner";
+import { clearUser } from "@/redux/userSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const user = false;
-  const notifications = 3;
-  const name = "Haris Mohanty";
-  const bio =
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt esse alias fugiat.";
+  const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.user);
 
   // Path for handle active links
   const location = useLocation();
@@ -53,6 +56,23 @@ const Navbar = () => {
       return text.substring(0, limit) + "...";
     }
     return text;
+  };
+
+  // User logout
+  const handleLogout = async () => {
+    try {
+      dispatch(showLoading());
+      const data = await logoutUserApi();
+      dispatch(hideLoading());
+      if (data?.success) {
+        toast.success("Logged out successfully!");
+        dispatch(clearUser());
+        navigate("/login");
+      }
+    } catch (err) {
+      dispatch(hideLoading());
+      toast.error(err?.response?.data?.message);
+    }
   };
 
   return (
@@ -112,12 +132,12 @@ const Navbar = () => {
               <>
                 <Link to={"/notifications"} className="relative">
                   <BellIcon className="h-8 w-8 text-gray-500 dark:text-white" />
-                  {notifications > 0 && (
+                  {user?.unSeenNotifications > 0 && (
                     <Badge
                       variant="destructive"
                       className="absolute -top-1 -right-1 text-xs h-5 w-5 flex items-center justify-center text-white bg-red-500 rounded-full"
                     >
-                      {notifications}
+                      {user?.unSeenNotifications.length}
                     </Badge>
                   )}
                 </Link>
@@ -125,10 +145,10 @@ const Navbar = () => {
                   <PopoverTrigger asChild>
                     <Avatar className="h-8 w-8">
                       {/* Add icon if no profile pic */}
-                      {!user?.profilePic ? (
+                      {user?.profilePhoto ? (
                         <AvatarImage
-                          src="https://github.com/shadcn.png"
-                          className="cursor-pointer"
+                          src={user?.profilePhoto}
+                          className="cursor-pointer object-cover"
                         />
                       ) : (
                         <UserCircleIcon className="h-8 w-8 text-gray-500 dark:text-white cursor-pointer" />
@@ -139,15 +159,18 @@ const Navbar = () => {
                     <Avatar className="h-10 w-10">
                       {/* Add icon if no profile pic */}
                       {!user?.profilePic ? (
-                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarImage
+                          src={user?.profilePhoto}
+                          className="object-cover"
+                        />
                       ) : (
                         <UserCircleIcon className="h-10 w-10 text-gray-500 dark:text-white" />
                       )}
                     </Avatar>
                     <div className="text-center">
-                      <h4 className="font-medium">{name}</h4>
+                      <h4 className="font-medium">{user?.name}</h4>
                       <p className="text-xs text-muted-foreground">
-                        {truncateBio(bio, 35)}
+                        {truncateBio(user?.bio, 35)}
                       </p>
                     </div>
                     <div className="flex flex-col items-center gap-1 w-full">
@@ -162,7 +185,7 @@ const Navbar = () => {
                       <Button
                         variant="link"
                         className="flex items-center gap-2 w-full justify-center"
-                        onClick={() => navigate("/logout")}
+                        onClick={handleLogout}
                       >
                         <ArrowLeftEndOnRectangleIcon className="h-4 w-4" />
                         Logout

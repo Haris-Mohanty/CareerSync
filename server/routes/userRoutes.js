@@ -20,7 +20,7 @@ router.post("/register", userRegisterController);
 router.post("/login", userLoginController);
 
 // logout User routes
-router.post("/logout", authMiddleware, userLogoutController);
+router.get("/logout", authMiddleware, userLogoutController);
 
 // Update user profile details
 router.put("/update-user-profile", authMiddleware, updateUserProfileDetails);
