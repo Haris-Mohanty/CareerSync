@@ -11,10 +11,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
 import uploadImage from "@/helper/UploadImage";
-import registerImage from "../../assets/register.jpg";
+import registerImage from "@/assets/register.jpg";
+import { registerUserApi } from "@/api/api";
+import { toast } from "sonner";
 
 // Form Validation
 const formSchema = z.object({
@@ -49,6 +50,8 @@ const formSchema = z.object({
 });
 
 const Register = () => {
+  const navigate = useNavigate();
+
   //********* FORM VALUE ************/
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -76,13 +79,22 @@ const Register = () => {
       const uploadImageCloudinary = await uploadImage(file);
       form.setValue("profilePhoto", uploadImageCloudinary.secure_url);
     } catch (err) {
-      toast.error("Failed to upload image!");
+      toast.error(err.message);
     }
   };
 
   //********** FORM SUBMIT **********/
-  function onSubmit(values) {
-    console.log(values);
+  async function onSubmit(values) {
+    try {
+      const user = await registerUserApi(values);
+      if (user.success) {
+        toast.success("User Registered Successfully!");
+        navigate("/login");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response.data.message);
+    }
   }
 
   return (

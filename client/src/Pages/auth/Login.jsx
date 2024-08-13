@@ -11,9 +11,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import loginImage from "../../assets/login.jpg";
+import { Link, useNavigate } from "react-router-dom";
+import loginImage from "@/assets/login.jpg";
+import { loginUserApi } from "@/api/api";
+// import { toast } from "sonner";
+import { toast } from "sonner";
 
 // Form Validation
 const formSchema = z.object({
@@ -34,6 +36,8 @@ const formSchema = z.object({
 });
 
 const Login = () => {
+  const navigate = useNavigate();
+
   //********* FORM VALUE ************/
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -45,8 +49,17 @@ const Login = () => {
   });
 
   //********** FORM SUBMIT **********/
-  function onSubmit(values) {
-    console.log(values);
+  async function onSubmit(values) {
+    try {
+      const data = await loginUserApi(values);
+      if (data.success) {
+        toast.success("Login Successfully!");
+        navigate("/");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response.data.message);
+    }
   }
 
   return (
@@ -60,8 +73,10 @@ const Login = () => {
           />
         </div>
         <div className="md:w-1/2 p-1 md:p-4">
-          <div className=" px-2 md:px-6 py-2 md:py-5 w-full max-w-lg mx-auto rounded-lg">
-            <h1 className="text-2xl font-bold flex text-center justify-center mb-4">Welcome Back!</h1>
+          <div className="px-2 md:px-6 py-2 md:py-5 w-full max-w-lg mx-auto rounded-lg">
+            <h1 className="text-2xl font-bold flex text-center justify-center mb-4">
+              Welcome Back!
+            </h1>
             <h2 className="text-lg font-semibold text-gray-500 flex text-center justify-center mb-4">
               Login your account
             </h2>
@@ -77,7 +92,11 @@ const Login = () => {
                     <FormItem>
                       <FormLabel>Enter Email*</FormLabel>
                       <FormControl>
-                        <Input placeholder="example@gmail.com" {...field} />
+                        <Input
+                          placeholder="example@gmail.com"
+                          {...field}
+                          autoComplete="email"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -95,6 +114,7 @@ const Login = () => {
                           type="password"
                           placeholder="******"
                           {...field}
+                          autoComplete="current-password"
                         />
                       </FormControl>
                       <FormMessage />

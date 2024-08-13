@@ -7,16 +7,12 @@ import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 import Login from "./Pages/auth/Login";
 import Register from "./Pages/auth/Register";
-import { ToastContainer, Slide } from "react-toastify";
+import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   return (
     <>
-      <ToastContainer
-        position="top-center"
-        transition={Slide}
-        autoClose={3000}
-      />
+      <Toaster />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
