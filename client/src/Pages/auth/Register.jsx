@@ -16,6 +16,8 @@ import uploadImage from "@/helper/UploadImage";
 import registerImage from "@/assets/register.jpg";
 import { registerUserApi } from "@/api/api";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 
 // Form Validation
 const formSchema = z.object({
@@ -51,6 +53,7 @@ const formSchema = z.object({
 
 const Register = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   //********* FORM VALUE ************/
   const form = useForm({
@@ -75,24 +78,29 @@ const Register = () => {
       return;
     }
     try {
+      dispatch(showLoading());
       // Upload Image Cloudinary
       const uploadImageCloudinary = await uploadImage(file);
+      dispatch(hideLoading());
       form.setValue("profilePhoto", uploadImageCloudinary.secure_url);
     } catch (err) {
       toast.error(err.message);
+      dispatch(hideLoading());
     }
   };
 
   //********** FORM SUBMIT **********/
   async function onSubmit(values) {
     try {
+      dispatch(showLoading());
       const user = await registerUserApi(values);
+      dispatch(hideLoading());
       if (user.success) {
         toast.success("User Registered Successfully!");
         navigate("/login");
       }
     } catch (err) {
-      console.log(err);
+      dispatch(hideLoading());
       toast.error(err.response.data.message);
     }
   }

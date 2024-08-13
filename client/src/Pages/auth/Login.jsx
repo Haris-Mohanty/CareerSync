@@ -16,6 +16,8 @@ import loginImage from "@/assets/login.jpg";
 import { loginUserApi } from "@/api/api";
 // import { toast } from "sonner";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 
 // Form Validation
 const formSchema = z.object({
@@ -37,6 +39,7 @@ const formSchema = z.object({
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   //********* FORM VALUE ************/
   const form = useForm({
@@ -51,13 +54,15 @@ const Login = () => {
   //********** FORM SUBMIT **********/
   async function onSubmit(values) {
     try {
+      dispatch(showLoading());
       const data = await loginUserApi(values);
+      dispatch(hideLoading());
       if (data.success) {
         toast.success("Login Successfully!");
         navigate("/");
       }
     } catch (err) {
-      console.log(err);
+      dispatch(hideLoading());
       toast.error(err.response.data.message);
     }
   }

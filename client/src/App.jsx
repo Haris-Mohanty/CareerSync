@@ -8,10 +8,12 @@ import Contact from "./Pages/Contact";
 import Login from "./Pages/auth/Login";
 import Register from "./Pages/auth/Register";
 import { Toaster } from "@/components/ui/sonner";
+import Spinner from "./components/Spinner";
 
 function App() {
   return (
     <>
+      <Spinner />
       <Toaster />
       <Navbar />
       <Routes>
