@@ -1,0 +1,66 @@
+import {
+  ComputerDesktopIcon,
+  FilmIcon,
+  ChartBarIcon,
+  CodeBracketSquareIcon,
+  ShieldCheckIcon,
+  PencilSquareIcon,
+  HeartIcon,
+  BanknotesIcon,
+  VideoCameraIcon,
+} from "@heroicons/react/24/outline";
+import { Button } from "../components/ui/button";
+
+const categories = [
+  { title: "UI/UX Designer", icon: ComputerDesktopIcon, positions: 56 },
+  { title: "Website Development", icon: CodeBracketSquareIcon, positions: 59 },
+  { title: "Digital Marketing", icon: VideoCameraIcon, positions: 56 },
+  { title: "Health & Care", icon: HeartIcon, positions: 56 },
+  { title: "Cyber Security", icon: ShieldCheckIcon, positions: 56 },
+  { title: "Content Writing", icon: PencilSquareIcon, positions: 56 },
+  { title: "Bank Job", icon: BanknotesIcon, positions: 56 },
+  { title: "Sales", icon: ChartBarIcon, positions: 56 },
+  { title: "Video & Animation", icon: FilmIcon, positions: 56 },
+];
+
+const JobCategory = () => {
+  return (
+    <section className="container mx-auto py-8">
+      <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4C40F8] mb-4">
+        Job <span className="text-black">Category</span>
+      </h2>
+      <p className="text-center text-gray-500 mb-8">
+        Get the most exciting jobs and grow your career fast with others.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {categories.map((category, index) => (
+          <div
+            key={index}
+            className="bg-white text-black p-6 flex items-center gap-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer hover:bg-indigo-700 group"
+          >
+            <div className="p-2 rounded-full bg-blue-50">
+              <category.icon className="h-8 w-8 text-indigo-700" />
+            </div>
+            <div>
+              <h3 className="text-sm md:text-base font-semibold mb-1 group-hover:text-white">
+                {category.title}
+              </h3>
+              <p className="text-xs md:text-sm text-indigo-500 group-hover:text-white">
+                {category.positions} Open Positions
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex justify-center mt-8">
+        <Button className="text-[#4C40F8] border-[#4C40F8] border-2 bg-indigo-700 hover:bg-indigo-800 text-white transition duration-300">
+          See More →
+        </Button>
+      </div>
+    </section>
+  );
+};
+
+export default JobCategory;

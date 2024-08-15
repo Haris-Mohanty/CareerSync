@@ -8,8 +8,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import user1 from "@/assets/user1.jpg";
 import user2 from "@/assets/user2.jpg";
 import user3 from "@/assets/user3.jpg";
+import { useState } from "react";
 
 const Hero = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handlePopularSearch = (term) => {
+    setSearchTerm(term);
+  };
+
   return (
     <>
       <section className="bg-slate-100 pt-8 md:p-1 mt-24 md:mt-1">
@@ -57,6 +64,8 @@ const Hero = () => {
             <div className="flex items-center justify-center lg:justify-start bg-white rounded-full shadow-lg px-4 py-1 md:py-3 mb-6">
               <input
                 type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Job Title Keywords"
                 className="flex-grow text-xs md:text-base p-2 text-gray-600 focus:outline-none font-poppins"
               />
@@ -67,13 +76,22 @@ const Hero = () => {
 
             {/* Popular Search Section */}
             <div className="flex flex-wrap gap-2 justify-center md:justify-start font-poppins font-medium text-xs md:text-base mb-4 md:mb-0">
-              <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full cursor-pointer hover:bg-blue-200">
+              <span
+                onClick={() => handlePopularSearch("UI/UX")}
+                className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full cursor-pointer hover:bg-blue-200"
+              >
                 UI/UX
               </span>
-              <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full cursor-pointer hover:bg-blue-200">
-                Web Dev
+              <span
+                onClick={() => handlePopularSearch("Web Development")}
+                className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full cursor-pointer hover:bg-blue-200"
+              >
+                Web Development
               </span>
-              <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full cursor-pointer hover:bg-blue-200">
+              <span
+                onClick={() => handlePopularSearch("Human Resources")}
+                className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full cursor-pointer hover:bg-blue-200"
+              >
                 Human Resources
               </span>
             </div>
@@ -91,7 +109,9 @@ const Hero = () => {
             <p className="text-sm md:text-2xl font-bold text-gray-800 font-openSans">
               7000+
             </p>
-            <p className="text-gray-600 text-xs md:text-sm font-merriweather">Workers</p>
+            <p className="text-gray-600 text-xs md:text-sm font-merriweather">
+              Workers
+            </p>
           </div>
         </div>
         <div className="flex items-center w-full md:w-auto">
@@ -102,7 +122,9 @@ const Hero = () => {
             <p className="text-sm md:text-2xl font-bold text-gray-800 font-openSans">
               3000+
             </p>
-            <p className="text-gray-600 text-xs md:text-sm font-merriweather">Companies</p>
+            <p className="text-gray-600 text-xs md:text-sm font-merriweather">
+              Companies
+            </p>
           </div>
         </div>
         <div className="flex items-center w-full md:w-auto">
@@ -113,7 +135,9 @@ const Hero = () => {
             <p className="text-sm md:text-2xl font-bold text-gray-800 font-openSans">
               1500+
             </p>
-            <p className="text-gray-600 text-xs md:text-sm font-merriweather">Cities</p>
+            <p className="text-gray-600 text-xs md:text-sm font-merriweather">
+              Cities
+            </p>
           </div>
         </div>
       </div>
