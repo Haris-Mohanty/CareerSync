@@ -86,7 +86,7 @@ const Navbar = () => {
 
           {/* Routes */}
           <div className="text-gray-500 dark:text-gray-400 order-3 w-full md:w-auto md:order-2">
-            <ul className="flex font-semibold justify-between">
+            <ul className="flex font-semibold justify-between font-raleway">
               <li
                 className={`md:px-4 md:py-2 ${
                   currentPath === "/"
@@ -197,7 +197,7 @@ const Navbar = () => {
             ) : (
               <Button
                 onClick={() => navigate("/login")}
-                className="px-4 py-2 rounded-xl flex items-center gap-2"
+                className="px-4 py-2 rounded-xl flex items-center gap-2 font-merriweather"
               >
                 <ArrowRightEndOnRectangleIcon className="h-6 w-6" />
                 <span>Login</span>
