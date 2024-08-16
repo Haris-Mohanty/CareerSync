@@ -9,6 +9,12 @@ import user1 from "@/assets/user1.jpg";
 import user2 from "@/assets/user2.jpg";
 import user3 from "@/assets/user3.jpg";
 import { useState } from "react";
+import { motion } from "framer-motion";
+
+const statVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1 },
+};
 
 const Hero = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,16 +28,26 @@ const Hero = () => {
       <section className="bg-slate-100 pt-8 md:p-1 mt-24 md:mt-1">
         <div className="container mx-auto flex flex-col-reverse md:flex-row items-center justify-between px-4 md:px-10">
           {/* Right Section - Image */}
-          <div className="order-1 md:order-2 md:w-3/4 flex justify-center md:justify-end mb-1 md:mb-0">
+          <motion.div
+            className="order-1 md:order-2 md:w-3/4 flex justify-center md:justify-end mb-1 md:mb-0"
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.5 }}
+          >
             <img
               src={heroImage}
               alt="Hero"
               className="max-w-full h-auto md:w-full md:h-auto"
             />
-          </div>
+          </motion.div>
 
           {/* Left Section */}
-          <div className="md:order-1 md:w-1/2 md:text-left">
+          <motion.div
+            className="md:order-1 md:w-1/2 md:text-left"
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1 }}
+          >
             <div className="flex items-center ml-4 md:ml-0 md:justify-start mb-2">
               <Avatar className="-mr-1">
                 <AvatarImage src={user1} alt="User 1" />
@@ -95,13 +111,19 @@ const Hero = () => {
                 Human Resources
               </span>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Statistics Section */}
       <div className="bg-slate-200 p-4 md:p-6 mx-auto flex justify-around text-center px-4 md:px-4">
-        <div className="flex items-center w-full md:w-auto">
+        <motion.div
+          className="flex items-center w-full md:w-auto"
+          initial="hidden"
+          animate="visible"
+          variants={statVariants}
+          transition={{ duration: 1, delay: 1.5 }} // Delay for the statistics section
+        >
           <div className="bg-white rounded-full p-1 md:p-4 mr-1">
             <UserCircleIcon className="h-5 w-5 md:h-10 md:w-10 text-indigo-600" />
           </div>
@@ -113,8 +135,14 @@ const Hero = () => {
               Workers
             </p>
           </div>
-        </div>
-        <div className="flex items-center w-full md:w-auto">
+        </motion.div>
+        <motion.div
+          className="flex items-center w-full md:w-auto"
+          initial="hidden"
+          animate="visible"
+          variants={statVariants}
+          transition={{ duration: 1, delay: 1.7 }} // Delay for the second statistic
+        >
           <div className="bg-white rounded-full p-1 md:p-4 mr-1">
             <BuildingOffice2Icon className="h-5 w-5 md:h-10 md:w-10 text-indigo-600" />
           </div>
@@ -126,8 +154,14 @@ const Hero = () => {
               Companies
             </p>
           </div>
-        </div>
-        <div className="flex items-center w-full md:w-auto">
+        </motion.div>
+        <motion.div
+          className="flex items-center w-full md:w-auto"
+          initial="hidden"
+          animate="visible"
+          variants={statVariants}
+          transition={{ duration: 1, delay: 1.9 }} // Delay for the third statistic
+        >
           <div className="bg-white rounded-full p-1 md:p-4 mr-1">
             <GlobeAsiaAustraliaIcon className="h-5 w-5 md:h-10 md:w-10 text-indigo-600" />
           </div>
@@ -139,7 +173,7 @@ const Hero = () => {
               Cities
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );

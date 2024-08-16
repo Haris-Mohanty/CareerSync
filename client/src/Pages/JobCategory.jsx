@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import {
   ComputerDesktopIcon,
   FilmIcon,
@@ -23,6 +24,16 @@ const categories = [
   { title: "Video & Animation", icon: FilmIcon, positions: 56 },
 ];
 
+const hoverEffect = {
+  initial: { scale: 1, rotate: 0 },
+  hover: { scale: 1.05, rotate: 1 },
+};
+
+const buttonHoverEffect = {
+  initial: { scale: 1 },
+  hover: { scale: 1.1 },
+};
+
 const JobCategory = () => {
   return (
     <div className="bg-slate-100">
@@ -34,11 +45,14 @@ const JobCategory = () => {
           Get the most exciting jobs and grow your career fast with others.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {categories.map((category, index) => (
-            <div
+            <motion.div
               key={index}
               className="bg-white text-black p-6 flex items-center gap-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer hover:bg-indigo-700 group"
+              variants={hoverEffect}
+              initial="initial"
+              whileHover="hover"
             >
               <div className="p-2 rounded-full bg-blue-50">
                 <category.icon className="h-8 w-8 text-indigo-700" />
@@ -51,14 +65,20 @@ const JobCategory = () => {
                   {category.positions} Open Positions
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         <div className="flex justify-center mt-8">
-          <Button className="text-white bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 hover:from-indigo-700 hover:via-indigo-800 hover:to-indigo-900 transition duration-300 rounded-lg px-6 py-3">
-            See More →
-          </Button>
+          <motion.div
+            variants={buttonHoverEffect}
+            initial="initial"
+            whileHover="hover"
+          >
+            <Button className="text-white bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 hover:from-indigo-700 hover:via-indigo-800 hover:to-indigo-900 transition duration-300 rounded-lg px-6 py-3">
+              See More →
+            </Button>
+          </motion.div>
         </div>
       </section>
     </div>

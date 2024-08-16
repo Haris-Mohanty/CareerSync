@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 import {
   MapPinIcon,
@@ -6,6 +7,11 @@ import {
   RssIcon,
 } from "@heroicons/react/24/outline";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+
+const buttonVariants = {
+  initial: { scale: 1 },
+  hover: { scale: 1.1 },
+};
 
 const PopularJobs = () => {
   return (
@@ -59,15 +65,26 @@ const PopularJobs = () => {
               </div>
             </div>
           </div>
-          <button className="text-white text-sm px-3 md:px-5 py-2 md:py-3 text-base rounded-lg bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors font-raleway font-medium w-full md:w-auto">
+          <motion.button
+            className="text-white text-sm px-3 md:px-5 py-2 md:py-3 text-base rounded-lg bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors font-raleway font-medium w-full md:w-auto"
+            variants={buttonVariants}
+            initial="initial"
+            whileHover="hover"
+          >
             Apply Now
-          </button>
+          </motion.button>
         </div>
 
         <div className="flex justify-center mt-8">
-          <Button className="text-white bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 hover:from-indigo-700 hover:via-indigo-800 hover:to-indigo-900 transition duration-300 rounded-lg px-6 py-3">
-            See More →
-          </Button>
+          <motion.div
+            variants={buttonVariants}
+            initial="initial"
+            whileHover="hover"
+          >
+            <Button className="text-white bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 hover:from-indigo-700 hover:via-indigo-800 hover:to-indigo-900 transition duration-300 rounded-lg px-6 py-3">
+              See More →
+            </Button>
+          </motion.div>
         </div>
       </div>
     </div>

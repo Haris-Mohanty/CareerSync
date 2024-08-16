@@ -4,7 +4,6 @@ import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { clearUser, setUser } from "@/redux/userSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "sonner";
 import JobCategory from "./JobCategory";
 import PopularJobs from "@/components/PopularJobs";
 
@@ -26,7 +25,7 @@ const Home = () => {
     } catch (err) {
       dispatch(hideLoading());
       dispatch(clearUser());
-      toast.error(err.message);
+
     }
   };
 
