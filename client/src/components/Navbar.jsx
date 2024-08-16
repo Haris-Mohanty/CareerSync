@@ -131,7 +131,7 @@ const Navbar = () => {
             {user ? (
               <>
                 <Link to={"/notifications"} className="relative">
-                  <BellIcon className="h-8 w-8 text-gray-500 dark:text-white" />
+                  <BellIcon className="h-8 w-8 text-indigo-700 dark:text-white" />
                   {user?.unSeenNotifications > 0 && (
                     <Badge
                       variant="destructive"
@@ -197,7 +197,7 @@ const Navbar = () => {
             ) : (
               <Button
                 onClick={() => navigate("/login")}
-                className="px-4 py-2 rounded-xl flex items-center gap-2 font-merriweather"
+                className="bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700  hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors px-4 py-2 rounded-xl flex items-center gap-2 font-merriweather dark:text-white"
               >
                 <ArrowRightEndOnRectangleIcon className="h-6 w-6" />
                 <span>Login</span>
@@ -205,11 +205,11 @@ const Navbar = () => {
             )}
 
             {/* Dark Mode Toggle Button */}
-            <button onClick={toggleDarkMode} className="text-gray-800">
+            <button onClick={toggleDarkMode}>
               {darkMode ? (
-                <SunIcon className="h-6 w-6 text-gray-300 hover:text-gray-400" />
+                <SunIcon className="h-6 w-6 text-indigo-100 hover:text-indigo-200" />
               ) : (
-                <MoonIcon className="h-6 w-6 text-gray-500 hover:text-gray-700" />
+                <MoonIcon className="h-6 w-6 text-indigo-600 hover:text-indigo-800" />
               )}
             </button>
           </div>

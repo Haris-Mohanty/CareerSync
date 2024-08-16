@@ -69,7 +69,7 @@ const Hero = () => {
                 placeholder="Job Title Keywords"
                 className="flex-grow text-xs md:text-base p-2 text-gray-600 focus:outline-none font-poppins"
               />
-              <button className="bg-blue-600 text-xs md:text-base text-white px-2 md:px-4 py-1 md:py-2 rounded-full hover:bg-blue-700 transition-colors font-merriweather duration-300">
+              <button className="bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 text-xs md:text-base text-white px-2 md:px-4 py-1 md:py-2 rounded-full hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors font-merriweather duration-300">
                 FIND JOBS
               </button>
             </div>
@@ -78,19 +78,19 @@ const Hero = () => {
             <div className="flex flex-wrap gap-2 justify-center md:justify-start font-poppins font-medium text-xs md:text-base mb-4 md:mb-0">
               <span
                 onClick={() => handlePopularSearch("UI/UX")}
-                className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full cursor-pointer hover:bg-blue-200"
+                className="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full cursor-pointer hover:bg-indigo-200"
               >
                 UI/UX
               </span>
               <span
                 onClick={() => handlePopularSearch("Web Development")}
-                className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full cursor-pointer hover:bg-blue-200"
+                className="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full cursor-pointer hover:bg-indigo-200"
               >
                 Web Development
               </span>
               <span
                 onClick={() => handlePopularSearch("Human Resources")}
-                className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full cursor-pointer hover:bg-blue-200"
+                className="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full cursor-pointer hover:bg-indigo-200"
               >
                 Human Resources
               </span>
@@ -103,7 +103,7 @@ const Hero = () => {
       <div className="bg-slate-200 p-4 md:p-6 mx-auto flex justify-around text-center px-4 md:px-4">
         <div className="flex items-center w-full md:w-auto">
           <div className="bg-white rounded-full p-1 md:p-4 mr-1">
-            <UserCircleIcon className="h-5 w-5 md:h-10 md:w-10 text-blue-600" />
+            <UserCircleIcon className="h-5 w-5 md:h-10 md:w-10 text-indigo-600" />
           </div>
           <div>
             <p className="text-sm md:text-2xl font-bold text-gray-800 font-openSans">
@@ -116,7 +116,7 @@ const Hero = () => {
         </div>
         <div className="flex items-center w-full md:w-auto">
           <div className="bg-white rounded-full p-1 md:p-4 mr-1">
-            <BuildingOffice2Icon className="h-5 w-5 md:h-10 md:w-10 text-blue-600" />
+            <BuildingOffice2Icon className="h-5 w-5 md:h-10 md:w-10 text-indigo-600" />
           </div>
           <div>
             <p className="text-sm md:text-2xl font-bold text-gray-800 font-openSans">
@@ -129,7 +129,7 @@ const Hero = () => {
         </div>
         <div className="flex items-center w-full md:w-auto">
           <div className="bg-white rounded-full p-1 md:p-4 mr-1">
-            <GlobeAsiaAustraliaIcon className="h-5 w-5 md:h-10 md:w-10 text-blue-600" />
+            <GlobeAsiaAustraliaIcon className="h-5 w-5 md:h-10 md:w-10 text-indigo-600" />
           </div>
           <div>
             <p className="text-sm md:text-2xl font-bold text-gray-800 font-openSans">

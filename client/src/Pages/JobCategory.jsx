@@ -25,41 +25,43 @@ const categories = [
 
 const JobCategory = () => {
   return (
-    <section className="container mx-auto py-8">
-      <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4C40F8] mb-4">
-        Job <span className="text-black">Category</span>
-      </h2>
-      <p className="text-center text-gray-500 mb-8">
-        Get the most exciting jobs and grow your career fast with others.
-      </p>
+    <div className="bg-slate-100">
+      <section className="container mx-auto py-8">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4C40F8] mb-4">
+          Job <span className="text-black">Category</span>
+        </h2>
+        <p className="text-center text-gray-500 mb-8">
+          Get the most exciting jobs and grow your career fast with others.
+        </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {categories.map((category, index) => (
-          <div
-            key={index}
-            className="bg-white text-black p-6 flex items-center gap-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer hover:bg-indigo-700 group"
-          >
-            <div className="p-2 rounded-full bg-blue-50">
-              <category.icon className="h-8 w-8 text-indigo-700" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {categories.map((category, index) => (
+            <div
+              key={index}
+              className="bg-white text-black p-6 flex items-center gap-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer hover:bg-indigo-700 group"
+            >
+              <div className="p-2 rounded-full bg-blue-50">
+                <category.icon className="h-8 w-8 text-indigo-700" />
+              </div>
+              <div>
+                <h3 className="text-sm md:text-base font-semibold mb-1 group-hover:text-white">
+                  {category.title}
+                </h3>
+                <p className="text-xs md:text-sm text-indigo-500 group-hover:text-white">
+                  {category.positions} Open Positions
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-sm md:text-base font-semibold mb-1 group-hover:text-white">
-                {category.title}
-              </h3>
-              <p className="text-xs md:text-sm text-indigo-500 group-hover:text-white">
-                {category.positions} Open Positions
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      <div className="flex justify-center mt-8">
-        <Button className="text-[#4C40F8] border-[#4C40F8] border-2 bg-indigo-700 hover:bg-indigo-800 text-white transition duration-300">
-          See More →
-        </Button>
-      </div>
-    </section>
+        <div className="flex justify-center mt-8">
+          <Button className="text-white bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 hover:from-indigo-700 hover:via-indigo-800 hover:to-indigo-900 transition duration-300 rounded-lg px-6 py-3">
+            See More →
+          </Button>
+        </div>
+      </section>
+    </div>
   );
 };
 

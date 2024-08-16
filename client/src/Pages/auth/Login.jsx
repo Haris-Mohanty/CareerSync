@@ -159,7 +159,7 @@ const Login = () => {
                   )}
                 />
 
-                <Button className="flex w-full" type="submit">
+                <Button className="flex w-full bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700  hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors font-merriweather dark:text-white" type="submit">
                   Login
                 </Button>
               </form>
