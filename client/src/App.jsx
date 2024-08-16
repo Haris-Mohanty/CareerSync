@@ -9,6 +9,7 @@ import Login from "./Pages/auth/Login";
 import Register from "./Pages/auth/Register";
 import { Toaster } from "@/components/ui/sonner";
 import Spinner from "./components/Spinner";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer />
     </>
   );
 }
