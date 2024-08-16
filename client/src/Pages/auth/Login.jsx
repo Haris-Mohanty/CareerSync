@@ -17,6 +17,7 @@ import { loginUserApi } from "@/api/api";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
+import { motion } from "framer-motion";
 
 // Form Validation
 const formSchema = z.object({
@@ -35,6 +36,22 @@ const formSchema = z.object({
     message: "Role must be either 'user' or 'recruiter'.",
   }),
 });
+
+// Animation Variants
+const containerVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 } },
+};
+
+const imageVariants = {
+  hidden: { opacity: 0, x: -100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.8 } },
+};
+
+const formVariants = {
+  hidden: { opacity: 0, x: 100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.8 } },
+};
 
 const Login = () => {
   const navigate = useNavigate();
@@ -68,22 +85,41 @@ const Login = () => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row mt-32 md:mt-14 justify-center items-center">
-        <div className="w-[90%] md:w-[75%] flex justify-center items-center p-1 md:p-6">
+      <motion.div
+        className="flex flex-col md:flex-row mt-32 md:mt-14 justify-center items-center"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div
+          className="w-[90%] md:w-[75%] flex justify-center items-center p-1 md:p-6"
+          variants={imageVariants}
+        >
           <img
             src={loginImage}
             alt="Login"
             className="w-full h-full object-cover rounded-lg shadow-lg"
           />
-        </div>
-        <div className="md:w-1/2 p-1 md:p-4">
+        </motion.div>
+        <motion.div className="md:w-1/2 p-1 md:p-4" variants={formVariants}>
           <div className="px-2 md:px-6 py-2 md:py-5 w-full max-w-lg mx-auto rounded-lg">
-            <h1 className="text-2xl font-bold flex text-center justify-center mb-4">
+            <motion.h1
+              className="text-2xl font-bold flex text-center justify-center mb-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { duration: 0.6 } }}
+            >
               Welcome Back!
-            </h1>
-            <h2 className="text-lg font-semibold text-gray-500 flex text-center justify-center mb-4">
-              Login your account
-            </h2>
+            </motion.h1>
+            <motion.h2
+              className="text-lg font-semibold text-gray-500 flex text-center justify-center mb-4"
+              initial={{ opacity: 0 }}
+              animate={{
+                opacity: 1,
+                transition: { duration: 0.6, delay: 0.2 },
+              }}
+            >
+              Login to your account
+            </motion.h2>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -159,7 +195,10 @@ const Login = () => {
                   )}
                 />
 
-                <Button className="flex w-full bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700  hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors font-merriweather dark:text-white" type="submit">
+                <Button
+                  className="flex w-full bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors font-merriweather dark:text-white"
+                  type="submit"
+                >
                   Login
                 </Button>
               </form>
@@ -178,8 +217,8 @@ const Login = () => {
               </p>
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </>
   );
 };

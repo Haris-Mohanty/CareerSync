@@ -4,6 +4,7 @@ import { clearUser, setUser } from "@/redux/userSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useSelector((state) => state.user);
@@ -26,6 +27,7 @@ const ProtectedRoute = ({ children }) => {
       dispatch(hideLoading());
       setRedirect(true);
       dispatch(clearUser());
+      toast.error("Please login first to access this page");
     }
   };
 

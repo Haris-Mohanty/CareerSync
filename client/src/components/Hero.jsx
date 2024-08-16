@@ -16,6 +16,11 @@ const statVariants = {
   visible: { opacity: 1, scale: 1 },
 };
 
+const buttonVariants = {
+  initial: { scale: 1 },
+  hover: { scale: 1.1 },
+};
+
 const Hero = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -85,9 +90,14 @@ const Hero = () => {
                 placeholder="Job Title Keywords"
                 className="flex-grow text-xs md:text-base p-2 text-gray-600 focus:outline-none font-poppins"
               />
-              <button className="bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 text-xs md:text-base text-white px-2 md:px-4 py-1 md:py-2 rounded-full hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors font-merriweather duration-300">
+              <motion.button
+                variants={buttonVariants}
+                initial="initial"
+                whileHover="hover"
+                className="bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 text-xs md:text-base text-white px-2 md:px-4 py-1 md:py-2 rounded-full hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors font-merriweather duration-300"
+              >
                 FIND JOBS
-              </button>
+              </motion.button>
             </div>
 
             {/* Popular Search Section */}
@@ -122,7 +132,7 @@ const Hero = () => {
           initial="hidden"
           animate="visible"
           variants={statVariants}
-          transition={{ duration: 1, delay: 1.5 }} // Delay for the statistics section
+          transition={{ duration: 1, delay: 1.5 }}
         >
           <div className="bg-white rounded-full p-1 md:p-4 mr-1">
             <UserCircleIcon className="h-5 w-5 md:h-10 md:w-10 text-indigo-600" />
@@ -141,7 +151,7 @@ const Hero = () => {
           initial="hidden"
           animate="visible"
           variants={statVariants}
-          transition={{ duration: 1, delay: 1.7 }} // Delay for the second statistic
+          transition={{ duration: 1, delay: 1.7 }}
         >
           <div className="bg-white rounded-full p-1 md:p-4 mr-1">
             <BuildingOffice2Icon className="h-5 w-5 md:h-10 md:w-10 text-indigo-600" />
@@ -160,7 +170,7 @@ const Hero = () => {
           initial="hidden"
           animate="visible"
           variants={statVariants}
-          transition={{ duration: 1, delay: 1.9 }} // Delay for the third statistic
+          transition={{ duration: 1, delay: 1.9 }}
         >
           <div className="bg-white rounded-full p-1 md:p-4 mr-1">
             <GlobeAsiaAustraliaIcon className="h-5 w-5 md:h-10 md:w-10 text-indigo-600" />

@@ -25,7 +25,6 @@ const Home = () => {
     } catch (err) {
       dispatch(hideLoading());
       dispatch(clearUser());
-
     }
   };
 

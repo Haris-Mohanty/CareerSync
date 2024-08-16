@@ -13,22 +13,51 @@ const buttonVariants = {
   hover: { scale: 1.1 },
 };
 
+const cardVariants = {
+  hidden: { opacity: 0, x: -100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.8 } },
+};
+
+const headerVariants = {
+  hidden: { opacity: 0, y: -50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+};
+
 const PopularJobs = () => {
   return (
     <div className="bg-slate-100 py-5 px-5 md:px-20">
       <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+        <motion.h2
+          className="text-3xl md:text-4xl font-bold text-gray-900"
+          variants={headerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.1 }}
+        >
           Popular <span className="text-indigo-600">Jobs</span>
-        </h2>
-        <p className="text-gray-500 mt-2 text-sm md:text-base">
+        </motion.h2>
+        <motion.p
+          className="text-gray-500 mt-2 text-sm md:text-base"
+          variants={headerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.1 }}
+          transition={{ delay: 0.2 }}
+        >
           Check out featured jobs from top companies around the globe and apply
           now
-        </p>
+        </motion.p>
       </div>
 
       <div className="space-y-6">
         {/* Job Card */}
-        <div className="bg-gradient-to-r from-indigo-50 via-indigo-100 to-indigo-50 rounded-lg p-4 md:p-6 flex flex-col md:flex-row justify-between items-center shadow-md">
+        <motion.div
+          className="bg-gradient-to-r from-indigo-50 via-indigo-100 to-indigo-50 rounded-lg p-4 md:p-6 flex flex-col md:flex-row justify-between items-center shadow-md"
+          variants={cardVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.1 }}
+        >
           <div className="flex items-center space-x-4 mb-4 md:mb-0">
             <Avatar className="w-14 h-14">
               <AvatarImage
@@ -73,7 +102,7 @@ const PopularJobs = () => {
           >
             Apply Now
           </motion.button>
-        </div>
+        </motion.div>
 
         <div className="flex justify-center mt-8">
           <motion.div

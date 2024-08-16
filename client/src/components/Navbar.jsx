@@ -77,7 +77,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-slate-100 dark:bg-gray-800 shadow-md dark:shadow dark:shadow-blue-300 shadow-gray-300 w-100 px-2 md:px-auto fixed top-0 right-0 left-0 z-50">
+      <nav className="bg-slate-50 dark:bg-gray-800 shadow-md dark:shadow dark:shadow-blue-300 shadow-gray-300 w-100 px-2 md:px-auto fixed top-0 right-0 left-0 z-50">
         <div className="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap">
           {/* Logo */}
           <Link to={"/"} className="md:order-1">

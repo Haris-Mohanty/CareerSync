@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -107,16 +108,31 @@ const Register = () => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row mt-32 md:mt-12 justify-center items-center">
-        <div className="w-[90%] md:w-[75%] flex justify-center items-center p-1 md:p-6 dark:p-1 dark:md:p-3">
+      <motion.div
+        className="flex flex-col md:flex-row mt-32 md:mt-12 justify-center items-center"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        <motion.div
+          className="w-[90%] md:w-[75%] flex justify-center items-center p-1 md:p-6 dark:p-1 dark:md:p-3"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
           <img
             src={registerImage}
             alt="Register"
             className="w-full h-full object-cover rounded-lg shadow-lg"
           />
-        </div>
-        <div className="md:w-1/2 p-1 md:p-4">
-          <div className=" px-2 md:px-6 py-2 md:py-5 w-full max-w-lg mx-auto rounded-lg">
+        </motion.div>
+        <motion.div
+          className="md:w-1/2 p-1 md:p-4"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+        >
+          <div className="px-2 md:px-6 py-2 md:py-5 w-full max-w-lg mx-auto rounded-lg">
             <h1 className="text-xl font-bold flex text-center justify-center mb-4">
               Create account
             </h1>
@@ -266,8 +282,8 @@ const Register = () => {
               </p>
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </>
   );
 };
