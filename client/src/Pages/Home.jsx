@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import JobCategory from "./JobCategory";
 import PopularJobs from "@/components/PopularJobs";
+import AuthSection from "@/components/AuthSection";
 
 const Home = () => {
   const { user } = useSelector((state) => state.user);
@@ -39,6 +40,7 @@ const Home = () => {
       <Hero />
       <JobCategory />
       <PopularJobs />
+      <AuthSection />
     </>
   );
 };
