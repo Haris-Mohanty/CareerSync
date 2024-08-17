@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import NotFound from "./Pages/NotFound";
@@ -53,7 +54,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route
-          path="/job"
+          path="/jobs"
           element={
             <ProtectedRoute>
               <Job />

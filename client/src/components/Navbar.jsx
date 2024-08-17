@@ -98,12 +98,12 @@ const Navbar = () => {
               </li>
               <li
                 className={`md:px-4 md:py-2 ${
-                  currentPath === "/job"
+                  currentPath === "/jobs"
                     ? "text-indigo-500 dark:text-indigo-300"
                     : "hover:text-indigo-400 dark:hover:text-indigo-300"
                 }`}
               >
-                <Link to="/job">Jobs</Link>
+                <Link to="/jobs">Jobs</Link>
               </li>
               <li
                 className={`md:px-4 md:py-2 ${
