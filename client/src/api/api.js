@@ -69,3 +69,28 @@ export const logoutUserApi = async () => {
     throw err;
   }
 };
+
+//**************** GET ALL JOBS API ****************/
+export const getAllJobsApi = async (filters) => {
+  try {
+    const response = await axios.get("/job/get-all-jobs", {
+      params: {
+        title: filters.title,
+        location: filters.location,
+        jobType: filters.jobType,
+        experienceLevel: filters.experienceLevel,
+        salary: filters.salary,
+        workType: filters.workType,
+      },
+      withCredentials: true,
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};

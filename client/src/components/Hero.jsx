@@ -30,7 +30,7 @@ const Hero = () => {
 
   return (
     <>
-      <section className="bg-slate-100 pt-8 md:p-1 mt-24 md:mt-1">
+      <section className="bg-slate-100 pt-8 md:p-1">
         <div className="container mx-auto flex flex-col-reverse md:flex-row items-center justify-between px-4 md:px-10">
           {/* Right Section - Image */}
           <motion.div

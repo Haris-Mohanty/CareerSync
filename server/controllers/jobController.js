@@ -322,7 +322,7 @@ export const getAllJobsController = async (req, res) => {
       .limit(limit);
 
     if (!jobs || jobs.length === 0) {
-      return res.status(404).json({
+      return res.status(200).json({
         success: true,
         message: "No jobs found!",
         totalJobs: 0,
