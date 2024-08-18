@@ -50,9 +50,10 @@ const jobSchema = new mongoose.Schema(
       enum: ["Entry", "Mid", "Senior"],
       required: [true, "Experience level is required!"],
     },
-    remote: {
-      type: Boolean,
-      default: false,
+    workType: {
+      type: String,
+      enum: ["Remote", "Onsite", "Hybrid"],
+      required: [true, "Work type is required!"],
     },
     company: {
       type: mongoose.Schema.Types.ObjectId,

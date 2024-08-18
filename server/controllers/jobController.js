@@ -28,7 +28,7 @@ export const createJobController = async (req, res) => {
       jobType,
       numberOfVacancies,
       experienceLevel,
-      remote,
+      workType,
       company,
       deadline,
       status,
@@ -44,6 +44,7 @@ export const createJobController = async (req, res) => {
       !jobType ||
       !numberOfVacancies ||
       !experienceLevel ||
+      !workType ||
       !company ||
       !deadline
     ) {
@@ -121,6 +122,15 @@ export const createJobController = async (req, res) => {
       });
     }
 
+    // Work type validation
+    const validWorkTyps = ["Remote", "Onsite", "Hybrid"];
+    if (!validWorkTyps.includes(workType)) {
+      return res.status(422).json({
+        success: false,
+        message: "Invalid work type provided!",
+      });
+    }
+
     // Deadline Validation
     const deadlineDate = new Date(deadline);
     if (isNaN(deadlineDate.getTime()) || deadlineDate <= Date.now()) {
@@ -167,7 +177,7 @@ export const createJobController = async (req, res) => {
       jobType,
       numberOfVacancies,
       experienceLevel,
-      remote,
+      workType,
       company,
       createdBy: userId,
       deadline,
@@ -198,20 +208,30 @@ export const createJobController = async (req, res) => {
 export const getAllJobsController = async (req, res) => {
   try {
     // Extarct query parameter for sorting and filtering
-    const { title, location, jobType, experienceLevel, status, remote } =
+    const { title, location, jobType, experienceLevel, salary, workType } =
       req.query;
 
     // Query obj
     let query = { isDeleted: false }; //Excluding Deleted jobs
 
+    // Pagination
+    const page = parseInt(req.query.page) || 1;
+    const limit = 8;
+
+    //Calculate skip value
+    const skip = (parseInt(page) - 1) * limit;
+
+    // Title
     if (title) {
       query.title = { $regex: title, $options: "i" };
     }
 
+    // Location
     if (location) {
       query.location = { $regex: location, $options: "i" };
     }
 
+    // Job Type
     if (jobType) {
       const validJobTypes = [
         "Full-time",
@@ -228,6 +248,7 @@ export const getAllJobsController = async (req, res) => {
       query.jobType = jobType;
     }
 
+    // Exp Level
     if (experienceLevel) {
       const validExperienceLevels = ["Entry", "Mid", "Senior"];
       if (!validExperienceLevels.includes(experienceLevel)) {
@@ -239,25 +260,66 @@ export const getAllJobsController = async (req, res) => {
       query.experienceLevel = experienceLevel;
     }
 
-    if (status) {
-      const validStatuses = ["Open", "Closed", "On Hold"];
-      if (!validStatuses.includes(status)) {
-        return res.status(422).json({
-          success: false,
-          message: "Invalid status provided!",
-        });
+    // Salary Filtering
+    if (salary) {
+      if (salary.includes("+")) {
+        // Handle open-ended maximum salary (e.g., "300000+")
+        const minSalary = parseFloat(salary.replace("+", ""));
+        if (isNaN(minSalary)) {
+          return res.status(422).json({
+            success: false,
+            message: "Invalid minimum salary provided!",
+          });
+        }
+        query.salary = { $gte: minSalary };
+      } else {
+        // Handle salary range (e.g., "100000-300000")
+        const salaryRange = salary.split("-");
+        if (salaryRange.length === 2) {
+          const minSalary = parseFloat(salaryRange[0]);
+          const maxSalary = parseFloat(salaryRange[1]);
+
+          if (isNaN(minSalary) || isNaN(maxSalary)) {
+            return res.status(422).json({
+              success: false,
+              message: "Invalid salary range provided!",
+            });
+          }
+
+          query.salary = { $gte: minSalary, $lte: maxSalary };
+        } else {
+          return res.status(422).json({
+            success: false,
+            message: "Invalid salary format provided! Use 'min-max' or 'min+'.",
+          });
+        }
       }
-      query.status = status;
     }
 
-    if (remote) {
-      query.remote = remote === "true";
+    // Work type valudation
+    if (workType) {
+      const validWorkTypes = ["Remote", "Onsite", "Hybrid"];
+      if (!validWorkTypes.includes(workType)) {
+        return res.status(422).json({
+          success: false,
+          message: "Invalid work type provided!",
+        });
+      }
+      query.workType = workType;
     }
+
+    // Get total count of jobs
+    const totalJobs = await JobModel.countDocuments(query);
+
+    // Calculate total pages
+    const totalPages = Math.ceil(totalJobs / limit);
 
     // Get job
     const jobs = await JobModel.find(query)
       .populate("company")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
     if (!jobs || jobs.length === 0) {
       return res.status(404).json({
@@ -271,7 +333,9 @@ export const getAllJobsController = async (req, res) => {
     // Success response
     return res.status(200).json({
       success: true,
-      totalJobs: jobs.length,
+      totalJobs: totalJobs,
+      currentPage: parseInt(page),
+      totalPages: totalPages,
       data: jobs,
     });
   } catch (err) {
@@ -392,7 +456,7 @@ export const updateJobDetailsController = async (req, res) => {
       jobType,
       numberOfVacancies,
       experienceLevel,
-      remote,
+      workType,
       company,
       deadline,
       status,
@@ -408,6 +472,7 @@ export const updateJobDetailsController = async (req, res) => {
       !jobType ||
       !numberOfVacancies ||
       !experienceLevel ||
+      !workType ||
       !company ||
       !deadline
     ) {
@@ -485,6 +550,15 @@ export const updateJobDetailsController = async (req, res) => {
       });
     }
 
+    // Work type validation
+    const validWorkTyps = ["Remote", "Onsite", "Hybrid"];
+    if (!validWorkTyps.includes(workType)) {
+      return res.status(422).json({
+        success: false,
+        message: "Invalid work type provided!",
+      });
+    }
+
     // Deadline Validation
     const deadlineDate = new Date(deadline);
     if (isNaN(deadlineDate.getTime()) || deadlineDate <= Date.now()) {
@@ -515,7 +589,7 @@ export const updateJobDetailsController = async (req, res) => {
         jobType,
         numberOfVacancies,
         experienceLevel,
-        remote,
+        workType,
         company,
         deadline,
         status,
