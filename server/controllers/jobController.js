@@ -214,12 +214,12 @@ export const getAllJobsController = async (req, res) => {
     // Query obj
     let query = { isDeleted: false }; //Excluding Deleted jobs
 
-    // Pagination
-    const page = parseInt(req.query.page) || 1;
-    const limit = 8;
+    // // Pagination
+    // const page = parseInt(req.query.page) || 1;
+    // const limit = 6;
 
-    //Calculate skip value
-    const skip = (parseInt(page) - 1) * limit;
+    // //Calculate skip value
+    // const skip = (parseInt(page) - 1) * limit;
 
     // Title
     if (title) {
@@ -311,15 +311,13 @@ export const getAllJobsController = async (req, res) => {
     // Get total count of jobs
     const totalJobs = await JobModel.countDocuments(query);
 
-    // Calculate total pages
-    const totalPages = Math.ceil(totalJobs / limit);
+    // // Calculate total pages
+    // const totalPages = Math.ceil(totalJobs / limit);
 
     // Get job
     const jobs = await JobModel.find(query)
       .populate("company")
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
+      .sort({ createdAt: -1 });
 
     if (!jobs || jobs.length === 0) {
       return res.status(200).json({
@@ -334,8 +332,6 @@ export const getAllJobsController = async (req, res) => {
     return res.status(200).json({
       success: true,
       totalJobs: totalJobs,
-      currentPage: parseInt(page),
-      totalPages: totalPages,
       data: jobs,
     });
   } catch (err) {

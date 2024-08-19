@@ -13,9 +13,10 @@ import JobComponent from "@/components/JobComponent";
 
 const Job = () => {
   const dispatch = useDispatch();
-  const [activeFilters, setActiveFilters] = useState({}); // Manage which filters are open
-  const [selectedFilters, setSelectedFilters] = useState({}); // Manage selected radio buttons
+  const [activeFilters, setActiveFilters] = useState({});
+  const [selectedFilters, setSelectedFilters] = useState({});
   const [jobs, setJobs] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const toggleFilter = (id) => {
     setActiveFilters((prevState) => ({
@@ -39,7 +40,11 @@ const Job = () => {
     });
   };
 
-  //***************** FETCH ALL JOBS ***************/
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // Fetch all jobs
   const fetchAllJobs = async () => {
     try {
       dispatch(showLoading());
@@ -117,12 +122,17 @@ const Job = () => {
     },
   ];
 
+  // Filter jobs based on search term
+  const filteredJobs = jobs.filter((job) =>
+    job.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="bg-slate-100 mt-0 md:mt-12 pb-6">
+    <div className="bg-slate-100 dark:bg-gray-800 mt-0 md:mt-12 pb-6">
       <main className="mx-auto px-8 md:px-12">
         <div className="pt-8 md:grid md:grid-cols-5 md:gap-x-8">
-          <aside className="bg-white pl-8 pr-2 py-7 rounded-lg shadow-lg hidden md:block">
-            <h2 className="text-4xl mb-6 ml-10 text-indigo-700 font-medium">
+          <aside className="bg-white dark:bg-gray-700 pl-8 pr-2 py-7 rounded-lg shadow-lg hidden md:block">
+            <h2 className="text-4xl mb-6 ml-10 text-indigo-700 font-semibold font-playfair dark:text-white">
               Filters
             </h2>
             <form className="space-y-8 divide-y divide-gray-200 max-h-[32rem] overflow-y-auto">
@@ -132,7 +142,7 @@ const Job = () => {
                   className={sectionIdx === 0 ? null : "pt-10"}
                 >
                   <fieldset>
-                    <legend className="block text-sm font-medium text-gray-900 flex justify-between items-center">
+                    <legend className="block text-sm font-medium text-gray-900 flex justify-between items-center font-medium font-merriweather dark:text-white">
                       {section.name}
                       <div className="flex items-center space-x-2 ml-1">
                         {selectedFilters[section.id] && (
@@ -178,11 +188,11 @@ const Job = () => {
                               onChange={() =>
                                 handleRadioChange(section.id, option.value)
                               }
-                              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:text-white dark:border-gray-700"
                             />
                             <label
                               htmlFor={`${section.id}-${optionIdx}`}
-                              className="ml-3 text-sm text-gray-600 cursor-pointer"
+                              className="ml-3 text-sm text-gray-600 cursor-pointer dark:text-white"
                             >
                               {option.label}
                             </label>
@@ -197,16 +207,35 @@ const Job = () => {
           </aside>
 
           {/* Job Cards Section */}
-          <div className="mt-1 md:mt-5 md:col-span-4">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-x-8 gap-y-4">
-              {jobs.length > 0 ? (
-                jobs.map((job, index) => <JobComponent key={index} job={job} />)
+          <div className="mt-1 md:mt-1 md:col-span-4">
+            {/* Search Bar */}
+            <div className="mb-6 flex items-center">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={handleSearch}
+                placeholder="Search jobs by title...."
+                className="w-full p-3 rounded-md border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring focus:ring-indigo-200 dark:focus:ring-gray-800 dark:bg-gray-700 dark:text-white"
+              />
+            </div>
+
+            {/* Job Listings */}
+            <div className="">
+              {filteredJobs.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-4 max-h-[40rem] overflow-y-auto">
+                  {filteredJobs.map((job, index) => (
+                    <JobComponent key={index} job={job} />
+                  ))}
+                </div>
               ) : (
-                <div className="flex flex-col items-center justify-center h-96">
-                  <MagnifyingGlassIcon className="h-16 w-16 text-gray-400 mb-4" />
-                  <p className="text-2xl text-gray-700 mb-4">No jobs found.</p>
-                  <p className="text-gray-500">
-                    Try adjusting your filters to find what you're looking for.
+                <div className="flex flex-col items-center justify-center h-96 mt-0 md:mt-20 dark:bg-gray-800">
+                  <MagnifyingGlassIcon className="h-20 w-20 text-indigo-600 mb-6 dark:text-indigo-900" />
+                  <p className="text-2xl font-semibold text-gray-700 mb-4 font-openSans dark:text-white">
+                    No jobs found!
+                  </p>
+                  <p className="text-gray-500 mb-6 text-center font-poppins dark:text-white">
+                    We could not find any jobs matching your criteria. Try
+                    adjusting your search or filter settings.
                   </p>
                 </div>
               )}
