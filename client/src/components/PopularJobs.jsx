@@ -7,6 +7,13 @@ import {
   RssIcon,
 } from "@heroicons/react/24/outline";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { getAllJobsApi } from "@/api/api";
+import { useDispatch, useSelector } from "react-redux";
+import { hideLoading, showLoading } from "@/redux/spinnerSlice";
+import { toast } from "sonner";
+import { useEffect, useState } from "react";
+import displayInr from "@/helper/IndianCurrency";
+import { useNavigate } from "react-router-dom";
 
 const buttonVariants = {
   initial: { scale: 1 },
@@ -24,6 +31,40 @@ const headerVariants = {
 };
 
 const PopularJobs = () => {
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [jobs, setJobs] = useState([]);
+
+  // Fetch all jobs
+  const fetchAllJobs = async () => {
+    try {
+      dispatch(showLoading());
+      const res = await getAllJobsApi();
+      if (res.success) {
+        setJobs(res.data);
+        dispatch(hideLoading());
+      }
+    } catch (err) {
+      dispatch(hideLoading());
+      toast.error(err.response.data.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllJobs();
+  }, []);
+
+  // Handle Apply Now click
+  const handleApplyNow = () => {
+    if (!user) {
+      toast.error("Please login to apply for the job");
+      navigate("/login");
+    } else {
+      toast.success("Applied"); // Just for msg code remain...
+    }
+  };
+
   return (
     <div className="bg-slate-100 py-5 px-5 md:px-20">
       <div className="text-center mb-10">
@@ -51,58 +92,64 @@ const PopularJobs = () => {
 
       <div className="space-y-6">
         {/* Job Card */}
-        <motion.div
-          className="bg-gradient-to-r from-indigo-50 via-indigo-100 to-indigo-50 rounded-lg p-4 md:p-6 flex flex-col md:flex-row justify-between items-center shadow-md"
-          variants={cardVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ amount: 0.1 }}
-        >
-          <div className="flex items-center space-x-4 mb-4 md:mb-0">
-            <Avatar className="w-14 h-14">
-              <AvatarImage
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdTNT-Q0TD9o3z_Ii0EiGkadVFPYnWYSVnig&s"
-                alt="Company Logo"
-                className="object-cover"
-              />
-              <AvatarFallback>LOGO</AvatarFallback>
-            </Avatar>
-            <div>
-              <h3 className="text-base md:text-xl font-semibold text-gray-800">
-                Junior Graphic Designer
-              </h3>
-              <div className="text-sm text-gray-500 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 mt-1">
-                <span className="flex items-center space-x-1">
-                  <MapPinIcon className="h-4 w-4 text-indigo-700" />
-                  <span>Remote | IN</span>
-                </span>
-                <span className="flex items-center space-x-1">
-                  <ClockIcon className="h-4 w-4 text-indigo-700" />
-                  <span>8 Hours</span>
-                </span>
-                <span className="flex items-center space-x-1">
-                  <CurrencyRupeeIcon className="h-4 w-4 text-indigo-700" />
-                  <span>3,00,000 INR</span>
-                </span>
-                <span className="flex items-center space-x-1">
-                  <RssIcon className="h-4 w-4 text-indigo-700" />
-                  <span>Mid-Level Experience</span>
-                </span>
-                <span className="bg-indigo-200 text-indigo-700 text-xs font-semibold px-2 py-1 rounded-lg">
-                  Full Time
-                </span>
+        {jobs.slice(0, 4).map((job) => (
+          <>
+            <motion.div
+              key={job._id}
+              className="bg-gradient-to-r from-indigo-50 via-indigo-100 to-indigo-50 rounded-lg p-4 md:p-6 flex flex-col md:flex-row justify-between items-center shadow-md"
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ amount: 0.1 }}
+            >
+              <div className="flex items-center space-x-4 mb-4 md:mb-0">
+                <Avatar className="w-14 h-14">
+                  <AvatarImage
+                    src={job?.company?.logo}
+                    alt="Company Logo"
+                    className="object-cover"
+                  />
+                  <AvatarFallback>LOGO</AvatarFallback>
+                </Avatar>
+                <div>
+                  <h3 className="text-base md:text-xl font-semibold text-gray-800">
+                    {job?.title}
+                  </h3>
+                  <div className="text-sm text-gray-500 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 mt-1">
+                    <span className="flex items-center space-x-1">
+                      <MapPinIcon className="h-4 w-4 text-indigo-700" />
+                      <span>{job?.workType} | IN</span>
+                    </span>
+                    <span className="flex items-center space-x-1">
+                      <ClockIcon className="h-4 w-4 text-indigo-700" />
+                      <span>8 Hours</span>
+                    </span>
+                    <span className="flex items-center space-x-1">
+                      <CurrencyRupeeIcon className="h-4 w-4 text-indigo-700" />
+                      <span>{displayInr(job?.salary)} INR</span>
+                    </span>
+                    <span className="flex items-center space-x-1">
+                      <RssIcon className="h-4 w-4 text-indigo-700" />
+                      <span>{job?.experienceLevel}-Level Experience</span>
+                    </span>
+                    <span className="bg-indigo-200 text-indigo-700 text-xs font-semibold px-2 py-1 rounded-lg">
+                      {job?.jobType}
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <motion.button
-            className="text-white text-sm px-3 md:px-5 py-2 md:py-3 text-base rounded-lg bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors font-raleway font-medium w-full md:w-auto"
-            variants={buttonVariants}
-            initial="initial"
-            whileHover="hover"
-          >
-            Apply Now
-          </motion.button>
-        </motion.div>
+              <motion.button
+                className="text-white text-sm px-3 md:px-5 py-2 md:py-3 text-base rounded-lg bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors font-raleway font-medium w-full md:w-auto"
+                onClick={handleApplyNow}
+                variants={buttonVariants}
+                initial="initial"
+                whileHover="hover"
+              >
+                Apply Now
+              </motion.button>
+            </motion.div>
+          </>
+        ))}
 
         <div className="flex justify-center mt-8">
           <motion.div
@@ -110,7 +157,10 @@ const PopularJobs = () => {
             initial="initial"
             whileHover="hover"
           >
-            <Button className="text-white bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 hover:from-indigo-700 hover:via-indigo-800 hover:to-indigo-900 transition duration-300 rounded-lg px-6 py-3">
+            <Button
+              onClick={() => navigate("/jobs")}
+              className="text-white bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 hover:from-indigo-700 hover:via-indigo-800 hover:to-indigo-900 transition duration-300 rounded-lg px-6 py-3"
+            >
               See More →
             </Button>
           </motion.div>

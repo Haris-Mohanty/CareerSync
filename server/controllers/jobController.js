@@ -214,13 +214,6 @@ export const getAllJobsController = async (req, res) => {
     // Query obj
     let query = { isDeleted: false }; //Excluding Deleted jobs
 
-    // // Pagination
-    // const page = parseInt(req.query.page) || 1;
-    // const limit = 6;
-
-    // //Calculate skip value
-    // const skip = (parseInt(page) - 1) * limit;
-
     // Title
     if (title) {
       query.title = { $regex: title, $options: "i" };
@@ -310,9 +303,6 @@ export const getAllJobsController = async (req, res) => {
 
     // Get total count of jobs
     const totalJobs = await JobModel.countDocuments(query);
-
-    // // Calculate total pages
-    // const totalPages = Math.ceil(totalJobs / limit);
 
     // Get job
     const jobs = await JobModel.find(query)

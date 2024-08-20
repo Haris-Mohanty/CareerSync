@@ -71,7 +71,7 @@ export const logoutUserApi = async () => {
 };
 
 //**************** GET ALL JOBS API ****************/
-export const getAllJobsApi = async (filters) => {
+export const getAllJobsApi = async (filters = {}) => {
   try {
     const response = await axios.get("/job/get-all-jobs", {
       params: {
@@ -82,7 +82,6 @@ export const getAllJobsApi = async (filters) => {
         salary: filters.salary,
         workType: filters.workType,
       },
-      withCredentials: true,
     });
 
     if (response.status === 200) {
