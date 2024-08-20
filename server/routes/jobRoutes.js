@@ -16,7 +16,7 @@ const router = express.Router();
 router.post("/create-job", authMiddleware, createJobController);
 
 // Get alll jobs
-router.get("/get-all-jobs", authMiddleware, getAllJobsController);
+router.get("/get-all-jobs", getAllJobsController);
 
 // Get All Jobs Of LoggedIn User (Recruiter)
 router.get("/get-all-jobs-of-user", authMiddleware, getAllJobsOfLoggedInUser);

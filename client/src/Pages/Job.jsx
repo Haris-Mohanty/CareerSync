@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   ChevronDownIcon,
   ChevronUpIcon,
+  FunnelIcon,
   MagnifyingGlassIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -10,6 +11,8 @@ import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { toast } from "sonner";
 import { getAllJobsApi } from "@/api/api";
 import JobComponent from "@/components/JobComponent";
+import { motion } from "framer-motion";
+import JobsCardSkeleton from "@/components/JobsCardSkeleton";
 
 const Job = () => {
   const dispatch = useDispatch();
@@ -17,6 +20,8 @@ const Job = () => {
   const [selectedFilters, setSelectedFilters] = useState({});
   const [jobs, setJobs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const toggleFilter = (id) => {
     setActiveFilters((prevState) => ({
@@ -48,20 +53,28 @@ const Job = () => {
   const fetchAllJobs = async () => {
     try {
       dispatch(showLoading());
-      const res = await getAllJobsApi(selectedFilters);
+      setLoading(true);
+      const res = await getAllJobsApi({ ...selectedFilters, searchTerm });
       if (res.success) {
         setJobs(res.data);
+        setLoading(false);
         dispatch(hideLoading());
       }
     } catch (err) {
       dispatch(hideLoading());
+      setLoading(false);
       toast.error(err.response.data.message);
     }
   };
 
   useEffect(() => {
     fetchAllJobs();
-  }, [selectedFilters]);
+  }, [selectedFilters, searchTerm]);
+
+  // Toggle mobile filter section
+  const toggleMobileFilter = () => {
+    setIsMobileFilterOpen(!isMobileFilterOpen);
+  };
 
   // Filters
   const filters = [
@@ -129,9 +142,92 @@ const Job = () => {
 
   return (
     <div className="bg-slate-100 dark:bg-gray-800 mt-0 md:mt-12 pb-6">
-      <main className="mx-auto px-8 md:px-12">
-        <div className="pt-8 md:grid md:grid-cols-5 md:gap-x-8">
-          <aside className="bg-white dark:bg-gray-700 pl-8 pr-2 py-7 rounded-lg shadow-lg hidden md:block">
+      <main className="mx-auto px-6 md:px-12">
+        <div className="pt-8 md:grid md:grid-cols-5 md:gap-x-8 relative">
+          {/* Mobile Filter Drawer */}
+          <div
+            className={`md:hidden fixed inset-0 z-50 transform ${
+              isMobileFilterOpen ? "translate-x-0" : "-translate-x-full"
+            } transition-transform duration-300 bg-gray-900 bg-opacity-50`}
+          >
+            <div className="w-3/5 bg-white dark:bg-gray-800 h-full shadow-lg max-h-screen overflow-y-auto">
+              <div className="flex justify-between items-center p-4 bg-indigo-600 text-white">
+                <h2 className="text-lg font-semibold">Filters</h2>
+                <button onClick={toggleMobileFilter}>
+                  <XMarkIcon className="h-6 w-6" />
+                </button>
+              </div>
+              <div className="p-4">
+                {filters.map((section, sectionIdx) => (
+                  <div
+                    key={section.id}
+                    className={sectionIdx === 0 ? null : "pt-10"}
+                  >
+                    <fieldset>
+                      <legend className="block text-sm font-medium text-gray-900 flex justify-between items-center dark:text-white">
+                        {section.name}
+                        <button
+                          type="button"
+                          onClick={() => toggleFilter(section.id)}
+                          className="focus:outline-none"
+                        >
+                          {activeFilters[section.id] ? (
+                            <ChevronUpIcon className="h-6 w-6 text-indigo-500 hover:text-indigo-700" />
+                          ) : (
+                            <ChevronDownIcon className="h-6 w-6 text-indigo-500 hover:text-indigo-700" />
+                          )}
+                        </button>
+                      </legend>
+                      <div
+                        className={`${
+                          activeFilters[section.id]
+                            ? "max-h-[20rem] transition-max-height duration-500 ease-in-out"
+                            : "max-h-0 overflow-hidden transition-max-height duration-500 ease-in-out"
+                        }`}
+                      >
+                        <div className="space-y-3 pt-6">
+                          {section.options.map((option, optionIdx) => (
+                            <div
+                              key={option.value}
+                              className="flex items-center"
+                            >
+                              <input
+                                id={`${section.id}-${optionIdx}`}
+                                name={section.id}
+                                value={option.value}
+                                type="radio"
+                                checked={
+                                  selectedFilters[section.id] === option.value
+                                }
+                                onChange={() =>
+                                  handleRadioChange(section.id, option.value)
+                                }
+                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:text-white dark:border-gray-700"
+                              />
+                              <label
+                                htmlFor={`${section.id}-${optionIdx}`}
+                                className="ml-3 text-sm text-gray-600 cursor-pointer dark:text-white"
+                              >
+                                {option.label}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Filter for desktop */}
+          <motion.aside
+            className="bg-white dark:bg-gray-700 pl-8 pr-2 py-7 rounded-lg shadow-lg hidden md:block"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+          >
             <h2 className="text-4xl mb-6 ml-10 text-indigo-700 font-semibold font-playfair dark:text-white">
               Filters
             </h2>
@@ -204,29 +300,57 @@ const Job = () => {
                 </div>
               ))}
             </form>
-          </aside>
-
+          </motion.aside>
           {/* Job Cards Section */}
-          <div className="mt-1 md:mt-1 md:col-span-4">
-            {/* Search Bar */}
-            <div className="mb-6 flex items-center">
-              <input
+          <div className="md:col-span-4">
+            <div className="mb-4 flex items-center justify-between">
+              {/* Mobile Filter Button */}
+              <button
+                className="md:hidden p-2 bg-indigo-600 text-white rounded-lg focus:outline-none shadow-md"
+                onClick={toggleMobileFilter}
+              >
+                <FunnelIcon title="Filter" className="h-6 w-6" />
+              </button>
+              <h2 className="text-sm md:text-lg font-semibold font-merriweather text-gray-700 dark:text-white">
+                Search Results: {filteredJobs.length}
+              </h2>
+              {/* Search Bar */}
+              <motion.input
                 type="text"
                 value={searchTerm}
                 onChange={handleSearch}
-                placeholder="Search jobs by title...."
-                className="w-full p-3 rounded-md border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring focus:ring-indigo-200 dark:focus:ring-gray-800 dark:bg-gray-700 dark:text-white"
+                placeholder="Search jobs by title..."
+                className="text-xs md:text-base p-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-gray-800 dark:bg-gray-700 dark:text-white transition-shadow duration-300 shadow-sm hover:shadow-md"
+                initial={{ width: "0%" }}
+                animate={{ width: "43%" }}
+                transition={{ delay: 0.1, duration: 0.7, ease: "easeInOut" }}
               />
             </div>
 
             {/* Job Listings */}
-            <div className="">
-              {filteredJobs.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-4 max-h-[40rem] overflow-y-auto">
+            <div>
+              {loading ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-4 max-h-[36rem] overflow-y-auto">
+                  {/* Display skeletons while loading */}
+                  {[1, 2, 3, 4, 5, 6].map((_, index) => (
+                    <JobsCardSkeleton key={index} />
+                  ))}
+                </div>
+              ) : filteredJobs.length > 0 ? (
+                <motion.div
+                  className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-4 max-h-[36rem] overflow-y-auto"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.8,
+                    ease: "easeInOut",
+                    staggerChildren: 0.2,
+                  }}
+                >
                   {filteredJobs.map((job, index) => (
                     <JobComponent key={index} job={job} />
                   ))}
-                </div>
+                </motion.div>
               ) : (
                 <div className="flex flex-col items-center justify-center h-96 mt-0 md:mt-20 dark:bg-gray-800">
                   <MagnifyingGlassIcon className="h-20 w-20 text-indigo-600 mb-6 dark:text-indigo-900" />

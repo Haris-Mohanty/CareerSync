@@ -53,14 +53,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route
-          path="/jobs"
-          element={
-            <ProtectedRoute>
-              <Job />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/jobs" element={<Job />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route
