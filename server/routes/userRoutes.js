@@ -26,7 +26,7 @@ router.get("/logout", authMiddleware, userLogoutController);
 router.put("/update-user-profile", authMiddleware, updateUserProfileDetails);
 
 // Mark all notifications as seen
-router.post(
+router.get(
   "/mark-all-notifications-as-seen",
   authMiddleware,
   markAllNotificationsAsSeen

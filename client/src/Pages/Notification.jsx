@@ -2,16 +2,35 @@ import { useSelector, useDispatch } from "react-redux";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import moment from "moment"; // Import Moment.js
 import { useNavigate } from "react-router-dom";
+import { hideLoading, showLoading } from "@/redux/spinnerSlice";
+import { toast } from "sonner";
+import { markAllNotificationsAsSeenApi } from "@/api/api";
+import { setUser } from "@/redux/userSlice";
 
 const Notification = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const markAllAsSeen = () => {
-    dispatch({ type: "MARK_ALL_AS_SEEN" });
+  //******** MARK ALL NOTIFICATIONS AS SEEN ******/
+  const markAllAsSeen = async () => {
+    try {
+      dispatch(showLoading());
+      const res = await markAllNotificationsAsSeenApi();
+      console.log(res);
+
+      if (res.success) {
+        dispatch(hideLoading());
+        toast.success(res.message);
+        dispatch(setUser(res.data));
+      }
+    } catch (err) {
+      dispatch(hideLoading());
+      toast.error(err?.response?.data?.message);
+    }
   };
 
+  //******** DELETE ALL SEEN NOTIFICATIONS ******/
   const deleteSeenNotifications = () => {
     dispatch({ type: "DELETE_SEEN_NOTIFICATIONS" });
   };

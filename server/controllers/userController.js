@@ -524,7 +524,7 @@ export const markAllNotificationsAsSeen = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "All notifications marked as seen",
-      data: user.seenNotifications,
+      data: user,
     });
   } catch (err) {
     return res.status(500).json({
@@ -551,6 +551,7 @@ export const deleteAllSeenNotifications = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "All seen notifications have been deleted",
+      data: user,
     });
   } catch (err) {
     return res.status(500).json({

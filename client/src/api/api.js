@@ -93,3 +93,20 @@ export const getAllJobsApi = async (filters = {}) => {
     throw err;
   }
 };
+
+//*********** MARK ALL NOTIFICATIONS AS SEEN API **************/
+export const markAllNotificationsAsSeenApi = async () => {
+  try {
+    const response = await axios.get("/user/mark-all-notifications-as-seen", {
+      withCredentials: true,
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};
