@@ -33,7 +33,7 @@ router.get(
 );
 
 // Delete all seen notification
-router.post(
+router.get(
   "/delete-all-seen-notifications",
   authMiddleware,
   deleteAllSeenNotifications

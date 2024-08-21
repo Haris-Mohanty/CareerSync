@@ -4,7 +4,10 @@ import moment from "moment"; // Import Moment.js
 import { useNavigate } from "react-router-dom";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { toast } from "sonner";
-import { markAllNotificationsAsSeenApi } from "@/api/api";
+import {
+  deleteAllSeenNotificationsApi,
+  markAllNotificationsAsSeenApi,
+} from "@/api/api";
 import { setUser } from "@/redux/userSlice";
 
 const Notification = () => {
@@ -17,7 +20,6 @@ const Notification = () => {
     try {
       dispatch(showLoading());
       const res = await markAllNotificationsAsSeenApi();
-      console.log(res);
 
       if (res.success) {
         dispatch(hideLoading());
@@ -31,8 +33,20 @@ const Notification = () => {
   };
 
   //******** DELETE ALL SEEN NOTIFICATIONS ******/
-  const deleteSeenNotifications = () => {
-    dispatch({ type: "DELETE_SEEN_NOTIFICATIONS" });
+  const deleteSeenNotifications = async () => {
+    try {
+      dispatch(showLoading());
+      const res = await deleteAllSeenNotificationsApi();
+
+      if (res.success) {
+        dispatch(hideLoading());
+        toast.success(res.message);
+        dispatch(setUser(res.data));
+      }
+    } catch (err) {
+      dispatch(hideLoading());
+      toast.error(err?.response?.data?.message);
+    }
   };
 
   // Function to format the time difference
@@ -139,7 +153,7 @@ const Notification = () => {
                     user.seenNotifications.map((notification, index) => (
                       <li
                         key={index}
-                        className="p-4 bg-white dark:bg-gray-600 shadow-sm rounded-lg hover:bg-gray-100 dark:hover:bg-gray-500 transition flex items-center justify-between cursor-pointer"
+                        className="p-4 bg-white dark:bg-gray-600 shadow-sm rounded-lg hover:bg-gray-100 dark:hover:bg-gray-500 transition flex items-center justify-between mb-2"
                       >
                         <div>
                           <p className="text-gray-800 dark:text-gray-200 font-medium text-xs md:text-base">

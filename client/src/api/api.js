@@ -110,3 +110,20 @@ export const markAllNotificationsAsSeenApi = async () => {
     throw err;
   }
 };
+
+//*********** DELETE ALL SEEN NOTIFICATIONS API **************/
+export const deleteAllSeenNotificationsApi = async () => {
+  try {
+    const response = await axios.get("/user/delete-all-seen-notifications", {
+      withCredentials: true,
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};
