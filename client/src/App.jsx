@@ -5,7 +5,6 @@ import NotFound from "./Pages/NotFound";
 import Home from "./Pages/Home";
 import Job from "./Pages/Job";
 import About from "./Pages/About";
-import Contact from "./Pages/Contact";
 import Login from "./Pages/auth/Login";
 import Register from "./Pages/auth/Register";
 import { Toaster } from "@/components/ui/sonner";
@@ -18,6 +17,8 @@ import { getUserApi } from "./api/api";
 import { clearUser, setUser } from "./redux/userSlice";
 import { useEffect } from "react";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import ProfilePage from "./Pages/ProfilePage";
+import Notification from "./Pages/Notification";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -55,7 +56,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/jobs" element={<Job />} />
         <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
         <Route
           path="/login"
           element={
@@ -70,6 +70,22 @@ function App() {
             <PublicRoute>
               <Register />
             </PublicRoute>
+          }
+        />
+        <Route
+          path="/view-profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute>
+              <Notification />
+            </ProtectedRoute>
           }
         />
         <Route path="*" element={<NotFound />} />

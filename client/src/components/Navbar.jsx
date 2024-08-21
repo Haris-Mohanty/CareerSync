@@ -114,15 +114,6 @@ const Navbar = () => {
               >
                 <Link to="/about">About</Link>
               </li>
-              <li
-                className={`md:px-4 md:py-2 ${
-                  currentPath === "/contact"
-                    ? "text-indigo-500 dark:text-indigo-300"
-                    : "hover:text-indigo-400 dark:hover:text-indigo-300"
-                }`}
-              >
-                <Link to="/contact">Contact</Link>
-              </li>
             </ul>
           </div>
 
@@ -132,12 +123,12 @@ const Navbar = () => {
               <>
                 <Link to={"/notifications"} className="relative">
                   <BellIcon className="h-8 w-8 text-indigo-700 dark:text-white" />
-                  {user?.unSeenNotifications > 0 && (
+                  {user?.unSeenNotifications.length > 0 && (
                     <Badge
                       variant="destructive"
                       className="absolute -top-1 -right-1 text-xs h-5 w-5 flex items-center justify-center text-white bg-red-500 rounded-full"
                     >
-                      {user?.unSeenNotifications.length}
+                      {user.unSeenNotifications.length}
                     </Badge>
                   )}
                 </Link>

@@ -30,7 +30,7 @@ const JobComponent = ({ job }) => {
   };
 
   return (
-    <div className="bg-white shadow-lg min-h-[15rem] px-6 pb-3 pt-2 rounded-lg space-y-2 relative dark:bg-gray-700 dark:shadow-2xl">
+    <div className="bg-white shadow-lg min-h-[15rem] px-6 pb-3 pt-2 rounded-lg space-y-2 relative dark:bg-gray-700 dark:shadow-2xl hover:shadow-xl">
       {/* Top Row: Days Ago and Save Later Icon */}
       <div className="flex justify-between items-center">
         <span className="text-sm text-blue-500">{daysAgo}</span>

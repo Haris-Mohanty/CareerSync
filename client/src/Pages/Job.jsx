@@ -69,6 +69,7 @@ const Job = () => {
 
   useEffect(() => {
     fetchAllJobs();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFilters, searchTerm]);
 
   // Toggle mobile filter section

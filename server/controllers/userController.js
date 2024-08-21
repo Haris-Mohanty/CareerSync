@@ -26,7 +26,7 @@ export const userRegisterController = async (req, res) => {
       return handleResponse(
         res,
         false,
-        "Name must be between 3 and 40 characters long!",
+        "Name must be between 2 and 40 characters long!",
         422
       );
     }
@@ -92,14 +92,22 @@ export const userRegisterController = async (req, res) => {
       phoneNumber,
       profilePhoto: profilePhoto || null,
       role,
+      unSeenNotifications: [
+        {
+          type: "profileUpdate",
+          message: `Welcome ${name}! Please update your profile details to apply for jobs.`,
+          createdAt: new Date(),
+          onClickPath: "/view-profile",
+        },
+      ],
     });
-    await newUser.save();
+    const savedUser = await newUser.save();
 
     // Response message
     return res.status(201).json({
       success: true,
       message: "User registered successfully",
-      newUser,
+      data: savedUser,
     });
   } catch (err) {
     return res.status(500).json({
