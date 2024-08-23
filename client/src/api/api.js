@@ -127,3 +127,22 @@ export const deleteAllSeenNotificationsApi = async () => {
     throw err;
   }
 };
+
+//*********** UPDATE USER PROFILE PHOTO API **************/
+export const updateUserProfilePhotoApi = async (profilePhoto) => {
+  try {
+    const response = await axios.put(
+      "/user/update-profile-photo",
+      { profilePhoto },
+      { withCredentials: true }
+    );
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};
