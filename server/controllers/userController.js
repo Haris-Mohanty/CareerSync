@@ -501,6 +501,49 @@ export const updateUserProfileDetails = async (req, res) => {
   }
 };
 
+//******** UPDATE PROFILE PHOTO CONTROLLER ***********/
+export const updateProfilePhotoController = async (req, res) => {
+  try {
+    // Extract user id
+    const userId = req.user;
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      return handleResponse(res, false, "User not found!", 404);
+    }
+
+    // Get the profile photo URL from the request body
+    const { profilePhoto } = req.body;
+
+    // Validate profile photo URL
+    if (!profilePhoto || !validator.isURL(profilePhoto)) {
+      return handleResponse(
+        res,
+        false,
+        "Please provide a valid URL for the profile photo!",
+        422
+      );
+    }
+
+    // Update the profile photo
+    user.profilePhoto = profilePhoto;
+    await user.save();
+
+    // Success response
+    return res.status(200).json({
+      success: true,
+      message: "Profile photo updated successfully",
+      data: user.profilePhoto,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!",
+      error: err.message,
+    });
+  }
+};
+
 //************ MARK ALL NOTIFICATIONS AS SEEN ****************/
 export const markAllNotificationsAsSeen = async (req, res) => {
   try {

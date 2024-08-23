@@ -7,6 +7,7 @@ import {
   markAllNotificationsAsSeen,
   deleteAllSeenNotifications,
   getUserInfoController,
+  updateProfilePhotoController,
 } from "../controllers/userController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
@@ -21,6 +22,13 @@ router.post("/login", userLoginController);
 
 // logout User routes
 router.get("/logout", authMiddleware, userLogoutController);
+
+// Update Profile Photo
+router.put(
+  "/update-profile-photo",
+  authMiddleware,
+  updateProfilePhotoController
+);
 
 // Update user profile details
 router.put("/update-user-profile", authMiddleware, updateUserProfileDetails);
