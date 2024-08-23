@@ -97,7 +97,7 @@ export const userRegisterController = async (req, res) => {
           type: "profileUpdate",
           message: `Welcome ${name}! Please update your profile details to apply for jobs.`,
           createdAt: new Date(),
-          onClickPath: "/view-profile",
+          onClickPath: "view-profile",
         },
       ],
     });

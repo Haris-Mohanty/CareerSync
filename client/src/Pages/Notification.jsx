@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import moment from "moment"; // Import Moment.js
+import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { toast } from "sonner";
@@ -9,6 +9,7 @@ import {
   markAllNotificationsAsSeenApi,
 } from "@/api/api";
 import { setUser } from "@/redux/userSlice";
+import { BellIcon, InboxIcon } from "@heroicons/react/24/outline";
 
 const Notification = () => {
   const { user } = useSelector((state) => state.user);
@@ -90,14 +91,16 @@ const Notification = () => {
 
             <div className="p-6 bg-gray-50 dark:bg-gray-700 rounded-b-lg">
               <TabsContent value="unseen">
-                <div className="flex justify-end mb-4">
-                  <button
-                    onClick={markAllAsSeen}
-                    className="bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors text-white px-6 py-2 rounded-lg text-xs md:text-base"
-                  >
-                    Mark All as Seen
-                  </button>
-                </div>
+                {user?.unSeenNotifications.length > 0 && (
+                  <div className="flex justify-end mb-4">
+                    <button
+                      onClick={markAllAsSeen}
+                      className="bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors text-white px-6 py-2 rounded-lg text-xs md:text-base"
+                    >
+                      Mark All as Seen
+                    </button>
+                  </div>
+                )}
                 <ul className="divide-y divide-gray-200 dark:divide-gray-600 max-h-[25rem] overflow-y-auto">
                   {user?.unSeenNotifications.length > 0 ? (
                     user.unSeenNotifications.map((notification, index) => {
@@ -132,22 +135,27 @@ const Notification = () => {
                       );
                     })
                   ) : (
-                    <li className="p-4 text-center text-gray-500 dark:text-gray-400">
-                      No notifications found!
-                    </li>
+                    <div className="flex flex-col items-center justify-center py-20">
+                      <InboxIcon className="h-16 w-16 text-gray-400 dark:text-gray-500" />
+                      <p className="text-gray-500 dark:text-gray-400 mt-4 text-lg">
+                        No Unseen Notifications
+                      </p>
+                    </div>
                   )}
                 </ul>
               </TabsContent>
 
               <TabsContent value="seen">
-                <div className="flex justify-end mb-4">
-                  <button
-                    onClick={deleteSeenNotifications}
-                    className="bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:from-red-600 hover:via-red-700 hover:to-red-800 transition-colors text-white px-6 py-2 rounded-lg text-xs md:text-base"
-                  >
-                    Delete Seen Notifications
-                  </button>
-                </div>
+                {user?.seenNotifications.length > 0 && (
+                  <div className="flex justify-end mb-4">
+                    <button
+                      onClick={deleteSeenNotifications}
+                      className="bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:from-red-600 hover:via-red-700 hover:to-red-800 transition-colors text-white px-6 py-2 rounded-lg text-xs md:text-base"
+                    >
+                      Delete Seen Notifications
+                    </button>
+                  </div>
+                )}
                 <ul className="divide-y divide-gray-200 dark:divide-gray-600">
                   {user?.seenNotifications.length > 0 ? (
                     user.seenNotifications.map((notification, index) => (
@@ -169,9 +177,12 @@ const Notification = () => {
                       </li>
                     ))
                   ) : (
-                    <li className="p-4 text-center text-gray-500 dark:text-gray-400">
-                      No seen notifications
-                    </li>
+                    <div className="flex flex-col items-center justify-center py-20">
+                      <BellIcon className="h-16 w-16 text-gray-400 dark:text-gray-500" />
+                      <p className="text-gray-500 dark:text-gray-400 mt-4 text-lg">
+                        No Seen Notifications
+                      </p>
+                    </div>
                   )}
                 </ul>
               </TabsContent>
