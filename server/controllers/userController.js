@@ -251,7 +251,6 @@ export const updateUserProfileDetails = async (req, res) => {
     const {
       name,
       phoneNumber,
-      profilePhoto,
       bio,
       skills,
       location,
@@ -263,7 +262,7 @@ export const updateUserProfileDetails = async (req, res) => {
     } = req.body;
 
     // Validation
-    if (!name || !phoneNumber || !profilePhoto || !bio || !resume || !skills) {
+    if (!name || !phoneNumber || !bio || !resume || !skills) {
       return handleResponse(res, false, "Please provide all fields!", 422);
     }
 
@@ -286,16 +285,6 @@ export const updateUserProfileDetails = async (req, res) => {
         res,
         false,
         "Please provide a valid phone number!",
-        422
-      );
-    }
-
-    // Validate profile photo URL
-    if (profilePhoto && !validator.isURL(profilePhoto)) {
-      return handleResponse(
-        res,
-        false,
-        "Please provide a valid URL for the profile photo!",
         422
       );
     }
@@ -467,7 +456,6 @@ export const updateUserProfileDetails = async (req, res) => {
         $set: {
           name,
           phoneNumber,
-          profilePhoto,
           bio,
           skills,
           location,
