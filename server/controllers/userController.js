@@ -380,6 +380,24 @@ export const updateUserProfileDetails = async (req, res) => {
             422
           );
         }
+        // Validate employment type
+        const validEmploymentTypes = [
+          "Full-time",
+          "Part-time",
+          "Contract",
+          "Internship",
+        ];
+        if (
+          exp.employmentType &&
+          !validEmploymentTypes.includes(exp.employmentType)
+        ) {
+          return handleResponse(
+            res,
+            false,
+            "Invalid employment type! Valid options are Full-time, Part-time, Contract, Internship.",
+            422
+          );
+        }
         // Validate start date
         if (exp.startDate && new Date(exp.startDate) > new Date()) {
           return handleResponse(

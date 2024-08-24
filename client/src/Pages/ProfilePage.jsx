@@ -151,7 +151,7 @@ const ProfilePage = () => {
                 {user?.name}
               </h3>
 
-              <p className="text-gray-500 text-sm md:text-base dark:text-gray-400 mt-2">
+              <p className="text-gray-500 text-sm md:text-base dark:text-gray-400 font-lato">
                 {user?.bio || "Bio not provided"}
               </p>
 
@@ -234,34 +234,47 @@ const ProfilePage = () => {
 
           {/* Experience Section */}
           <div className="p-6 md:p-8 border-t border-gray-200 dark:border-gray-700">
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
               Experience
             </h4>
-            <div className="mt-4 space-y-6">
+            <div className="space-y-6">
               {user?.experience?.length > 0 ? (
-                user.experience.map((exp, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col bg-gray-100 dark:bg-gray-800 rounded-lg p-4 shadow-sm dark:shadow-md"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-base font-semibold text-gray-900 dark:text-white">
-                        {exp.jobTitle}
-                      </span>
-                      <span className="text-sm text-gray-600 dark:text-gray-300">
-                        {moment(exp.startDate).format("MMM YYYY")} -{" "}
-                        {exp.isCurrent
-                          ? "Present"
-                          : moment(exp.endDate).format("MMM YYYY")}
-                      </span>
+                user.experience.map((exp, index) => {
+                  const startDate = moment(exp.startDate);
+                  const endDate = exp.isCurrent
+                    ? moment()
+                    : moment(exp.endDate);
+                  const durationYears = endDate
+                    .diff(startDate, "years", true)
+                    .toFixed(1);
+
+                  return (
+                    <div
+                      key={index}
+                      className="flex flex-col md:flex-row items-start md:items-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-lg p-6 shadow-lg"
+                    >
+                      <div className="flex-1">
+                        <h5 className="text-xl font-bold mb-1">
+                          {exp.jobTitle}
+                        </h5>
+                        <div className="flex items-center space-x-2 text-xs md:text-sm">
+                          <p className="italic">{exp.company}</p>
+                          <span className=" ext-gray-200">•</span>
+                          <p className="italic">{exp.employmentType}</p>
+                          <span className=" text-gray-200">•</span>
+                          <p className="italic">
+                            {durationYears}{" "}
+                            {durationYears == 1 ? "year" : "years"}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mt-4 md:mt-0 md:ml-6 text-sm font-medium">
+                        {startDate.format("MMM YYYY")} -{" "}
+                        {exp.isCurrent ? "Present" : endDate.format("MMM YYYY")}
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-700 dark:text-gray-400">
-                      <span className="font-medium text-gray-900 dark:text-white">
-                        {exp.company}
-                      </span>
-                    </div>
-                  </div>
-                ))
+                  );
+                })
               ) : (
                 <p className="text-gray-500 dark:text-gray-400">
                   No experience added
@@ -272,31 +285,27 @@ const ProfilePage = () => {
 
           {/* Education Section */}
           <div className="p-6 md:p-8 border-t border-gray-200 dark:border-gray-700">
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
               Education
             </h4>
-            <div className="mt-4 space-y-6">
+            <div className="space-y-6">
               {user?.education?.length > 0 ? (
                 user.education.map((edu, index) => (
                   <div
                     key={index}
-                    className="flex flex-col bg-gray-100 dark:bg-gray-800 rounded-lg p-4 shadow-sm dark:shadow-md"
+                    className="flex flex-col md:flex-row items-start md:items-center bg-gradient-to-r from-green-400 via-teal-500 to-blue-600 text-white rounded-lg p-6 shadow-lg"
                   >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-base font-semibold text-gray-900 dark:text-white">
-                        {edu.degree}
-                      </span>
-                      <span className="text-sm text-gray-600 dark:text-gray-300">
-                        {moment(edu.startDate).format("MMM YYYY")} -{" "}
-                        {edu.isCurrent
-                          ? "Present"
-                          : moment(edu.endDate).format("MMM YYYY")}
-                      </span>
-                    </div>
-                    <div className="text-sm text-gray-700 dark:text-gray-400">
-                      <span className="font-medium text-gray-900 dark:text-white">
+                    <div className="flex-1">
+                      <h5 className="text-xl font-bold mb-1">{edu.degree}</h5>
+                      <p className="text-sm italic mb-2">
                         {edu.fieldOfStudy} at {edu.institution}
-                      </span>
+                      </p>
+                    </div>
+                    <div className="mt-4 md:mt-0 md:ml-6 text-sm font-medium">
+                      {moment(edu.startDate).format("MMM YYYY")} -{" "}
+                      {edu.isCurrent
+                        ? "Present"
+                        : moment(edu.endDate).format("MMM YYYY")}
                     </div>
                   </div>
                 ))

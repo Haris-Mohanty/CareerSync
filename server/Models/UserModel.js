@@ -112,6 +112,11 @@ const userSchema = new mongoose.Schema(
           type: Boolean,
           default: false,
         },
+        employmentType: {
+          type: String,
+          enum: ["Full-time", "Part-time", "Contract", "Internship"],
+          required: [true, "Employment type is required"],
+        },
       },
     ],
     education: [

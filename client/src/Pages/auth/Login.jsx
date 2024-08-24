@@ -86,7 +86,7 @@ const Login = () => {
   return (
     <>
       <motion.div
-        className="flex flex-col md:flex-row mt-32 md:mt-14 justify-center items-center"
+        className="flex flex-col md:flex-row mt-4 md:mt-12 justify-center items-center"
         variants={containerVariants}
         initial="hidden"
         animate="visible"

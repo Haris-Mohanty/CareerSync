@@ -109,7 +109,7 @@ const Register = () => {
   return (
     <>
       <motion.div
-        className="flex flex-col md:flex-row mt-32 md:mt-12 justify-center items-center"
+        className="flex flex-col md:flex-row mt-4 md:mt-12 justify-center items-center"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
