@@ -2,7 +2,7 @@ import axios from "axios";
 
 const url = `https://api.cloudinary.com/v1_1/${
   import.meta.env.VITE_APP_CLOUD_NAME_CLOUDINARY
-}/image/upload`;
+}/upload`;
 
 const uploadImage = async (image) => {
   try {

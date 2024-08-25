@@ -8,7 +8,7 @@ const UserProfileForm = ({ formData, handleChange }) => {
         <div className="space-y-2">
           <label
             htmlFor="name"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            className="block text-sm md:text-base font-semibold font-lato text-gray-700 dark:text-gray-300"
           >
             Name
           </label>
@@ -16,7 +16,7 @@ const UserProfileForm = ({ formData, handleChange }) => {
             type="text"
             id="name"
             name="name"
-            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
             value={formData.name}
             onChange={handleChange}
             placeholder="Enter your name"
@@ -26,7 +26,7 @@ const UserProfileForm = ({ formData, handleChange }) => {
         <div className="space-y-2">
           <label
             htmlFor="phoneNumber"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            className="block text-sm md:text-base font-semibold font-lato text-gray-700 dark:text-gray-300"
           >
             Phone Number
           </label>
@@ -34,7 +34,7 @@ const UserProfileForm = ({ formData, handleChange }) => {
             type="tel"
             id="phoneNumber"
             name="phoneNumber"
-            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
             value={formData.phoneNumber}
             onChange={handleChange}
             placeholder="Enter your phone number"
@@ -47,14 +47,14 @@ const UserProfileForm = ({ formData, handleChange }) => {
       <div className="space-y-2">
         <label
           htmlFor="bio"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          className="block text-sm md:text-base font-semibold font-lato text-gray-700 dark:text-gray-300"
         >
           Bio
         </label>
         <textarea
           id="bio"
           name="bio"
-          className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+          className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
           value={formData.bio}
           onChange={handleChange}
           rows={3}
@@ -68,7 +68,7 @@ const UserProfileForm = ({ formData, handleChange }) => {
       <div className="space-y-2">
         <label
           htmlFor="skills"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          className="block text-sm md:text-base font-semibold font-lato text-gray-700 dark:text-gray-300"
         >
           Skills
         </label>
@@ -76,7 +76,7 @@ const UserProfileForm = ({ formData, handleChange }) => {
           type="text"
           id="skills"
           name="skills"
-          className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+          className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
           value={formData.skills.join(", ")}
           onChange={(e) =>
             handleChange({
@@ -93,7 +93,7 @@ const UserProfileForm = ({ formData, handleChange }) => {
         <div className="space-y-2">
           <label
             htmlFor="location"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            className="block text-sm md:text-base font-semibold font-lato text-gray-700 dark:text-gray-300"
           >
             Location
           </label>
@@ -101,7 +101,7 @@ const UserProfileForm = ({ formData, handleChange }) => {
             type="text"
             id="location"
             name="location"
-            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
             value={formData.location}
             onChange={handleChange}
             placeholder="Enter your location"
@@ -111,7 +111,7 @@ const UserProfileForm = ({ formData, handleChange }) => {
         <div className="space-y-2">
           <label
             htmlFor="totalExperienceYears"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            className="block text-sm md:text-base font-semibold font-lato text-gray-700 dark:text-gray-300"
           >
             Total Experience Years
           </label>
@@ -119,7 +119,7 @@ const UserProfileForm = ({ formData, handleChange }) => {
             type="number"
             id="totalExperienceYears"
             name="totalExperienceYears"
-            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
             value={formData.totalExperienceYears}
             onChange={handleChange}
             placeholder="Enter your total experience in years"

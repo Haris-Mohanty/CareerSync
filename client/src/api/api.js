@@ -146,3 +146,20 @@ export const updateUserProfilePhotoApi = async (profilePhoto) => {
     throw err;
   }
 };
+
+//*********** UPDATE USER PROFILE DETAILS API **************/
+export const updatedUserProfileDetailsApi = async (data) => {
+  try {
+    const response = await axios.put("/user/update-user-profile", data, {
+      withCredentials: true,
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};

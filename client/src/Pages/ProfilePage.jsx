@@ -99,7 +99,6 @@ const ProfilePage = () => {
     } catch (err) {
       dispatch(hideLoading());
       toast.error(err.message || "Failed to upload image.");
-      console.log(err);
     }
   };
 
@@ -175,7 +174,7 @@ const ProfilePage = () => {
                 </div>
 
                 {/* Location and Resume */}
-                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 capitalize">
                   <MapPinIcon className="h-5 w-5 mr-2 text-indigo-500" />
                   <span>{user?.location || "Location not provided"}</span>
                 </div>
@@ -222,7 +221,7 @@ const ProfilePage = () => {
                     user.skills.map((skill, index) => (
                       <span
                         key={index}
-                        className="bg-indigo-500 text-white text-xs px-2 py-1 rounded-md"
+                        className="bg-indigo-500 text-white text-xs px-2 py-1 rounded-md capitalize"
                       >
                         {skill}
                       </span>
@@ -244,7 +243,8 @@ const ProfilePage = () => {
             </h4>
             <div className="space-y-6">
               {user?.experience?.length > 0 ? (
-                user.experience.map((exp, index) => {
+                // Reverse the order to show the latest experience first
+                [...user.experience].reverse().map((exp, index) => {
                   const startDate = moment(exp.startDate);
                   const endDate = exp.isCurrent
                     ? moment()
@@ -264,9 +264,9 @@ const ProfilePage = () => {
                         </h5>
                         <div className="flex items-center space-x-2 text-xs md:text-sm">
                           <p className="italic">{exp.company}</p>
-                          <span className=" ext-gray-200">•</span>
+                          <span className="text-gray-200">•</span>
                           <p className="italic">{exp.employmentType}</p>
-                          <span className=" text-gray-200">•</span>
+                          <span className="text-gray-200">•</span>
                           <p className="italic">
                             {durationYears}{" "}
                             {durationYears == 1 ? "year" : "years"}
@@ -295,7 +295,8 @@ const ProfilePage = () => {
             </h4>
             <div className="space-y-6">
               {user?.education?.length > 0 ? (
-                user.education.map((edu, index) => (
+                // Reverse the order to show the latest education first
+                [...user.education].reverse().map((edu, index) => (
                   <div
                     key={index}
                     className="flex flex-col md:flex-row items-start md:items-center bg-gradient-to-r from-green-400 via-teal-500 to-blue-600 text-white rounded-lg p-6 shadow-lg"

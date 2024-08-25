@@ -25,11 +25,13 @@ const ExperienceSection = ({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Experience</h3>
+        <h3 className="text-base md:text-xl font-semibold font-lato text-gray-700 dark:text-gray-300">
+          Experience
+        </h3>
         <button
           type="button"
           onClick={handleAddExperience}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="inline-flex items-center px-2 md:px-4 py-1 md:py-2 border border-transparent text-xs md:text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           <PlusIcon className="h-5 w-5" aria-hidden="true" />
           Add Experience
@@ -52,7 +54,7 @@ const ExperienceSection = ({
               type="text"
               id={`company-${index}`}
               name={`company-${index}`}
-              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
               value={exp.company}
               onChange={(e) =>
                 handleChange({
@@ -82,7 +84,7 @@ const ExperienceSection = ({
               type="text"
               id={`jobTitle-${index}`}
               name={`jobTitle-${index}`}
-              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
               value={exp.jobTitle}
               onChange={(e) =>
                 handleChange({
@@ -111,7 +113,7 @@ const ExperienceSection = ({
             <select
               id={`employmentType-${index}`}
               name={`employmentType-${index}`}
-              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
               value={exp.employmentType}
               onChange={(e) =>
                 handleChange({
@@ -146,7 +148,7 @@ const ExperienceSection = ({
               id={`startDate-${index}`}
               selected={exp.startDate}
               onChange={(date) => handleStartDateChange(index, date)}
-              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
               dateFormat="MM/yyyy"
               showMonthYearPicker
               maxDate={today} // Prevent future dates
@@ -166,7 +168,7 @@ const ExperienceSection = ({
               id={`endDate-${index}`}
               selected={exp.endDate}
               onChange={(date) => handleEndDateChange(index, date)}
-              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
               dateFormat="MM/yyyy"
               showMonthYearPicker
               minDate={exp.startDate} // Prevent dates before start date

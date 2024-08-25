@@ -25,12 +25,12 @@ const EducationSection = ({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Education</h3>
+        <h3 className="text-base md:text-xl font-semibold font-lato text-gray-700 dark:text-gray-300">Education</h3>
         <div className="flex space-x-2">
           <button
             type="button"
             onClick={handleAddEducation}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="inline-flex items-center px-2 md:px-4 py-1 md:py-2 border border-transparent text-xs md:text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
             <PlusIcon className="h-5 w-5" aria-hidden="true" />
             <span className="ml-1">Add Education</span>
@@ -54,7 +54,7 @@ const EducationSection = ({
               type="text"
               id={`institute-${index}`}
               name={`institute-${index}`}
-              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
               value={edu.institution}
               onChange={(e) =>
                 handleChange({
@@ -86,7 +86,7 @@ const EducationSection = ({
               type="text"
               id={`degree-${index}`}
               name={`degree-${index}`}
-              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
               value={edu.degree}
               onChange={(e) =>
                 handleChange({
@@ -116,7 +116,7 @@ const EducationSection = ({
               type="text"
               id={`fieldOfStudy-${index}`}
               name={`fieldOfStudy-${index}`}
-              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
               value={edu.fieldOfStudy}
               onChange={(e) =>
                 handleChange({
@@ -148,7 +148,7 @@ const EducationSection = ({
               id={`startDate-${index}`}
               selected={edu.startDate}
               onChange={(date) => handleStartDateChange(index, date)}
-              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
               dateFormat="MM/yyyy"
               showMonthYearPicker
               maxDate={today} // Prevent future dates
@@ -168,7 +168,7 @@ const EducationSection = ({
               id={`endDate-${index}`}
               selected={edu.endDate}
               onChange={(date) => handleEndDateChange(index, date)}
-              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white sm:text-sm px-3 py-2"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs md:text-sm px-3 py-2"
               dateFormat="MM/yyyy"
               showMonthYearPicker
               minDate={edu.startDate} // Prevent dates before start date
