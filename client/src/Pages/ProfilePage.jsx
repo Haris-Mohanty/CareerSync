@@ -15,6 +15,7 @@ import { updateUserProfilePhotoApi } from "@/api/api";
 import { useEffect, useState } from "react";
 import uploadImage from "@/helper/UploadImage";
 import moment from "moment";
+import UpdateUserDetails from "@/components/UpdateUserDetails";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const ProfilePage = () => {
 
   const [profilePhoto, setProfilePhoto] = useState(user?.profilePhoto || "");
   const [profileCompletion, setProfileCompletion] = useState(0);
+  const [openDialog, setOpenDialog] = useState(false);
 
   // Check if all required user details are available
   const isProfileComplete =
@@ -105,11 +107,14 @@ const ProfilePage = () => {
     <>
       <div className="bg-slate-100 dark:bg-gray-700 md:mt-16 px-4 md:px-0 py-4 flex items-center justify-center">
         <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg w-full max-w-7xl relative">
-          {/* Edit or Update Profile Button */}
+          {/* Update Profile */}
           <div className="flex justify-end p-4 absolute top-12 left-0 right-0">
-            <button className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg text-xs md:text-sm font-medium shadow-md transition">
-              {isProfileComplete ? "Edit Profile" : "Update Profile"}
-            </button>
+            <UpdateUserDetails
+              user={user}
+              isProfileComplete={isProfileComplete}
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
+            />
           </div>
 
           {/* Profile Completion Progress Bar */}
