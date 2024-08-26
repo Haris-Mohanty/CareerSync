@@ -242,7 +242,7 @@ UpdateUserDetails.propTypes = {
       })
     ),
   }),
-  isProfileComplete: PropTypes.string.isRequired,
+  isProfileComplete: PropTypes.bool,
   openDialog: PropTypes.bool.isRequired,
   setOpenDialog: PropTypes.func.isRequired,
 };

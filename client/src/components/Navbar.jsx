@@ -11,7 +11,7 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { useDispatch, useSelector } from "react-redux";
@@ -137,10 +137,15 @@ const Navbar = () => {
                     <Avatar className="h-8 w-8">
                       {/* Add icon if no profile pic */}
                       {user?.profilePhoto ? (
-                        <AvatarImage
-                          src={user?.profilePhoto}
-                          className="cursor-pointer object-cover"
-                        />
+                        <>
+                          <AvatarImage
+                            src={user?.profilePhoto}
+                            className="cursor-pointer object-cover"
+                          />
+                          <AvatarFallback className="text-base cursor-pointer text-indigo-700 font-bold">
+                            {user?.name?.charAt(0)}
+                          </AvatarFallback>
+                        </>
                       ) : (
                         <UserCircleIcon className="h-8 w-8 text-gray-500 dark:text-white cursor-pointer" />
                       )}
@@ -150,10 +155,15 @@ const Navbar = () => {
                     <Avatar className="h-10 w-10">
                       {/* Add icon if no profile pic */}
                       {!user?.profilePic ? (
-                        <AvatarImage
-                          src={user?.profilePhoto}
-                          className="object-cover"
-                        />
+                        <>
+                          <AvatarImage
+                            src={user?.profilePhoto}
+                            className="object-cover"
+                          />
+                          <AvatarFallback className="text-base text-indigo-700 font-bold">
+                            {user?.name?.charAt(0)}
+                          </AvatarFallback>
+                        </>
                       ) : (
                         <UserCircleIcon className="h-10 w-10 text-gray-500 dark:text-white" />
                       )}

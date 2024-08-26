@@ -125,7 +125,7 @@ const ProfilePage = () => {
               ></div>
             </div>
             <p className="text-right text-sm text-gray-500 dark:text-gray-400 mt-2">
-              {profileCompletion}% Complete
+              {profileCompletion}% Profile Complete
             </p>
           </div>
 

@@ -44,6 +44,7 @@ const ResumeUpload = ({ resume, resumeName, handleFileChange }) => {
         // Upload the selected resume to Cloudinary
         const uploadedFile = await uploadImage(selectedFile);
         dispatch(hideLoading());
+        toast.success("Resume uploaded successfully!");
         const jpgUrl = uploadedFile.secure_url.replace(/\.\w+$/, ".jpg"); // Convert to jpg
         handleFileChange(jpgUrl, selectedFile.name);
         setFileUrl(jpgUrl); // Update fileUrl with the uploaded URL

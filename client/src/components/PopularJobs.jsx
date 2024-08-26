@@ -66,10 +66,10 @@ const PopularJobs = () => {
   };
 
   return (
-    <div className="bg-slate-100 py-5 px-5 md:px-20">
+    <div className="bg-slate-100 dark:bg-gray-700 py-5 px-5 md:px-20">
       <div className="text-center mb-10">
         <motion.h2
-          className="text-3xl md:text-4xl font-bold text-gray-900"
+          className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white"
           variants={headerVariants}
           initial="hidden"
           whileInView="visible"
@@ -78,7 +78,7 @@ const PopularJobs = () => {
           Popular <span className="text-indigo-600">Jobs</span>
         </motion.h2>
         <motion.p
-          className="text-gray-500 mt-2 text-sm md:text-base"
+          className="text-gray-500 dark:text-gray-200 mt-2 text-sm md:text-base"
           variants={headerVariants}
           initial="hidden"
           whileInView="visible"
@@ -95,7 +95,7 @@ const PopularJobs = () => {
         {jobs.slice(0, 4).map((job) => (
           <motion.div
             key={job?._id}
-            className="bg-gradient-to-r from-indigo-50 via-indigo-100 to-indigo-50 rounded-lg p-4 md:p-6 flex flex-col md:flex-row justify-between items-center shadow-md"
+            className="bg-gradient-to-r from-indigo-50 via-indigo-100 to-indigo-50 dark:from-gray-900 via-gray-100 dark:via-gray-800 to-gray-50 dark:to-gray-900 rounded-lg p-4 md:p-6 flex flex-col md:flex-row justify-between items-center shadow-md"
             variants={cardVariants}
             initial="hidden"
             whileInView="visible"
@@ -111,24 +111,24 @@ const PopularJobs = () => {
                 <AvatarFallback>LOGO</AvatarFallback>
               </Avatar>
               <div>
-                <h3 className="text-base md:text-xl font-semibold text-gray-800">
+                <h3 className="text-base md:text-xl font-semibold text-gray-800 dark:text-gray-200">
                   {job?.title}
                 </h3>
-                <div className="text-sm text-gray-500 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 mt-1">
+                <div className="text-sm text-gray-500 dark:text-gray-200 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 mt-1">
                   <span className="flex items-center space-x-1">
-                    <MapPinIcon className="h-4 w-4 text-indigo-700" />
+                    <MapPinIcon className="h-4 w-4 text-indigo-700 dark:text-white" />
                     <span>{job?.workType} | IN</span>
                   </span>
                   <span className="flex items-center space-x-1">
-                    <ClockIcon className="h-4 w-4 text-indigo-700" />
+                    <ClockIcon className="h-4 w-4 text-indigo-700 dark:text-white" />
                     <span>8 Hours</span>
                   </span>
                   <span className="flex items-center space-x-1">
-                    <CurrencyRupeeIcon className="h-4 w-4 text-indigo-700" />
+                    <CurrencyRupeeIcon className="h-4 w-4 text-indigo-700 dark:text-white" />
                     <span>{displayInr(job?.salary)} INR</span>
                   </span>
                   <span className="flex items-center space-x-1">
-                    <RssIcon className="h-4 w-4 text-indigo-700" />
+                    <RssIcon className="h-4 w-4 text-indigo-700 dark:text-white" />
                     <span>{job?.experienceLevel}-Level Experience</span>
                   </span>
                   <span className="bg-indigo-200 text-indigo-700 text-xs font-semibold px-2 py-1 rounded-lg">

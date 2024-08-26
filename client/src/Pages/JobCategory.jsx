@@ -42,7 +42,7 @@ const buttonHoverEffect = {
 
 const JobCategory = () => {
   return (
-    <div className="bg-slate-100">
+    <div className="bg-slate-100 dark:bg-gray-700">
       <section className="container mx-auto py-8">
         <motion.h2
           className="text-3xl md:text-4xl font-bold text-center text-[#4C40F8] mb-4"
@@ -51,10 +51,10 @@ const JobCategory = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
         >
-          Job <span className="text-black">Category</span>
+          Job <span className="text-black dark:text-white">Category</span>
         </motion.h2>
         <motion.p
-          className="text-center text-gray-500 mb-8"
+          className="text-center text-gray-500 dark:text-gray-300 mb-8"
           variants={headerAnimation}
           initial="hidden"
           whileInView="visible"
@@ -67,7 +67,7 @@ const JobCategory = () => {
           {categories.map((category, index) => (
             <motion.div
               key={index}
-              className="bg-white text-black p-6 flex items-center gap-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer hover:bg-indigo-700 group"
+              className="bg-white dark:bg-gray-800 text-black dark:text-white p-6 flex items-center gap-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer hover:bg-indigo-700 group"
               variants={hoverEffect}
               initial="hidden"
               whileInView="visible"

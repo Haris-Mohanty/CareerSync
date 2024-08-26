@@ -262,7 +262,7 @@ export const updateUserProfileDetails = async (req, res) => {
     } = req.body;
 
     // Validation
-    if (!name || !phoneNumber || !bio || !resume || !skills) {
+    if (!name || !phoneNumber || !bio || !skills) {
       return handleResponse(res, false, "Please provide all fields!", 422);
     }
 
