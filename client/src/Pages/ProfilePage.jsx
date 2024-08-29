@@ -8,6 +8,8 @@ import {
   MapPinIcon,
   DocumentIcon,
   UserIcon,
+  BookmarkIcon,
+  ExclamationCircleIcon,
 } from "@heroicons/react/24/outline";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { toast } from "sonner";
@@ -16,6 +18,9 @@ import { useEffect, useState } from "react";
 import uploadImage from "@/helper/UploadImage";
 import moment from "moment";
 import UpdateUserDetails from "@/components/UpdateUserDetails";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SavedJobs from "./SavedJobs";
+import AppliedJobs from "./AppliedJobs";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -104,7 +109,8 @@ const ProfilePage = () => {
 
   return (
     <>
-      <div className="bg-slate-100 dark:bg-gray-700 md:mt-16 px-4 md:px-0 py-4 flex items-center justify-center">
+      <div className="bg-slate-100 dark:bg-gray-700 md:mt-16 px-4 md:px-0 py-4 flex flex-col items-center justify-center">
+        {/* View Profile Details */}
         <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg w-full max-w-7xl relative">
           {/* Update Profile */}
           <div className="flex justify-end p-4 absolute top-12 left-0 right-0">
@@ -322,6 +328,55 @@ const ProfilePage = () => {
               )}
             </div>
           </div>
+        </div>
+
+        {/* Applied Jobs And Saved Jobs */}
+        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg w-full max-w-7xl mt-12">
+          <Tabs defaultValue="applied">
+            {/* Tabs List */}
+            <TabsList className="flex justify-center border-b-1 border-gray-200 dark:border-gray-700">
+              <TabsTrigger
+                value="applied"
+                className="group relative w-full py-3 text-sm md::text-base font-medium text-center text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
+              >
+                <BriefcaseIcon className="h-5 w-5 inline-block mr-2 text-gray-500 dark:text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400" />
+                Applied Jobs
+              </TabsTrigger>
+              <TabsTrigger
+                value="saved"
+                className="group relative w-full py-3 text-sm md::text-base font-medium text-center text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
+              >
+                <BookmarkIcon className="h-5 w-5 inline-block mr-2 text-gray-500 dark:text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400" />
+                Saved Jobs
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Tabs Content for Applied Jobs */}
+            <TabsContent value="applied" className="p-6">
+              {user?.appliedJobs?.length > 0 ? (
+                <AppliedJobs jobs={user.appliedJobs} />
+              ) : (
+                <div className="flex items-center space-x-2 text-red-500 dark:text-red-400">
+                  <ExclamationCircleIcon className="h-6 w-6" />
+                  <p>
+                    No applied jobs found. Please update your job applications.
+                  </p>
+                </div>
+              )}
+            </TabsContent>
+
+            {/* Tabs Content for Saved Jobs */}
+            <TabsContent value="saved" className="p-6">
+              {user?.savedJobs?.length > 0 ? (
+                <SavedJobs jobs={user.savedJobs} />
+              ) : (
+                <div className="flex items-center space-x-2 text-red-500 dark:text-red-400">
+                  <ExclamationCircleIcon className="h-6 w-6" />
+                  <p>No saved jobs found. Please save some jobs for later.</p>
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </>
