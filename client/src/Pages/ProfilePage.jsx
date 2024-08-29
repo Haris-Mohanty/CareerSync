@@ -356,7 +356,7 @@ const ProfilePage = () => {
               {user?.appliedJobs?.length > 0 ? (
                 <AppliedJobs jobs={user.appliedJobs} />
               ) : (
-                <div className="flex items-center space-x-2 text-red-500 dark:text-red-400">
+                <div className="flex items-center justify-center text-sm md:text-base space-x-2 text-red-500 dark:text-red-400 min-h-28">
                   <ExclamationCircleIcon className="h-6 w-6" />
                   <p>
                     No applied jobs found. Please update your job applications.
@@ -370,7 +370,7 @@ const ProfilePage = () => {
               {user?.savedJobs?.length > 0 ? (
                 <SavedJobs jobs={user.savedJobs} />
               ) : (
-                <div className="flex items-center space-x-2 text-red-500 dark:text-red-400">
+                <div className="flex items-center justify-center text-sm md:text-base space-x-2 text-red-500 dark:text-red-400 min-h-28">
                   <ExclamationCircleIcon className="h-6 w-6" />
                   <p>No saved jobs found. Please save some jobs for later.</p>
                 </div>

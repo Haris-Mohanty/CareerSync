@@ -88,6 +88,7 @@ export const applyJobController = async (req, res) => {
       type: "newApplication",
       message: `A new application has been submitted for your job: ${jobExists.title}.`,
       date: new Date(),
+      onClickPath: "view-profile",
     };
     recruiter.unSeenNotifications.push(notification);
     await recruiter.save();
@@ -181,6 +182,16 @@ export const updateApplicationStatus = async (req, res) => {
       });
     }
 
+    // Check if the logged-in user is the creator of the job
+    const currentUserId = req.user;
+    if (application.job.createdBy.toString() !== currentUserId.toString()) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "You are not authorized to update the status of this application.",
+      });
+    }
+
     // Check if the status is already set
     if (application.status === status) {
       return res.status(400).json({
@@ -207,6 +218,7 @@ export const updateApplicationStatus = async (req, res) => {
       type: "application-status",
       message: `Your application for the job ${application.job.title} has been ${status}.`,
       date: new Date(),
+      onClickPath: "view-profile",
     };
 
     applicant.unSeenNotifications.push(notification);

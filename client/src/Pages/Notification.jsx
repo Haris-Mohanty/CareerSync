@@ -103,37 +103,39 @@ const Notification = () => {
                 )}
                 <ul className="divide-y divide-gray-200 dark:divide-gray-600 max-h-[25rem] overflow-y-auto">
                   {user?.unSeenNotifications.length > 0 ? (
-                    user.unSeenNotifications.map((notification, index) => {
-                      const daysAgo = moment().diff(
-                        moment(notification.createdAt),
-                        "days"
-                      );
-                      const showNewBadge = daysAgo < 1; // Show "New" badge if less than 1 day old
+                    [...user.unSeenNotifications]
+                      .reverse()
+                      .map((notification, index) => {
+                        const daysAgo = moment().diff(
+                          moment(notification.createdAt),
+                          "days"
+                        );
+                        const showNewBadge = daysAgo < 1; // Show "New" badge if less than 1 day old
 
-                      return (
-                        <li
-                          key={index}
-                          className="p-4 bg-white dark:bg-gray-600 shadow-sm rounded-lg hover:bg-gray-100 dark:hover:bg-gray-500 transition flex items-center justify-between mb-2 cursor-pointer"
-                          onClick={() =>
-                            navigate(`/${notification.onClickPath}`)
-                          }
-                        >
-                          <div>
-                            <p className="text-gray-800 dark:text-gray-200 font-medium text-xs md:text-base">
-                              {notification.message}
-                            </p>
-                            <span className="text-sm text-gray-500 dark:text-gray-400">
-                              {formatTimeDifference(notification.createdAt)}
-                            </span>
-                          </div>
-                          {showNewBadge && (
-                            <span className="text-xs text-white bg-indigo-500 px-2 py-1 rounded-full">
-                              New
-                            </span>
-                          )}
-                        </li>
-                      );
-                    })
+                        return (
+                          <li
+                            key={index}
+                            className="p-4 bg-white dark:bg-gray-600 shadow-sm rounded-lg hover:bg-gray-100 dark:hover:bg-gray-500 transition flex items-center justify-between mb-2 cursor-pointer"
+                            onClick={() =>
+                              navigate(`/${notification.onClickPath}`)
+                            }
+                          >
+                            <div>
+                              <p className="text-gray-800 dark:text-gray-200 font-medium text-xs md:text-base">
+                                {notification.message}
+                              </p>
+                              <span className="text-sm text-gray-500 dark:text-gray-400">
+                                {formatTimeDifference(notification.createdAt)}
+                              </span>
+                            </div>
+                            {showNewBadge && (
+                              <span className="text-xs text-white bg-indigo-500 px-2 py-1 rounded-full">
+                                New
+                              </span>
+                            )}
+                          </li>
+                        );
+                      })
                   ) : (
                     <div className="flex flex-col items-center justify-center py-20">
                       <InboxIcon className="h-16 w-16 text-gray-400 dark:text-gray-500" />
