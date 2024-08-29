@@ -2,6 +2,7 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import UserModel from "../Models/UserModel.js";
+import { model } from "mongoose";
 
 // Response message
 const handleResponse = (res, success, message, statusCode) => {
@@ -620,12 +621,19 @@ export const getUserInfoController = async (req, res) => {
     const user = await UserModel.findById(userId)
       .populate({
         path: "appliedJobs",
-        populate: {
-          path: "company",
-          model: "Company", // The name of the Company model
-          select: "companyName location", // Fetch these data only
-        },
-        select: "-applications -createdBy", // Exclude from job
+        populate: [
+          {
+            path: "company", // Name of which path(field) you want to populate
+            model: "Company", // The name of the model
+            select: "companyName location", // Fetch these data only
+          },
+          {
+            path: "applications",
+            model: "Application",
+            select: "applicant status applicationDate",
+          },
+        ],
+        select: "-createdBy",
       })
       .populate({
         path: "savedJobs",
@@ -645,6 +653,14 @@ export const getUserInfoController = async (req, res) => {
         message: "User not found!",
       });
     }
+
+    // Filter applications to show only those with a matching application ID to the current user
+    user.appliedJobs.forEach((job) => {
+      job.applications = job.applications.filter(
+        (application) =>
+          application.applicant._id.toString() === userId.toString()
+      );
+    });
 
     // Reverse the appliedJobs and savedJobs array for fetch latest
     user.appliedJobs.reverse();
