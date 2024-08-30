@@ -163,3 +163,20 @@ export const updatedUserProfileDetailsApi = async (data) => {
     throw err;
   }
 };
+
+//*********** GET JOB DETAILS BY ID API **************/
+export const getJobDetailsApi = async (id) => {
+  try {
+    const response = await axios.get(`/job/get-job-by-id/${id}`, {
+      withCredentials: true,
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};

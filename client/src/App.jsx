@@ -19,6 +19,7 @@ import { useEffect } from "react";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import ProfilePage from "./Pages/ProfilePage";
 import Notification from "./Pages/Notification";
+import JobDetails from "./Pages/JobDetails";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -55,6 +56,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/jobs" element={<Job />} />
+        <Route path="/jobs/details/:id" element={<JobDetails />} />
         <Route path="/about" element={<About />} />
         <Route
           path="/login"

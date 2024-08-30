@@ -104,6 +104,7 @@ const JobComponent = ({ job }) => {
           initial="initial"
           whileHover="hover"
           className="mt-2 text-indigo-600 hover:text-indigo-800 focus:outline-none dark:text-white hover:underline"
+          onClick={() => navigate(`/jobs/details/${job._id}`)}
         >
           View Details
         </motion.button>
@@ -131,6 +132,7 @@ JobComponent.propTypes = {
       location: PropTypes.string.isRequired,
       logo: PropTypes.string,
     }).isRequired,
+    _id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,

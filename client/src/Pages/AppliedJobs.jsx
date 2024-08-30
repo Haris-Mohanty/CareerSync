@@ -9,11 +9,26 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import moment from "moment";
+import { motion } from "framer-motion";
+import { EyeIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
+
+const cardVariants = {
+  hidden: { opacity: 0, x: -100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.8 } },
+};
 
 const AppliedJobs = ({ jobs }) => {
+  const navigate = useNavigate();
   return (
     <>
-      <div className="overflow-x-auto">
+      <motion.div
+        className="overflow-x-auto"
+        variants={cardVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ amount: 0.1 }}
+      >
         <Table className="min-w-full bg-white dark:bg-gray-800 shadow-md rounded-lg">
           <TableCaption className="text-sm mt-8 text-gray-600 dark:text-gray-400">
             A list of your applied jobs.
@@ -40,6 +55,9 @@ const AppliedJobs = ({ jobs }) => {
               </TableHead>
               <TableHead className="py-3 px-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 whitespace-nowrap">
                 Status
+              </TableHead>
+              <TableHead className="py-3 px-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 whitespace-nowrap">
+                Action
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -81,12 +99,20 @@ const AppliedJobs = ({ jobs }) => {
                       {application.status}
                     </span>
                   </TableCell>
+                  <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap flex items-center space-x-2">
+                    {/* View Details */}
+                    <EyeIcon
+                      className="h-6 w-6 text-gray-500 cursor-pointer hover:text-indigo-500"
+                      title="View Details"
+                      onClick={() => navigate(`/jobs/details/${job._id}`)}
+                    />
+                  </TableCell>
                 </TableRow>
               ))
             )}
           </TableBody>
         </Table>
-      </div>
+      </motion.div>
     </>
   );
 };

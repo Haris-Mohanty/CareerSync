@@ -21,6 +21,7 @@ import UpdateUserDetails from "@/components/UpdateUserDetails";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SavedJobs from "./SavedJobs";
 import AppliedJobs from "./AppliedJobs";
+import { motion } from "framer-motion";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -111,7 +112,16 @@ const ProfilePage = () => {
     <>
       <div className="bg-slate-100 dark:bg-gray-700 md:mt-16 px-4 md:px-0 py-4 flex flex-col items-center justify-center">
         {/* View Profile Details */}
-        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg w-full max-w-7xl relative">
+        <motion.div
+          className="bg-white dark:bg-gray-800 shadow-lg rounded-lg w-full max-w-7xl relative"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 1.2,
+            ease: "easeInOut",
+            staggerChildren: 0.2,
+          }}
+        >
           {/* Update Profile */}
           <div className="flex justify-end p-4 absolute top-12 left-0 right-0">
             <UpdateUserDetails
@@ -328,7 +338,7 @@ const ProfilePage = () => {
               )}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Applied Jobs And Saved Jobs */}
         <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg w-full max-w-7xl mt-12">
