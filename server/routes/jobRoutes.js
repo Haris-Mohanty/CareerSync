@@ -22,7 +22,7 @@ router.get("/get-all-jobs", getAllJobsController);
 router.get("/get-all-jobs-of-user", authMiddleware, getAllJobsOfLoggedInUser);
 
 // Get Job By ID
-router.get("/get-job-by-id/:id", authMiddleware, getJobsByIdController);
+router.get("/get-job-by-id/:id", getJobsByIdController);
 
 // Update job details
 router.put("/update-job/:id", authMiddleware, updateJobDetailsController);
