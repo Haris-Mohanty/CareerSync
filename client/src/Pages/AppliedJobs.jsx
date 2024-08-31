@@ -75,7 +75,13 @@ const AppliedJobs = ({ jobs }) => {
                     {job.title}
                   </TableCell>
                   <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
-                    {job.location}
+                    {job?.workType === "Remote"
+                      ? "Remote"
+                      : job?.workType === "Hybrid"
+                      ? `${
+                          job?.location || "Location not specified"
+                        } (Hybrid)`
+                      : job?.location || "India"}
                   </TableCell>
                   <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
                     {job.jobType}

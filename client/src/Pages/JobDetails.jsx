@@ -1,4 +1,4 @@
-import { getJobDetailsApi } from "@/api/api";
+import { getJobDetailsApi, saveJobForLaterApi } from "@/api/api";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +16,7 @@ import { motion } from "framer-motion";
 import displayInr from "@/helper/IndianCurrency";
 import JobDetailsSkeleton from "@/components/JobDetailsSkeleton";
 import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
+import { setUser } from "@/redux/userSlice";
 
 const buttonVariants = {
   initial: { scale: 1 },
@@ -46,6 +47,22 @@ const JobDetails = () => {
       dispatch(hideLoading());
       showErrorToast(err?.response?.data?.message);
       setLoading(false);
+    }
+  };
+
+  // SAVE JOB FOR LATER
+  const saveJobForLater = async (id) => {
+    try {
+      dispatch(showLoading());
+      const res = await saveJobForLaterApi(id);
+      if (res.success) {
+        dispatch(hideLoading());
+        showSuccessToast(res.message);
+        dispatch(setUser(res.data));
+      }
+    } catch (err) {
+      dispatch(hideLoading());
+      showErrorToast(err?.response?.data?.message);
     }
   };
 
@@ -80,6 +97,7 @@ const JobDetails = () => {
                 initial="initial"
                 whileHover="hover"
                 className="p-2 bg-indigo-100 rounded-full border border-indigo-300 cursor-pointer hover:bg-indigo-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 transition"
+                onClick={() => saveJobForLater(jobDetails?._id)}
               >
                 <BookmarkIcon
                   title="Save Later"
@@ -142,6 +160,10 @@ const JobDetails = () => {
                 <span className="font-semibold text-xs md:text-sm text-indigo-800 dark:text-white ml-2">
                   {jobDetails?.workType === "Remote"
                     ? "Remote"
+                    : jobDetails?.workType === "Hybrid"
+                    ? `${
+                        jobDetails?.location || "Location not specified"
+                      } (Hybrid)`
                     : jobDetails?.location || "India"}
                 </span>
               </span>

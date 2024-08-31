@@ -180,3 +180,24 @@ export const getJobDetailsApi = async (id) => {
     throw err;
   }
 };
+
+//*********** SAVE JOB FOR LATER API **************/
+export const saveJobForLaterApi = async (id) => {
+  try {
+    const response = await axios.post(
+      `/job/save-job/${id}`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};

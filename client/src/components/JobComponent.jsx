@@ -1,11 +1,15 @@
 import PropTypes from "prop-types";
 import { BookmarkIcon } from "@heroicons/react/24/outline";
+import { BookmarkIcon as BookmarkSolidIcon } from "@heroicons/react/24/solid";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import moment from "moment";
 import { motion } from "framer-motion";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
+import { hideLoading, showLoading } from "@/redux/spinnerSlice";
+import { saveJobForLaterApi } from "@/api/api";
+import { setUser } from "@/redux/userSlice";
 
 const buttonVariants = {
   initial: { scale: 1 },
@@ -13,11 +17,33 @@ const buttonVariants = {
 };
 
 const JobComponent = ({ job }) => {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   // Job posted date
   const daysAgo = moment(job.createdAt).fromNow();
+
+  // Check if job is already saved
+  const isJobSaved = user?.savedJobs.some(
+    (savedJob) => savedJob?._id === job?._id
+  );
+
+  // SAVE JOB FOR LATER
+  const saveJobForLater = async (id) => {
+    try {
+      dispatch(showLoading());
+      const res = await saveJobForLaterApi(id);
+      if (res.success) {
+        dispatch(hideLoading());
+        showSuccessToast(res.message);
+        dispatch(setUser(res.data));
+      }
+    } catch (err) {
+      dispatch(hideLoading());
+      showErrorToast(err?.response?.data?.message);
+    }
+  };
 
   // Handle Apply Now click
   const handleApplyNow = () => {
@@ -39,11 +65,19 @@ const JobComponent = ({ job }) => {
           initial="initial"
           whileHover="hover"
           className="p-2 bg-indigo-100 rounded-full border border-indigo-300 cursor-pointer hover:bg-indigo-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 transition"
+          onClick={() => saveJobForLater(job?._id)}
         >
-          <BookmarkIcon
-            title="Save Later"
-            className="h-5 w-5 text-indigo-700 dark:text-white"
-          />
+          {isJobSaved ? (
+            <BookmarkSolidIcon
+              title="Saved"
+              className="h-5 w-5 text-indigo-700 dark:text-white"
+            />
+          ) : (
+            <BookmarkIcon
+              title="Save Later"
+              className="h-5 w-5 text-indigo-700 dark:text-white"
+            />
+          )}
         </motion.div>
       </div>
 
