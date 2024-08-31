@@ -12,7 +12,6 @@ import {
   ExclamationCircleIcon,
 } from "@heroicons/react/24/outline";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
-import { toast } from "sonner";
 import { updateUserProfilePhotoApi } from "@/api/api";
 import { useEffect, useState } from "react";
 import uploadImage from "@/helper/UploadImage";
@@ -22,6 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SavedJobs from "./SavedJobs";
 import AppliedJobs from "./AppliedJobs";
 import { motion } from "framer-motion";
+import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -73,13 +73,13 @@ const ProfilePage = () => {
 
     // Check if file exists
     if (!file) {
-      toast.error("No file selected.");
+      showErrorToast("No file selected.");
       return;
     }
 
     // Check if file size is under 300KB
     if (file.size > 300 * 1024) {
-      toast.error("Please upload an image under 300KB.");
+      showErrorToast("Please upload an image under 300KB.");
       return;
     }
 
@@ -97,14 +97,14 @@ const ProfilePage = () => {
         uploadImageCloudinary.secure_url
       );
       if (res.success) {
-        toast.success(res.message);
+        showSuccessToast(res.message);
       } else {
-        toast.error(res.message);
+        showErrorToast(res.message);
       }
       dispatch(hideLoading());
     } catch (err) {
       dispatch(hideLoading());
-      toast.error(err.message || "Failed to upload image.");
+      showErrorToast(err.message || "Failed to upload image.");
     }
   };
 

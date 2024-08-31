@@ -88,7 +88,7 @@ const Hero = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Job Title Keywords"
-                className="flex-grow text-xs md:text-base p-2 text-gray-600 dark:bg-gray-600 focus:outline-none font-poppins"
+                className="flex-grow text-xs md:text-base p-2 text-gray-600 dark:text-gray-200 dark:bg-gray-600 focus:outline-none font-poppins"
               />
               <motion.button
                 variants={buttonVariants}

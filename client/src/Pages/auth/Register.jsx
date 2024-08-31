@@ -16,9 +16,9 @@ import { Link, useNavigate } from "react-router-dom";
 import uploadImage from "@/helper/UploadImage";
 import registerImage from "@/assets/register.jpg";
 import { registerUserApi } from "@/api/api";
-import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
+import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
 
 // Form Validation
 const formSchema = z.object({
@@ -75,7 +75,7 @@ const Register = () => {
 
     // Check if file size is under 75KB
     if (file.size > 300 * 1024) {
-      toast.error("Please upload an image under 300KB.");
+      showErrorToast("Please upload an image under 300KB.");
       return;
     }
     try {
@@ -85,7 +85,7 @@ const Register = () => {
       dispatch(hideLoading());
       form.setValue("profilePhoto", uploadImageCloudinary.secure_url);
     } catch (err) {
-      toast.error(err.message);
+      showErrorToast(err.message);
       dispatch(hideLoading());
     }
   };
@@ -97,12 +97,12 @@ const Register = () => {
       const user = await registerUserApi(values);
       dispatch(hideLoading());
       if (user.success) {
-        toast.success("User Registered Successfully!");
+        showSuccessToast("User Registered Successfully!");
         navigate("/login");
       }
     } catch (err) {
       dispatch(hideLoading());
-      toast.error(err.response.data.message);
+      showErrorToast(err.response.data.message);
     }
   }
 

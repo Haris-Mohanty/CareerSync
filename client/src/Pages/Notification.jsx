@@ -3,13 +3,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
-import { toast } from "sonner";
 import {
   deleteAllSeenNotificationsApi,
   markAllNotificationsAsSeenApi,
 } from "@/api/api";
 import { setUser } from "@/redux/userSlice";
 import { BellIcon, InboxIcon } from "@heroicons/react/24/outline";
+import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
 
 const Notification = () => {
   const { user } = useSelector((state) => state.user);
@@ -24,12 +24,12 @@ const Notification = () => {
 
       if (res.success) {
         dispatch(hideLoading());
-        toast.success(res.message);
+        showSuccessToast(res.message);
         dispatch(setUser(res.data));
       }
     } catch (err) {
       dispatch(hideLoading());
-      toast.error(err?.response?.data?.message);
+      showErrorToast(err?.response?.data?.message);
     }
   };
 
@@ -41,12 +41,12 @@ const Notification = () => {
 
       if (res.success) {
         dispatch(hideLoading());
-        toast.success(res.message);
+        showSuccessToast(res.message);
         dispatch(setUser(res.data));
       }
     } catch (err) {
       dispatch(hideLoading());
-      toast.error(err?.response?.data?.message);
+      showErrorToast(err?.response?.data?.message);
     }
   };
 

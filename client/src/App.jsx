@@ -51,7 +51,12 @@ function App() {
   return (
     <>
       <Spinner />
-      <Toaster />
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 2000,
+        }}
+      />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

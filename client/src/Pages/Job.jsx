@@ -8,11 +8,11 @@ import {
 } from "@heroicons/react/24/outline";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
-import { toast } from "sonner";
 import { getAllJobsApi } from "@/api/api";
 import JobComponent from "@/components/JobComponent";
 import { motion } from "framer-motion";
 import JobsCardSkeleton from "@/components/JobsCardSkeleton";
+import { showErrorToast } from "@/helper/toastHelper";
 
 const Job = () => {
   const dispatch = useDispatch();
@@ -63,7 +63,7 @@ const Job = () => {
     } catch (err) {
       dispatch(hideLoading());
       setLoading(false);
-      toast.error(err.response.data.message);
+      showErrorToast(err.response.data.message);
     }
   };
 

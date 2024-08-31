@@ -14,10 +14,10 @@ import { Input } from "@/components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
 import loginImage from "@/assets/login.jpg";
 import { loginUserApi } from "@/api/api";
-import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { motion } from "framer-motion";
+import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
 
 // Form Validation
 const formSchema = z.object({
@@ -74,12 +74,12 @@ const Login = () => {
       const data = await loginUserApi(values);
       dispatch(hideLoading());
       if (data.success) {
-        toast.success("Login Successfully!");
+        showSuccessToast("Login Successfully");
         navigate("/");
       }
     } catch (err) {
       dispatch(hideLoading());
-      toast.error(err.response.data.message);
+      showErrorToast(err.response.data.message);
     }
   }
 

@@ -11,11 +11,11 @@ import UserProfileForm from "./UserProfileForm";
 import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
 import ResumeUpload from "./ResumeUpload";
-import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { updatedUserProfileDetailsApi } from "@/api/api";
 import { setUser } from "@/redux/userSlice";
+import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
 
 const UpdateUserDetails = ({
   user,
@@ -143,14 +143,13 @@ const UpdateUserDetails = ({
       const res = await updatedUserProfileDetailsApi(formData);
       if (res.success) {
         dispatch(hideLoading());
-        toast.success(res.message);
+        showSuccessToast(res.message);
         dispatch(setUser(res.user));
         setOpenDialog(false);
       }
     } catch (err) {
       dispatch(hideLoading());
-      toast.error(err?.response?.data?.message);
-      console.log(err);
+      showErrorToast(err?.response?.data?.message);
     }
   };
 

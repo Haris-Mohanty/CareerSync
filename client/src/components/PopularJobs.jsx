@@ -10,10 +10,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { getAllJobsApi } from "@/api/api";
 import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
-import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import displayInr from "@/helper/IndianCurrency";
 import { useNavigate } from "react-router-dom";
+import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
 
 const buttonVariants = {
   initial: { scale: 1 },
@@ -47,7 +47,7 @@ const PopularJobs = () => {
       }
     } catch (err) {
       dispatch(hideLoading());
-      toast.error(err.response.data.message);
+      showErrorToast(err.response.data.message);
     }
   };
 
@@ -58,10 +58,10 @@ const PopularJobs = () => {
   // Handle Apply Now click
   const handleApplyNow = () => {
     if (!user) {
-      toast.error("Please login to apply for the job");
+      showErrorToast("Please login to apply for the job");
       navigate("/login");
     } else {
-      toast.success("Applied"); // Just for msg code remain...
+      showSuccessToast("Applied"); // Just for msg code remain...
     }
   };
 

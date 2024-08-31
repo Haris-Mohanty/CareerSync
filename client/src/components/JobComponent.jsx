@@ -5,7 +5,7 @@ import moment from "moment";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
 
 const buttonVariants = {
   initial: { scale: 1 },
@@ -22,10 +22,10 @@ const JobComponent = ({ job }) => {
   // Handle Apply Now click
   const handleApplyNow = () => {
     if (!user) {
-      toast.error("Please login to apply for the job");
+      showErrorToast("Please login to apply for the job");
       navigate("/login");
     } else {
-      toast.success("Applied"); // Just for msg code remain...
+      showSuccessToast("Applied"); // Just for msg code remain...
     }
   };
 

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { TrashIcon, EyeIcon } from "@heroicons/react/24/outline";
-import { toast } from "sonner";
 import uploadImage from "@/helper/UploadImage";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
+import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
 
 const ResumeUpload = ({ resume, resumeName, handleFileChange }) => {
   const dispatch = useDispatch();
@@ -32,7 +32,7 @@ const ResumeUpload = ({ resume, resumeName, handleFileChange }) => {
       ].includes(selectedFile.type);
 
       if (!isValidFileType) {
-        toast.error("Please upload a valid file (.pdf, .doc, .docx)");
+        showErrorToast("Please upload a valid file (.pdf, .doc, .docx)");
         return;
       }
 
@@ -44,12 +44,12 @@ const ResumeUpload = ({ resume, resumeName, handleFileChange }) => {
         // Upload the selected resume to Cloudinary
         const uploadedFile = await uploadImage(selectedFile);
         dispatch(hideLoading());
-        toast.success("Resume uploaded successfully!");
+        showSuccessToast("Resume uploaded successfully!");
         const jpgUrl = uploadedFile.secure_url.replace(/\.\w+$/, ".jpg"); // Convert to jpg
         handleFileChange(jpgUrl, selectedFile.name);
         setFileUrl(jpgUrl); // Update fileUrl with the uploaded URL
       } catch (err) {
-        toast.error("Error uploading file: " + err.message);
+        showErrorToast("Error uploading file: " + err.message);
         dispatch(hideLoading());
       }
     }
