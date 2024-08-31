@@ -671,3 +671,63 @@ export const deleteJobController = async (req, res) => {
     });
   }
 };
+
+//*************** JOB SAVE LATER CONTROLLER  ***************/
+export const saveJobForLaterController = async (req, res) => {
+  try {
+    // Get userId
+    const userId = req.user;
+
+    // Extract Job Id from params
+    const { id } = req.params;
+
+    // Check if job exist or not
+    const job = await JobModel.findById(id);
+    if (!job) {
+      return res.status(404).json({
+        success: false,
+        message: "Job not found!",
+      });
+    }
+
+    // Check if the job is already deleted
+    if (job.isDeleted) {
+      return res.status(400).json({
+        success: false,
+        message: "This job has been deleted.",
+      });
+    }
+
+    // Find the user
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Check if the job is already saved by the user
+    if (user.savedJobs.includes(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Job is already saved.",
+      });
+    }
+
+    // Save job ID in the user's saved jobs list
+    user.savedJobs.push(id);
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Job has been saved for later.",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!",
+      error: err.message,
+    });
+  }
+};

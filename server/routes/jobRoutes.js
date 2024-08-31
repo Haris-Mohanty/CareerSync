@@ -7,6 +7,7 @@ import {
   getAllJobsOfLoggedInUser,
   getJobsByIdController,
   updateJobDetailsController,
+  saveJobForLaterController,
 } from "../controllers/jobController.js";
 
 // Router obj
@@ -29,6 +30,9 @@ router.put("/update-job/:id", authMiddleware, updateJobDetailsController);
 
 // Delete Job
 router.put("/delete-job/:id", authMiddleware, deleteJobController);
+
+// Saved jobs
+router.post("/save-job/:id", authMiddleware, saveJobForLaterController);
 
 // Export
 export default router;
