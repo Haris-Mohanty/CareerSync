@@ -14,6 +14,7 @@ import { BookmarkIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
+import displayInr from "@/helper/IndianCurrency";
 
 const buttonVariants = {
   initial: { scale: 1 },
@@ -43,15 +44,13 @@ const JobDetails = () => {
 
   useEffect(() => {
     fetchJobDetails();
-  }, []);
-
-  console.log("Job Details", jobDetails);
+  }, [id]);
 
   return (
     <>
       <div className="bg-slate-100 dark:bg-gray-700 md:mt-16 px-4 md:px-16 md:gap-20 py-4 flex flex-col md:flex-row items-center justify-center">
         {/* Job Card */}
-        <div className="md:w-[30%] mx-auto bg-white shadow-lg rounded-lg p-6 border border-gray-200 relative order-1 md:order-1">
+        <div className="w-full md:w-[30%] mx-auto bg-white shadow-lg dark:bg-gray-800 rounded-lg p-6 border border-gray-200 relative order-1 md:order-1 dark:border-gray-700">
           {/* Save Late Icon */}
           <div className="flex justify-end items-center absolute top-2 right-4">
             <motion.div
@@ -80,10 +79,10 @@ const JobDetails = () => {
             </Avatar>
             <div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                {jobDetails?.company.companyName}
+                {jobDetails?.company.companyName || "Company Name"}
               </h3>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                {jobDetails?.company.location}
+                {jobDetails?.company.location || "Company Location"}
               </p>
             </div>
           </div>
@@ -94,31 +93,31 @@ const JobDetails = () => {
           </h3>
           <div className="flex items-center text-yellow-500 mt-1 text-sm">
             <StarIcon className="h-5 w-5 text-yellow-500" />
-            <span className="ml-1 text-gray-600">
+            <span className="ml-1 text-gray-600 dark:text-gray-300">
               {jobDetails?.rating || "3.4"} | {jobDetails?.reviews || "33"}{" "}
               Reviews
             </span>
           </div>
 
-          <div className="flex flex-col mt-4 text-sm md:text-base space-y-2 text-gray-600">
+          <div className="flex flex-col mt-4 text-sm md:text-base space-y-2 text-gray-600 dark:text-gray-300">
             <span className="flex items-center">
-              <BriefcaseIcon className="h-5 w-5 text-gray-500" />
+              <BriefcaseIcon className="h-5 w-5 text-gray-500 dark:text-gray-200" />
               Exp:
-              <span className="font-semibold text-xs md:text-sm text-indigo-800 ml-2">
+              <span className="font-semibold text-xs md:text-sm text-indigo-800 dark:text-white ml-2">
                 {jobDetails?.experienceLevel} Level
               </span>
             </span>
             <span className="mr-4 flex items-center">
-              <CurrencyRupeeIcon className="h-5 w-5 text-gray-500" />
+              <CurrencyRupeeIcon className="h-5 w-5 text-gray-500 dark:text-gray-200" />
               Salary:
-              <span className="font-semibold text-xs md:text-sm text-indigo-800 ml-2">
-                {jobDetails?.salary || "Not Disclosed"}
+              <span className="font-semibold text-xs md:text-sm text-indigo-800 dark:text-white ml-2">
+                {displayInr(jobDetails?.salary) || "Not Disclosed"} INR
               </span>
             </span>
             <span className="flex items-center">
-              <MapPinIcon className="h-5 w-5 text-gray-500" />
+              <MapPinIcon className="h-5 w-5 text-gray-500 dark:text-gray-200" />
               Location:
-              <span className="font-semibold text-xs md:text-sm text-indigo-800 ml-2">
+              <span className="font-semibold text-xs md:text-sm text-indigo-800 dark:text-white ml-2">
                 {jobDetails?.workType === "Remote"
                   ? "Remote"
                   : jobDetails?.location || "India"}
@@ -126,24 +125,24 @@ const JobDetails = () => {
             </span>
           </div>
 
-          <div className="mt-4 flex text-gray-400 text-xs md:text-sm">
+          <div className="mt-4 flex text-gray-400 dark:text-gray-400 text-xs md:text-sm">
             <div>
               Posted:
-              <span className="font-semibold text-sm text-gray-800 md:mx-1">
+              <span className="font-semibold text-sm text-gray-800 dark:text-gray-200 md:mx-1">
                 {moment(jobDetails?.createdAt).fromNow()}
               </span>
               |{" "}
             </div>
             <div>
               Openings:
-              <span className="font-semibold text-sm text-gray-800 mx-1">
+              <span className="font-semibold text-sm text-gray-800 dark:text-gray-200 mx-1">
                 {jobDetails?.numberOfVacancies || "1"}
               </span>
               |
             </div>
             <div>
               Applicants:
-              <span className="font-semibold text-sm text-gray-800 mx-1">
+              <span className="font-semibold text-sm text-gray-800 dark:text-gray-200 mx-1">
                 {jobDetails?.applications.length}
               </span>
             </div>
@@ -163,16 +162,180 @@ const JobDetails = () => {
           </div>
         </div>
 
-        {/* Job Description */}
-        <div className="md:w-[70%] mx-auto bg-white shadow-lg rounded-lg p-6 border border-gray-200 mt-4 md:mt-0 md:ml-4 max-h-[40rem] overflow-y-auto order-2 md:order-2">
-          <h4 className="text-xl font-semibold text-gray-800 dark:text-white">
-            Job Description
-          </h4>
-          <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">
-            {jobDetails?.description || "No description available."}
-          </p>
+        {/************* Job Full Details *************/}
+        <div className="w-full md:w-[70%] mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border border-gray-200 dark:border-gray-700 mt-4 md:mt-0 md:ml-4 max-h-[40rem] overflow-y-auto order-2 md:order-2">
+          {/* Job Description Section */}
+          <section className="mb-4">
+            <h4 className="text-xl font-semibold text-gray-800 dark:text-white dark:border-gray-600 pb-2">
+              Job Description
+            </h4>
+            <p className="text-sm text-gray-600 dark:text-gray-300 ml-4">
+              {jobDetails?.description || "No description available."}
+            </p>
+          </section>
 
-          {/* Repeated content removed for brevity */}
+          {/* Job Details Section */}
+          <div className="space-y-4 border-t border-gray-300 dark:border-gray-600 pt-6">
+            <section className="space-y-2 px-4">
+              <div className="flex justify-between items-center text-sm text-gray-700 dark:text-gray-400">
+                <span className="font-semibold">Job Role:</span>
+                <span>{jobDetails?.title || "Not specified"}</span>
+              </div>
+
+              <div className="flex justify-between items-center text-sm text-gray-700 dark:text-gray-400">
+                <span className="font-semibold">Industry Type:</span>
+                <span>{jobDetails?.company?.industry || "Not specified"}</span>
+              </div>
+
+              <div className="flex justify-between items-center text-sm text-gray-700 dark:text-gray-400">
+                <span className="font-semibold">Job Location:</span>
+                <span>
+                  {jobDetails?.workType === "Remote"
+                    ? "Remote"
+                    : jobDetails?.workType === "Hybrid"
+                    ? `${
+                        jobDetails?.location || "Location not specified"
+                      } (Hybrid)`
+                    : jobDetails?.location || "India"}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center text-sm text-gray-700 dark:text-gray-400">
+                <span className="font-semibold">Employment Type:</span>
+                <span className="px-2 py-1 rounded bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100">
+                  {jobDetails?.jobType || "Not specified"}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center text-sm text-gray-700 dark:text-gray-400">
+                <span className="font-semibold">Experience Level:</span>
+                <span>
+                  {jobDetails?.experienceLevel || "Not specified"} Level
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center text-sm text-gray-700 dark:text-gray-400">
+                <span className="font-semibold">Salary:</span>
+                <span>
+                  {displayInr(jobDetails?.salary) || "Not specified"} INR
+                </span>
+              </div>
+            </section>
+
+            {/* Requirements Section */}
+            <section className="border-t border-gray-300 dark:border-gray-600 pt-4">
+              <h4 className="text-xl font-semibold text-gray-800 dark:text-white pb-2">
+                Requirements
+              </h4>
+              <ul className="list-disc list-inside space-y-2 mt-2">
+                {jobDetails?.requirements?.length > 0 ? (
+                  jobDetails.requirements.map((requirement, index) => (
+                    <li
+                      key={index}
+                      className="text-sm text-gray-600 dark:text-gray-300"
+                    >
+                      {requirement}
+                    </li>
+                  ))
+                ) : (
+                  <li className="text-sm text-gray-600 dark:text-gray-300">
+                    No requirements listed.
+                  </li>
+                )}
+              </ul>
+            </section>
+
+            {/* Deadline Section */}
+            <section className="flex justify-end text-sm text-gray-700 dark:text-gray-400 border-t border-gray-300 dark:border-gray-600 pt-6">
+              <span className="font-semibold">Last Date to Apply:</span>
+              <span className="ml-2 text-indigo-500 font-bold">
+                {jobDetails?.deadline
+                  ? moment(jobDetails.deadline).format("MMMM Do, YYYY")
+                  : "Not specified"}
+              </span>
+            </section>
+          </div>
+
+          <div className="px-4 md:px-6 py-4 md:py-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 mt-6">
+            <div className="md:flex md:gap-8 md:space-y-0">
+              {/* Company Details Section */}
+              <div className="flex-1 md:border-r border-gray-200 dark:border-gray-700 md:border-r md:pr-8">
+                <h2 className="text-lg md:text-xl font-bold font-openSans text-gray-900 dark:text-white mb-3">
+                  Company Details
+                </h2>
+                <div className="flex items-start space-x-4">
+                  <Avatar className="h-12 md:h-20 w-12 md:w-20">
+                    <AvatarImage
+                      src={jobDetails?.company?.logo}
+                      alt={jobDetails?.company?.companyName}
+                    />
+                    <AvatarFallback className="text-2xl">
+                      {jobDetails?.company?.companyName?.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="">
+                    <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white">
+                      {jobDetails?.company?.companyName || "Company Name"}
+                    </h3>
+                    <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
+                      {jobDetails?.company?.location ||
+                        "Location not specified"}
+                    </p>
+                    <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mt-2">
+                      {jobDetails?.company?.description ||
+                        "No description available."}
+                    </p>
+                    <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-2">
+                      <span className="font-semibold">Email:</span>{" "}
+                      {jobDetails?.company?.email || "Not specified"}
+                    </p>
+                    <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1 mb-4 md:mb-0">
+                      <span className="font-semibold">Company Size:</span>{" "}
+                      {jobDetails?.company?.companySize || "Not specified"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Recruiter Details Section */}
+              <div className="flex-1 md:pl-8">
+                <h2 className="text-lg md:text-xl font-bold font-openSans text-gray-900 dark:text-white mb-3">
+                  Recruiter Details
+                </h2>
+                <div className="flex items-start space-x-4">
+                  <Avatar className="h-12 md:h-20 w-12 md:w-20">
+                    <AvatarImage
+                      src={jobDetails?.createdBy?.profilePhoto}
+                      alt={jobDetails?.createdBy?.name}
+                    />
+                    <AvatarFallback className="text-2xl">
+                      {jobDetails?.createdBy?.name?.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="">
+                    <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white">
+                      {jobDetails?.createdBy?.name || "Recruiter Name"}
+                    </h3>
+                    <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
+                      {jobDetails?.createdBy?.location ||
+                        "Location not specified"}
+                    </p>
+                    <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mt-2">
+                      {jobDetails?.createdBy?.bio || "No bio available."}
+                    </p>
+                    <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-2">
+                      <span className="font-semibold">Email:</span>{" "}
+                      {jobDetails?.createdBy?.email || "Not specified"}
+                    </p>
+                    <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      <span className="font-semibold">Phone:</span>{" "}
+                      {jobDetails?.createdBy?.phoneNumber || "Not specified"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

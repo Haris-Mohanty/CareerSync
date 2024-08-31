@@ -382,7 +382,19 @@ export const getJobsByIdController = async (req, res) => {
     const { id } = req.params;
 
     // Get Job
-    const job = await JobModel.findById(id).populate("company");
+    // const job = await JobModel.findById(id).populate("company");
+
+    const job = await JobModel.findById(id)
+      .populate({
+        path: "company", // Name of which path(field) you want to populate
+        model: "Company", // The name of the model
+        select: "-ownerId -closedJobs -isDeleted", // Deselect
+      })
+      .populate({
+        path: "createdBy",
+        model: "User",
+        select: "name email profilePhoto bio phoneNumber location",
+      });
 
     // Check if job was found
     if (!job || job.isDeleted) {
