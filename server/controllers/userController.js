@@ -637,12 +637,19 @@ export const getUserInfoController = async (req, res) => {
       })
       .populate({
         path: "savedJobs",
-        populate: {
-          path: "company",
-          model: "Company",
-          select: "companyName location",
-        },
-        select: "-applications -createdBy",
+        populate: [
+          {
+            path: "company",
+            model: "Company",
+            select: "companyName location",
+          },
+          {
+            path: "applications",
+            model: "Application",
+            select: "applicant status applicationDate",
+          },
+        ],
+        select: "-createdBy",
       })
       .select("-password");
 

@@ -10,6 +10,7 @@ import {
   StarIcon,
 } from "@heroicons/react/24/solid";
 import { BookmarkIcon } from "@heroicons/react/24/outline";
+import { BookmarkIcon as BookmarkSolidIcon } from "@heroicons/react/24/solid";
 import moment from "moment";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
@@ -50,6 +51,11 @@ const JobDetails = () => {
     }
   };
 
+  // Check if job is already saved
+  const isJobSaved = user?.savedJobs.some(
+    (savedJob) => savedJob?._id === jobDetails?._id
+  );
+
   // SAVE JOB FOR LATER
   const saveJobForLater = async (id) => {
     try {
@@ -59,6 +65,7 @@ const JobDetails = () => {
         dispatch(hideLoading());
         showSuccessToast(res.message);
         dispatch(setUser(res.data));
+        window.location.reload();
       }
     } catch (err) {
       dispatch(hideLoading());
@@ -99,10 +106,17 @@ const JobDetails = () => {
                 className="p-2 bg-indigo-100 rounded-full border border-indigo-300 cursor-pointer hover:bg-indigo-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 transition"
                 onClick={() => saveJobForLater(jobDetails?._id)}
               >
-                <BookmarkIcon
-                  title="Save Later"
-                  className="h-5 w-5 text-indigo-700 dark:text-white"
-                />
+                {isJobSaved ? (
+                  <BookmarkSolidIcon
+                    title="Saved"
+                    className="h-5 w-5 text-indigo-700 dark:text-white"
+                  />
+                ) : (
+                  <BookmarkIcon
+                    title="Save Later"
+                    className="h-5 w-5 text-indigo-700 dark:text-white"
+                  />
+                )}
               </motion.div>
             </div>
 

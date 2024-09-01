@@ -722,6 +722,7 @@ export const saveJobForLaterController = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Job has been saved for later.",
+      data: user,
     });
   } catch (err) {
     return res.status(500).json({

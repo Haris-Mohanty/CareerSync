@@ -38,6 +38,7 @@ const JobComponent = ({ job }) => {
         dispatch(hideLoading());
         showSuccessToast(res.message);
         dispatch(setUser(res.data));
+        window.location.reload();
       }
     } catch (err) {
       dispatch(hideLoading());
