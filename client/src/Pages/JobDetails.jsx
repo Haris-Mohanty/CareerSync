@@ -56,6 +56,9 @@ const JobDetails = () => {
     (savedJob) => savedJob?._id === jobDetails?._id
   );
 
+  const isDeadlinePassed = moment().isAfter(moment(jobDetails?.deadline));
+  const jobStatus = isDeadlinePassed ? "Closed" : jobDetails?.status;
+
   // SAVE JOB FOR LATER
   const saveJobForLater = async (id) => {
     try {
@@ -306,12 +309,21 @@ const JobDetails = () => {
               </section>
 
               {/* Deadline Section */}
-              <section className="flex justify-end text-sm text-gray-700 dark:text-gray-400 border-t border-gray-300 dark:border-gray-600 pt-6">
+              <section className="flex justify-end text-xs md:text-sm text-gray-700 dark:text-gray-400 border-t border-gray-300 dark:border-gray-600 pt-6">
                 <span className="font-semibold">Last Date to Apply:</span>
                 <span className="ml-2 text-indigo-500 font-bold">
                   {jobDetails?.deadline
                     ? moment(jobDetails.deadline).format("MMMM Do, YYYY")
-                    : "Not specified"}
+                    : "Not specified"}{" "}
+                  <span
+                    className={`ml-2 px-2 py-1 rounded-full text-sm font-semibold ${
+                      jobStatus === "Open"
+                        ? "bg-green-500 text-white"
+                        : "bg-red-500 text-white"
+                    }`}
+                  >
+                    {jobStatus}
+                  </span>
                 </span>
               </section>
             </div>

@@ -1,6 +1,7 @@
 import ApplicationModel from "../Models/ApplicationModel.js";
 import JobModel from "../Models/JobModel.js";
 import UserModel from "../Models/UserModel.js";
+import moment from "moment";
 
 //*********** CREATE A NEW APPLICATION (APPLY JOB) *****/
 export const applyJobController = async (req, res) => {
@@ -19,6 +20,14 @@ export const applyJobController = async (req, res) => {
       return res.status(404).json({
         success: false,
         message: "Job not found!",
+      });
+    }
+
+    // Check if the job deadline has passed
+    if (moment().isAfter(moment(jobExists.deadline))) {
+      return res.status(400).json({
+        success: false,
+        message: "The application deadline for this job has passed!",
       });
     }
 

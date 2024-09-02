@@ -63,52 +63,57 @@ const SavedJobs = ({ jobs }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {jobs.map((job, index) => (
-              <TableRow
-                key={job._id}
-                className="hover:bg-gray-50 dark:hover:bg-gray-600"
-              >
-                <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
-                  {index + 1}
-                </TableCell>
-                <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
-                  {job.title}
-                </TableCell>
-                <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
-                  {job.company.companyName}
-                </TableCell>
-                <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
-                  {job?.workType === "Remote"
-                    ? "Remote"
-                    : job?.workType === "Hybrid"
-                    ? `${job?.location || "Location not specified"} (Hybrid)`
-                    : job?.location || "India"}
-                </TableCell>
-                <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
-                  {job.jobType}
-                </TableCell>
-                <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
-                  {displayInr(job.salary)}
-                </TableCell>
-                <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
-                  {moment(job.applicationDate).format("DD/MM/YYYY")}
-                </TableCell>
-                <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
-                  {moment(job.deadline).format("DD/MM/YYYY")}
-                </TableCell>
-                <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
-                  <span
-                    className={`px-2 py-1 rounded-full text-sm font-semibold ${
-                      job.status === "Open"
-                        ? "bg-green-500 text-white"
-                        : "bg-red-500 text-white"
-                    }`}
-                  >
-                    {job.status}
-                  </span>
-                </TableCell>
-              </TableRow>
-            ))}
+            {jobs.map((job, index) => {
+              const isDeadlinePassed = moment().isAfter(moment(job.deadline));
+              const jobStatus = isDeadlinePassed ? "Closed" : job.status;
+
+              return (
+                <TableRow
+                  key={job._id}
+                  className="hover:bg-gray-50 dark:hover:bg-gray-600"
+                >
+                  <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
+                    {index + 1}
+                  </TableCell>
+                  <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
+                    {job.title}
+                  </TableCell>
+                  <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
+                    {job.company.companyName}
+                  </TableCell>
+                  <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
+                    {job?.workType === "Remote"
+                      ? "Remote"
+                      : job?.workType === "Hybrid"
+                      ? `${job?.location || "Location not specified"} (Hybrid)`
+                      : job?.location || "India"}
+                  </TableCell>
+                  <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
+                    {job.jobType}
+                  </TableCell>
+                  <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
+                    {displayInr(job.salary)}
+                  </TableCell>
+                  <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
+                    {moment(job.applicationDate).format("DD/MM/YYYY")}
+                  </TableCell>
+                  <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
+                    {moment(job.deadline).format("DD/MM/YYYY")}
+                  </TableCell>
+                  <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
+                    <span
+                      className={`px-2 py-1 rounded-full text-sm font-semibold ${
+                        jobStatus === "Open"
+                          ? "bg-green-500 text-white"
+                          : "bg-red-500 text-white"
+                      }`}
+                    >
+                      {jobStatus}
+                    </span>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </motion.div>
