@@ -96,24 +96,49 @@ const Navbar = () => {
               >
                 <Link to="/">Home</Link>
               </li>
-              <li
-                className={`md:px-4 md:py-2 ${
-                  currentPath === "/jobs"
-                    ? "text-indigo-500 dark:text-indigo-300"
-                    : "hover:text-indigo-400 dark:hover:text-indigo-300"
-                }`}
-              >
-                <Link to="/jobs">Jobs</Link>
-              </li>
-              <li
-                className={`md:px-4 md:py-2 ${
-                  currentPath === "/about"
-                    ? "text-indigo-500 dark:text-indigo-300"
-                    : "hover:text-indigo-400 dark:hover:text-indigo-300"
-                }`}
-              >
-                <Link to="/about">About</Link>
-              </li>
+              {user?.role === "recruiter" ? (
+                <>
+                  <li
+                    className={`md:px-4 md:py-2 ${
+                      currentPath === "/recruiter/company"
+                        ? "text-indigo-500 dark:text-indigo-300"
+                        : "hover:text-indigo-400 dark:hover:text-indigo-300"
+                    }`}
+                  >
+                    <Link to="/recruiter/company">Company</Link>
+                  </li>
+                  <li
+                    className={`md:px-4 md:py-2 ${
+                      currentPath === "/recruiter/job"
+                        ? "text-indigo-500 dark:text-indigo-300"
+                        : "hover:text-indigo-400 dark:hover:text-indigo-300"
+                    }`}
+                  >
+                    <Link to="/recruiter/job">Job</Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li
+                    className={`md:px-4 md:py-2 ${
+                      currentPath === "/jobs"
+                        ? "text-indigo-500 dark:text-indigo-300"
+                        : "hover:text-indigo-400 dark:hover:text-indigo-300"
+                    }`}
+                  >
+                    <Link to="/jobs">Jobs</Link>
+                  </li>
+                  <li
+                    className={`md:px-4 md:py-2 ${
+                      currentPath === "/about"
+                        ? "text-indigo-500 dark:text-indigo-300"
+                        : "hover:text-indigo-400 dark:hover:text-indigo-300"
+                    }`}
+                  >
+                    <Link to="/about">About</Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
 

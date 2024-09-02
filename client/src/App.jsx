@@ -20,6 +20,8 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import ProfilePage from "./Pages/ProfilePage";
 import Notification from "./Pages/Notification";
 import JobDetails from "./Pages/JobDetails";
+import Company from "./Pages/recruiter/Company";
+import Jobs from "./Pages/recruiter/Jobs";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -84,6 +86,22 @@ function App() {
           element={
             <ProtectedRoute>
               <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/recruiter/company"
+          element={
+            <ProtectedRoute>
+              <Company />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/recruiter/job"
+          element={
+            <ProtectedRoute>
+              <Jobs />
             </ProtectedRoute>
           }
         />

@@ -201,3 +201,20 @@ export const saveJobForLaterApi = async (id) => {
     throw err;
   }
 };
+
+//*********** GET COMPANY DETAILS (RECRUITER) **************/
+export const getCompanyDetailsByRecruiterApi = async () => {
+  try {
+    const response = await axios.get("/company/get-company-details", {
+      withCredentials: true,
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};

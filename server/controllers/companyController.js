@@ -165,11 +165,20 @@ export const createCompanyController = async (req, res) => {
   }
 };
 
-//******************* GET COMPANY DETAILS CONTROLLER ***************/
+//******** GET COMPANY DETAILS CONTROLLER (ONLY RECRUITER) ***************/
 export const getCompanyDetailsController = async (req, res) => {
   try {
     // Get user
     const userId = req.user;
+    const user = await UserModel.findById(userId);
+
+    // Check if user is a recruiter
+    if (user.role !== "recruiter") {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied. Only recruiters can get companies.",
+      });
+    }
 
     // Get company
     const getCompany = await CompanyModel.find({
@@ -197,7 +206,7 @@ export const getCompanyDetailsController = async (req, res) => {
   }
 };
 
-//**** GET COMPANY DETAILS BY COMPANY ID CONTROLLER ********/
+//**** GET COMPANY DETAILS BY COMPANY ID CONTROLLER (All) ********/
 export const getCompanyByIdController = async (req, res) => {
   try {
     // Extract company id from params

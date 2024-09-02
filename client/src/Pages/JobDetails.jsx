@@ -56,6 +56,12 @@ const JobDetails = () => {
     (savedJob) => savedJob?._id === jobDetails?._id
   );
 
+  // Check if job is already applied
+  const hasApplied = user?.appliedJobs?.some(
+    (appliedJob) => appliedJob?._id === jobDetails?._id
+  );
+
+  // Job Status change (using deadline)
   const isDeadlinePassed = moment().isAfter(moment(jobDetails?.deadline));
   const jobStatus = isDeadlinePassed ? "Closed" : jobDetails?.status;
 
@@ -131,7 +137,7 @@ const JobDetails = () => {
                   alt={jobDetails?.company.companyName}
                 />
                 <AvatarFallback>
-                  {jobDetails?.company.companyName.charAt(0)}
+                  {jobDetails?.company.companyName.charAt(0) || "C"}
                 </AvatarFallback>
               </Avatar>
               <div>
@@ -211,15 +217,24 @@ const JobDetails = () => {
 
             <div className="border border-b mt-3"></div>
             <div className="flex justify-end items-center mt-4">
-              <motion.button
-                onClick={handleApplyNow}
-                variants={buttonVariants}
-                initial="initial"
-                whileHover="hover"
-                className="mt-2 text-white bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors px-4 py-2 rounded focus:outline-none"
-              >
-                Apply Now
-              </motion.button>
+              {hasApplied ? (
+                <button
+                  disabled
+                  className="mt-2 bg-gray-400 text-white px-4 py-2 rounded"
+                >
+                  Already Applied
+                </button>
+              ) : (
+                <motion.button
+                  onClick={handleApplyNow}
+                  variants={buttonVariants}
+                  initial="initial"
+                  whileHover="hover"
+                  className="mt-2 text-white bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors px-4 py-2 rounded focus:outline-none"
+                >
+                  Apply Now
+                </motion.button>
+              )}
             </div>
           </div>
 

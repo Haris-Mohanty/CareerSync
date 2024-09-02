@@ -96,7 +96,7 @@ export const applyJobController = async (req, res) => {
     const notification = {
       type: "newApplication",
       message: `A new application has been submitted for your job: ${jobExists.title}.`,
-      date: new Date(),
+      createdAt: new Date(),
       onClickPath: "view-profile",
     };
     recruiter.unSeenNotifications.push(notification);
@@ -226,7 +226,7 @@ export const updateApplicationStatus = async (req, res) => {
     const notification = {
       type: "application-status",
       message: `Your application for the job ${application.job.title} has been ${status}.`,
-      date: new Date(),
+      createdAt: new Date(),
       onClickPath: "view-profile",
     };
 

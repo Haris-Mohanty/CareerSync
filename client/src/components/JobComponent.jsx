@@ -29,6 +29,11 @@ const JobComponent = ({ job }) => {
     (savedJob) => savedJob?._id === job?._id
   );
 
+  // Check if job is already applied
+  const hasApplied = user?.appliedJobs?.some(
+    (appliedJob) => appliedJob?._id === job?._id
+  );
+
   // SAVE JOB FOR LATER
   const saveJobForLater = async (id) => {
     try {
@@ -143,15 +148,24 @@ const JobComponent = ({ job }) => {
         >
           View Details
         </motion.button>
-        <motion.button
-          onClick={handleApplyNow}
-          variants={buttonVariants}
-          initial="initial"
-          whileHover="hover"
-          className="mt-2 text-white bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors px-4 py-2 rounded focus:outline-none"
-        >
-          Apply Now
-        </motion.button>
+        {hasApplied ? (
+          <button
+            disabled
+            className="mt-2 bg-gray-400 text-white px-4 py-2 rounded"
+          >
+            Applied
+          </button>
+        ) : (
+          <motion.button
+            onClick={handleApplyNow}
+            variants={buttonVariants}
+            initial="initial"
+            whileHover="hover"
+            className="mt-2 text-white bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors px-4 py-2 rounded focus:outline-none"
+          >
+            Apply Now
+          </motion.button>
+        )}
       </div>
     </div>
   );
