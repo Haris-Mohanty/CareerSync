@@ -252,3 +252,24 @@ export const getCompanyDetailsByIdApi = async (id) => {
     throw err;
   }
 };
+
+//*************** UPDATE COMPANY DETAILS *****************/
+export const updateCompanyDetailsApi = async (id, data) => {
+  try {
+    const response = await axios.put(
+      `/company/update-company/${id}`,
+      { ...data },
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};

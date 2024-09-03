@@ -25,7 +25,7 @@ import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import uploadImage from "@/helper/UploadImage";
 import { useState } from "react";
 import { TrashIcon, CloudArrowUpIcon } from "@heroicons/react/24/outline";
-import { createCompanyApi } from "@/api/api";
+import { createCompanyApi, updateCompanyDetailsApi } from "@/api/api";
 
 // Form Validation Schema
 const formSchema = z.object({
@@ -121,13 +121,14 @@ const CompanyForm = ({ setShowForm, onRefresh, company, buttonName }) => {
   const onSubmit = async (data) => {
     try {
       dispatch(showLoading());
-
-      const res = await createCompanyApi(data);
+      const res = company
+        ? await updateCompanyDetailsApi(company?._id, data)
+        : await createCompanyApi(data);
       dispatch(hideLoading());
 
       if (res.success) {
         showSuccessToast(
-          `Company ${company ? "updated" : "created"} successfully!`
+          `Company ${company ? "details updated" : "created"} successfully!`
         );
         onRefresh();
         setShowForm(false);
@@ -137,6 +138,7 @@ const CompanyForm = ({ setShowForm, onRefresh, company, buttonName }) => {
     } catch (err) {
       dispatch(hideLoading());
       showErrorToast(err?.response?.data?.message || "An error occurred.");
+      console.log(err);
     }
   };
 
