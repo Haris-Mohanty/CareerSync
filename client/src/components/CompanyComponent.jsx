@@ -45,13 +45,13 @@ const CompanyComponent = ({ company }) => {
       <div className="flex mt-4 justify-between items-center">
         <p className="text-sm text-gray-700 dark:text-gray-300">
           Industry:{" "}
-          <span className="px-2 py-1 rounded-full bg-blue-300 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+          <span className="px-2 py-1 rounded-full bg-teal-500 text-white dark:bg-teal-700">
             {company.industry}
           </span>
         </p>
         <p className="text-sm text-gray-700 dark:text-gray-300">
-          Size:
-          <span className="ml-1 px-2 py-1 rounded-full bg-green-300 text-green-800 dark:bg-green-900 dark:text-green-200">
+          Size:{" "}
+          <span className="ml-1 px-2 py-1 rounded-full bg-purple-500 text-white dark:bg-purple-700">
             {company.companySize}
           </span>
         </p>

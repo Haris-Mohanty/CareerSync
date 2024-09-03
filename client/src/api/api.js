@@ -218,3 +218,20 @@ export const getCompanyDetailsByRecruiterApi = async () => {
     throw err;
   }
 };
+
+//*********** CREATE NEW COMPANY (RECRUITER) **************/
+export const createCompanyApi = async (data) => {
+  try {
+    const response = await axios.post("/company/create-company", data, {
+      withCredentials: true,
+    });
+
+    if (response.status === 201) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};
