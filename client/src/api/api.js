@@ -273,3 +273,24 @@ export const updateCompanyDetailsApi = async (id, data) => {
     throw err;
   }
 };
+
+//*************** DELETE COMPANY *****************/
+export const deleteCompanyApi = async (id) => {
+  try {
+    const response = await axios.put(
+      `/company/delete-company/${id}`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};

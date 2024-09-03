@@ -1,22 +1,32 @@
-import { getCompanyDetailsByIdApi } from "@/api/api";
-import { showErrorToast } from "@/helper/toastHelper";
+import { deleteCompanyApi, getCompanyDetailsByIdApi } from "@/api/api";
+import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import JobComponent from "@/components/JobComponent";
 import { Skeleton } from "@/components/ui/skeleton";
 import CompanyForm from "@/components/CompanyForm";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogOverlay,
+} from "@/components/ui/dialog";
 
 const CompanyDetails = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useSelector((state) => state.user);
   const [company, setCompany] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   // Fetch Company Details by Company ID
   const fetchCompanyDetailsById = async () => {
@@ -43,6 +53,23 @@ const CompanyDetails = () => {
   const handleAddOrEditCompany = (company = null) => {
     setSelectedCompany(company);
     setShowForm(true);
+  };
+
+  // ******* DELTE COMPANY *********/
+  const handleDeleteCompany = async () => {
+    try {
+      dispatch(showLoading());
+      const res = await deleteCompanyApi(id);
+      dispatch(hideLoading());
+      if (res.success) {
+        showSuccessToast("Company deleted successfully.");
+        setShowDeleteDialog(false);
+        navigate("/recruiter/company");
+      }
+    } catch (err) {
+      dispatch(hideLoading());
+      showErrorToast(err?.response?.data?.message || "An error occurred.");
+    }
   };
 
   if (loading) {
@@ -115,22 +142,58 @@ const CompanyDetails = () => {
       ) : (
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg relative">
-            {/* Edit Button */}
+            {/* Edit and Delete Buttons */}
             {user?._id === company?.ownerId._id && (
-              <div className="absolute top-2 right-2">
+              <div className="absolute top-4 right-2 flex space-x-2">
                 <button
                   onClick={() => handleAddOrEditCompany(company)}
                   className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-xs md:text-sm font-medium shadow-md transition"
                 >
                   Edit Company
                 </button>
+
+                {/* Button to open the delete dialog */}
+                <button
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-xs md:text-sm font-medium shadow-md transition"
+                  onClick={() => setShowDeleteDialog(true)} // Open the dialog
+                >
+                  Delete Company
+                </button>
               </div>
             )}
+
+            {/* Dialog Component */}
+            <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+              <DialogOverlay />
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Delete Company</DialogTitle>
+                  <DialogDescription>
+                    Are you sure you want to delete this company? This action
+                    cannot be undone.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex justify-end space-x-4 mt-4">
+                  <button
+                    className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg shadow-md transition"
+                    onClick={() => setShowDeleteDialog(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-md transition"
+                    onClick={handleDeleteCompany}
+                  >
+                    Confirm Delete
+                  </button>
+                </div>
+              </DialogContent>
+            </Dialog>
 
             {/* Company Header */}
             <div className="p-8 flex flex-col md:flex-row">
               {/* Company Details */}
-              <div className="md:w-2/3 mb-6 md:mb-0">
+              <div className="md:w-2/3 mb-6 mt-6 md:mt-0 md:mb-0">
                 <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white">
                   {company?.companyName || "Company Name"}
                 </h1>
@@ -187,7 +250,7 @@ const CompanyDetails = () => {
               </div>
 
               {/* Company Logo */}
-              <div className="md:w-1/3 flex justify-center mb-6 md:mb-0">
+              <div className="md:w-1/3 flex justify-center md:mt-12">
                 <Avatar className="h-44 w-44 border-4 border-gray-300 dark:border-gray-600 transition-transform transform hover:scale-105">
                   <AvatarImage
                     src={company?.logo}
