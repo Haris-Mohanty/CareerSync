@@ -216,7 +216,16 @@ export const getCompanyByIdController = async (req, res) => {
     const company = await CompanyModel.findOne({
       _id: id,
       isDeleted: false,
-    }).populate("ownerId", "name email");
+    })
+      .populate("ownerId", "name email profilePhoto bio")
+      .populate({
+        path: "openJobs",
+        populate: {
+          path: "company",
+          select: "companyName location logo",
+        },
+      });
+
     if (!company) {
       return res.status(404).json({
         success: false,

@@ -69,7 +69,9 @@ const CompanyComponent = ({ company }) => {
       {/* View Full Details Button */}
       <div className="mt-6 flex justify-center">
         <button
-          onClick={() => navigate("/recruiter/view-company-details")}
+          onClick={() =>
+            navigate(`/view-company-details/${company._id}`)
+          }
           className="bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors text-white text-sm px-5 py-2 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-indigo-600 dark:hover:bg-indigo-700 transition-transform transform hover:-translate-y-1 duration-300"
         >
           View Full Details

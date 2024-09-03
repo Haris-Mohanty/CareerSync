@@ -17,6 +17,8 @@ const Company = () => {
   const [showForm, setShowForm] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(null);
 
+
+  //********** FETCH COMPANY OF RECRUITER *****/
   const fetchCompanyDetails = async () => {
     try {
       dispatch(showLoading());
@@ -42,7 +44,7 @@ const Company = () => {
   }, []);
 
   // Handle the form display
-  const handleAddOrEditAddress = (company = null) => {
+  const handleAddOrEditCompany = (company = null) => {
     setSelectedCompany(company);
     setShowForm(true);
   };
@@ -68,7 +70,7 @@ const Company = () => {
               {/* Add New Company Button */}
               <button
                 className="bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors flex items-center text-sm md:text-base text-white px-2 md:px-4 py-2 rounded-lg shadow-md"
-                onClick={() => handleAddOrEditAddress()}
+                onClick={() => handleAddOrEditCompany()}
               >
                 <PlusIcon className="h-5 w-5" />
                 Add New Company
@@ -135,11 +137,7 @@ const Company = () => {
                 }}
               >
                 {company.map((comp, index) => (
-                  <CompanyComponent
-                    key={index}
-                    company={comp}
-                    onEdit={() => handleAddOrEditAddress(comp)}
-                  />
+                  <CompanyComponent key={index} company={comp} />
                 ))}
               </motion.div>
             ) : (

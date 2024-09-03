@@ -235,3 +235,20 @@ export const createCompanyApi = async (data) => {
     throw err;
   }
 };
+
+//******** GET COMPANY DETAILS BY COMPANY ID (ALL) *************/
+export const getCompanyDetailsByIdApi = async (id) => {
+  try {
+    const response = await axios.get(`/company/get-company-by-id/${id}`, {
+      withCredentials: true,
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};

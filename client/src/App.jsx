@@ -22,6 +22,7 @@ import Notification from "./Pages/Notification";
 import JobDetails from "./Pages/JobDetails";
 import Company from "./Pages/recruiter/Company";
 import Jobs from "./Pages/recruiter/Jobs";
+import CompanyDetails from "./Pages/recruiter/CompanyDetails";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -94,6 +95,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Company />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/view-company-details/:id"
+          element={
+            <ProtectedRoute>
+              <CompanyDetails />
             </ProtectedRoute>
           }
         />
