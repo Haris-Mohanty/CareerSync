@@ -23,6 +23,7 @@ import JobDetails from "./Pages/JobDetails";
 import Company from "./Pages/recruiter/Company";
 import CompanyDetails from "./Pages/recruiter/CompanyDetails";
 import RecruiterJobs from "./Pages/recruiter/RecruiterJobs";
+import RecruiterJobsDetails from "./Pages/recruiter/RecruiterJobsDetails";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -103,6 +104,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CompanyDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/recruiter/view-job-details/:id"
+          element={
+            <ProtectedRoute>
+              <RecruiterJobsDetails />
             </ProtectedRoute>
           }
         />

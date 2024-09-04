@@ -42,6 +42,10 @@ const RecruiterJobs = () => {
     navigate("/recruiter/post-job");
   };
 
+  const handleViewDetails = (job) => {
+    navigate(`/recruiter/view-job-details/${job._id}`, { state: { job } });
+  };
+
   return (
     <div className="bg-slate-100 dark:bg-gray-800 mt-0 md:mt-16 py-2 px-2 md:py-6">
       <div className="mx-auto container px-4 md:px-8 py-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg">
@@ -99,9 +103,7 @@ const RecruiterJobs = () => {
                   {job.description}
                 </p>
                 <button
-                  onClick={() =>
-                    navigate(`/recruiter/view-job-details/${job._id}`)
-                  }
+                  onClick={() => handleViewDetails(job)}
                   className="mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg w-full"
                 >
                   View Full Details
