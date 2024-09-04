@@ -328,3 +328,24 @@ export const createJobAPi = async (data) => {
     throw err;
   }
 };
+
+//*************** UPDATE JOB DETAILS *****************/
+export const updateJobDetailsApi = async (id, data) => {
+  try {
+    const response = await axios.put(
+      `/job/update-job/${id}`,
+      { ...data },
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};

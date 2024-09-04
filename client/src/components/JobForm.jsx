@@ -27,7 +27,7 @@ import { useState } from "react";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
-import { createJobAPi } from "@/api/api";
+import { createJobAPi, updateJobDetailsApi } from "@/api/api";
 
 // Form Validation Schema
 const formSchema = z.object({
@@ -94,7 +94,7 @@ const JobForm = ({ setShowForm, onRefresh, job, buttonName, company }) => {
     setRequirementsList(requirementsList.filter((_, i) => i !== index));
   };
 
-  // Handle form submission
+  //*********** HANDLE FORM SUBMISSION (CREATE || UPDATE) JOB ***********/
   const onSubmit = async (data) => {
     data.requirements = requirementsList; // Update requirements list
     data.salary = parseFloat(data.salary); // Convert salary to number
@@ -103,7 +103,9 @@ const JobForm = ({ setShowForm, onRefresh, job, buttonName, company }) => {
 
     try {
       dispatch(showLoading());
-      const res = await createJobAPi(data);
+      const res = job
+        ? await updateJobDetailsApi(job?._id, data)
+        : await createJobAPi(data);
       dispatch(hideLoading());
 
       if (res.success) {

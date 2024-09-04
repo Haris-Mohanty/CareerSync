@@ -57,12 +57,8 @@ const RecruiterJobs = () => {
   };
 
   useEffect(() => {
-    fetchCompanyDetails();
-    fetchCompanyDetails();
-  }, []);
-
-  useEffect(() => {
     fetchAllJobsOfLoggedInRecruiter();
+    fetchCompanyDetails();
   }, []);
 
   // Handle the form of post job and update job
