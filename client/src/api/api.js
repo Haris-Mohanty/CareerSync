@@ -294,3 +294,20 @@ export const deleteCompanyApi = async (id) => {
     throw err;
   }
 };
+
+//***** GET ALL JOBS OF LOGGEDIN RECRUITER **************/
+export const getAllJobsOfLoggedInRecruiter = async () => {
+  try {
+    const response = await axios.get("/job/get-all-jobs-of-user", {
+      withCredentials: true,
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};
