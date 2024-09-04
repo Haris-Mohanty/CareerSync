@@ -311,3 +311,20 @@ export const getAllJobsOfLoggedInRecruiter = async () => {
     throw err;
   }
 };
+
+//********************* CREATE JOB APi **************/
+export const createJobAPi = async (data) => {
+  try {
+    const response = await axios.post("/job/create-job", data, {
+      withCredentials: true,
+    });
+
+    if (response.status === 201) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};

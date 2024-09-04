@@ -17,7 +17,6 @@ const Company = () => {
   const [showForm, setShowForm] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(null);
 
-
   //********** FETCH COMPANY OF RECRUITER *****/
   const fetchCompanyDetails = async () => {
     try {
@@ -141,15 +140,21 @@ const Company = () => {
                 ))}
               </motion.div>
             ) : (
-              <div className="flex flex-col items-center justify-center h-96 mt-0 md:mt-20 dark:bg-gray-800">
-                <MagnifyingGlassIcon className="h-20 w-20 text-indigo-600 mb-6 dark:text-indigo-900" />
-                <p className="text-2xl font-semibold text-gray-700 mb-4 font-openSans dark:text-white">
-                  No companies found!
-                </p>
-                <p className="text-gray-500 mb-6 text-center font-poppins dark:text-white">
+              <div className="text-center py-10">
+                <MagnifyingGlassIcon className="w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4" />
+                <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                  No companies found
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400 mb-4">
                   We could not find any companies! Please add a new company for
                   posting jobs.
                 </p>
+                <button
+                  onClick={() => handleAddOrEditCompany()}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg"
+                >
+                  Add Your First Company
+                </button>
               </div>
             )}
           </div>

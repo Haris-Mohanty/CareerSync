@@ -9,10 +9,23 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import displayInr from "@/helper/IndianCurrency";
 import moment from "moment";
+import { useSelector } from "react-redux";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogOverlay,
+} from "@/components/ui/dialog";
+import { useState } from "react";
 
 const RecruiterJobsDetails = () => {
   const location = useLocation();
+  const { user } = useSelector((state) => state.user);
   const { job } = location.state || {};
+
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   // Job Status change (using deadline)
   const isDeadlinePassed = moment().isAfter(moment(job?.deadline));
@@ -23,14 +36,56 @@ const RecruiterJobsDetails = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto mt-16 px-4 md:px-8 py-4">
-      <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8">
-        <div className="flex flex-col md:flex-row items-center md:items-start pb-3">
-          <Avatar className="h-44 w-44 border-4 border-gray-300 dark:border-gray-600 transition-transform transform hover:scale-105 mr-8">
-            <AvatarImage
-              src={job.company.logo}
-              alt={job.company.companyName}
-            />
+    <div className="max-w-7xl mx-auto md:mt-16 px-4 md:px-8 py-4">
+      <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 md:p-8">
+        <div className="flex flex-col md:flex-row items-center md:items-start pb-3 relative">
+          {/* Edit and Delete Buttons */}
+          {user?._id === job?.createdBy && (
+            <div className="absolute -top-4 -right-3  flex space-x-2">
+              <button
+                // onClick={() => handleAddOrEditCompany(company)}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-xs md:text-sm font-medium shadow-md transition"
+              >
+                Edit Company
+              </button>
+
+              {/* Button to open the delete dialog */}
+              <button
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-xs md:text-sm font-medium shadow-md transition"
+                onClick={() => setShowDeleteDialog(true)} // Open the dialog
+              >
+                Delete Company
+              </button>
+            </div>
+          )}
+
+          {/* Dialog Component for delete job */}
+          <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+            <DialogOverlay />
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Delete Company</DialogTitle>
+                <DialogDescription>
+                  Are you sure you want to delete this company? This action
+                  cannot be undone.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="flex justify-end space-x-4 mt-4">
+                <button
+                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg shadow-md transition"
+                  onClick={() => setShowDeleteDialog(false)}
+                >
+                  Cancel
+                </button>
+                <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-md transition">
+                  Confirm Delete
+                </button>
+              </div>
+            </DialogContent>
+          </Dialog>
+
+          <Avatar className="h-44 w-44 border-4 border-gray-300 dark:border-gray-600 transition-transform transform hover:scale-105 mr-8 mt-6 md:mt-0">
+            <AvatarImage src={job.company.logo} alt={job.company.companyName} />
             <AvatarFallback className="text-5xl">
               {job?.company?.companyName?.charAt(0)}
             </AvatarFallback>
@@ -83,6 +138,7 @@ const RecruiterJobsDetails = () => {
           </div>
         </div>
 
+        {/* Job Desc */}
         <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-200 border-b-2 border-gray-200 dark:border-gray-700 pb-2">
@@ -92,6 +148,7 @@ const RecruiterJobsDetails = () => {
               {job.description}
             </p>
 
+            {/* Job Requirements */}
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-200 mt-8 border-b-2 border-gray-200 dark:border-gray-700 pb-2">
               Requirements
             </h2>
@@ -108,6 +165,7 @@ const RecruiterJobsDetails = () => {
             </ul>
           </div>
 
+          {/* Company Info */}
           <div>
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-200 border-b-2 border-gray-200 dark:border-gray-700 pb-2">
               Company Information
@@ -145,6 +203,7 @@ const RecruiterJobsDetails = () => {
               </p>
             </div>
 
+            {/* Job Info */}
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-200 mt-8 border-b-2 border-gray-200 dark:border-gray-700 pb-2">
               Job Details
             </h2>
