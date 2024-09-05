@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   BriefcaseIcon,
   MapPinIcon,
@@ -20,13 +20,18 @@ import {
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
 import JobForm from "@/components/JobForm";
-import { getCompanyDetailsByRecruiterApi, getJobDetailsApi } from "@/api/api";
+import {
+  deleteJobApi,
+  getCompanyDetailsByRecruiterApi,
+  getJobDetailsApi,
+} from "@/api/api";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
-import { showErrorToast } from "@/helper/toastHelper";
+import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
 
 const RecruiterJobsDetails = () => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const { job } = location.state || {};
   const { id } = useParams();
@@ -76,6 +81,23 @@ const RecruiterJobsDetails = () => {
     fetchJobDetailsById();
   }, []);
 
+  // ******* DELTE JOB *********/
+  const handleDeleteJob = async () => {
+    try {
+      dispatch(showLoading());
+      const res = await deleteJobApi(id);
+      dispatch(hideLoading());
+      if (res.success) {
+        showSuccessToast("Job deleted successfully.");
+        setShowDeleteDialog(false);
+        navigate("/recruiter/job");
+      }
+    } catch (err) {
+      dispatch(hideLoading());
+      showErrorToast(err?.response?.data?.message || "An error occurred.");
+    }
+  };
+
   if (!job) {
     return <div>No job data available</div>;
   }
@@ -108,7 +130,7 @@ const RecruiterJobsDetails = () => {
                   onClick={() => handleAddOrEditJob(job)}
                   className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-xs md:text-sm font-medium shadow-md transition"
                 >
-                  Edit Company
+                  Edit Job
                 </button>
 
                 {/* Button to open the delete dialog */}
@@ -116,7 +138,7 @@ const RecruiterJobsDetails = () => {
                   className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-xs md:text-sm font-medium shadow-md transition"
                   onClick={() => setShowDeleteDialog(true)} // Open the dialog
                 >
-                  Delete Company
+                  Delete Job
                 </button>
               </div>
             )}
@@ -139,7 +161,7 @@ const RecruiterJobsDetails = () => {
                   >
                     Cancel
                   </button>
-                  <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-md transition">
+                  <button onClick={handleDeleteJob} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-md transition">
                     Confirm Delete
                   </button>
                 </div>
