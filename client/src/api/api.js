@@ -349,3 +349,24 @@ export const updateJobDetailsApi = async (id, data) => {
     throw err;
   }
 };
+
+//*************** DELETE JOB API *****************/
+export const deleteJobApi = async (id) => {
+  try {
+    const response = await axios.put(
+      `/job/delete-job/${id}`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};
