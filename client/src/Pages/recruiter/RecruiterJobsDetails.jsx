@@ -114,7 +114,7 @@ const RecruiterJobsDetails = () => {
         <div className="px-4 md:px-8">
           <JobForm
             setShowForm={setShowForm}
-            onRefresh={job}
+            onRefresh={fetchJobDetailsById}
             job={selectedJob}
             buttonName={selectedJob ? "Update Job" : "Post Job"}
             company={company}
@@ -161,7 +161,10 @@ const RecruiterJobsDetails = () => {
                   >
                     Cancel
                   </button>
-                  <button onClick={handleDeleteJob} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-md transition">
+                  <button
+                    onClick={handleDeleteJob}
+                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-md transition"
+                  >
                     Confirm Delete
                   </button>
                 </div>

@@ -59,6 +59,7 @@ const formSchema = z.object({
 const JobForm = ({ setShowForm, onRefresh, job, buttonName, company }) => {
   const dispatch = useDispatch();
 
+  // Requirement
   const [requirementsList, setRequirementsList] = useState(
     job?.requirements || []
   );
@@ -83,6 +84,7 @@ const JobForm = ({ setShowForm, onRefresh, job, buttonName, company }) => {
     },
   });
 
+  // Requirement Handle (ADD)
   const handleAddRequirement = () => {
     if (requirementInput.trim()) {
       setRequirementsList([...requirementsList, requirementInput.trim()]);
@@ -90,6 +92,7 @@ const JobForm = ({ setShowForm, onRefresh, job, buttonName, company }) => {
     }
   };
 
+  // Requirement Handle (REMOVE)
   const handleRemoveRequirement = (index) => {
     setRequirementsList(requirementsList.filter((_, i) => i !== index));
   };
