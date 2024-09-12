@@ -28,6 +28,7 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
 import { createJobAPi, updateJobDetailsApi } from "@/api/api";
+import { useNavigate } from "react-router-dom";
 
 // Form Validation Schema
 const formSchema = z.object({
@@ -58,6 +59,7 @@ const formSchema = z.object({
 
 const JobForm = ({ setShowForm, onRefresh, job, buttonName, company }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Requirement
   const [requirementsList, setRequirementsList] = useState(
@@ -113,15 +115,18 @@ const JobForm = ({ setShowForm, onRefresh, job, buttonName, company }) => {
 
       if (res.success) {
         showSuccessToast(
-          `Job ${company ? "details updated" : "posted"} successfully!`
+          `Job ${job ? "details updated" : "posted"} successfully!`
         );
         onRefresh();
         setShowForm(false);
+
+        if (job) {
+          navigate("/recruiter/job");
+        }
       }
     } catch (err) {
       dispatch(hideLoading());
       showErrorToast(err?.response?.data?.message || "An error occurred.");
-      console.log(err);
     }
   };
 
