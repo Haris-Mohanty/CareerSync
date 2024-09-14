@@ -69,7 +69,7 @@ const Job = () => {
 
   useEffect(() => {
     fetchAllJobs();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFilters, searchTerm]);
 
   // Toggle mobile filter section
@@ -83,9 +83,9 @@ const Job = () => {
       id: "title",
       name: "Most Popular Searches",
       options: [
-        { value: "Frontend Development", label: "Frontend Development" },
-        { value: "Full Stack Development", label: "Full Stack Development" },
-        { value: "Digital Marketing", label: "Digital Marketing" },
+        { value: "Frontend Developer", label: "Frontend Developer" },
+        { value: "Full Stack Developer", label: "Full Stack Developer" },
+        { value: "Data Analyst", label: "Data Analyst" },
       ],
     },
     {
@@ -94,6 +94,7 @@ const Job = () => {
       options: [
         { value: "Delhi, India", label: "Delhi, India" },
         { value: "Mumbai, India", label: "Mumbai, India" },
+        { value: "Bengaluru, India", label: "Bengaluru, India" },
         { value: "Bhubaneswar, India", label: "Bhubaneswar, India" },
       ],
     },
@@ -120,9 +121,11 @@ const Job = () => {
       id: "salary",
       name: "Salary (LPA)",
       options: [
-        { value: "0-100000", label: "0 - 100K" },
-        { value: "100000-300000", label: "100k-300k" },
-        { value: "300000+", label: "300k+" },
+        { value: "0-100000", label: "0 - 1 lpa" },
+        { value: "100000-300000", label: "1 lpa - 3 lpa" },
+        { value: "300001-1000000", label: "3 lpa - 10 lpa" },
+        { value: "1000001-2000000", label: "10 lpa - 20 lpa" },
+        { value: "2000001+", label: "20 lpa+" },
       ],
     },
     {

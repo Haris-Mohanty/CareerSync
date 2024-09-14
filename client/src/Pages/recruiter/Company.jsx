@@ -34,7 +34,6 @@ const Company = () => {
     } catch (err) {
       setLoading(false);
       dispatch(hideLoading());
-      showErrorToast(err?.response?.data?.message || "An error occurred.");
     }
   };
 

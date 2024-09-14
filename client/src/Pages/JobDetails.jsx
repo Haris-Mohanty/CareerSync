@@ -105,7 +105,7 @@ const JobDetails = () => {
       ) : (
         <div className="bg-slate-100 dark:bg-gray-700 md:mt-16 px-4 md:px-16 md:gap-20 py-4 flex flex-col md:flex-row items-center justify-center">
           {/* Job Card */}
-          <div className="w-full md:w-[30%] mx-auto bg-white shadow-lg dark:bg-gray-800 rounded-lg p-6 border border-gray-200 relative order-1 md:order-1 dark:border-gray-700">
+          <div className="w-full md:w-[32%] mx-auto bg-white shadow-lg dark:bg-gray-800 rounded-lg p-6 border border-gray-200 relative order-1 md:order-1 dark:border-gray-700">
             {/* Save Late Icon */}
             <div className="flex justify-end items-center absolute top-2 right-4">
               <motion.div
@@ -239,7 +239,7 @@ const JobDetails = () => {
           </div>
 
           {/************* Job Full Details *************/}
-          <div className="w-full md:w-[70%] mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border border-gray-200 dark:border-gray-700 mt-4 md:mt-0 md:ml-4 max-h-[40rem] overflow-y-auto order-2 md:order-2">
+          <div className="w-full md:w-[68%] mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border border-gray-200 dark:border-gray-700 mt-4 md:mt-0 md:ml-4 max-h-[40rem] overflow-y-auto order-2 md:order-2">
             {/* Job Description Section */}
             <section className="mb-4">
               <h4 className="text-xl font-semibold text-gray-800 dark:text-white dark:border-gray-600 pb-2">
