@@ -250,13 +250,13 @@ const RecruiterJobsDetails = () => {
             </Avatar>
 
             <div className="mt-4 md:mt-0">
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-200">
+              <h1 className="text-xl md:text-3xl font-bold text-gray-900 dark:text-gray-200">
                 {job.title}
               </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-400 mt-2">
+              <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mt-2">
                 {job.company.companyName}
               </p>
-              <div className="flex flex-wrap mt-4 space-x-4">
+              <div className="flex flex-wrap mt-4 space-x-4 text-xs md:text-base">
                 <div className="flex items-center text-gray-600 dark:text-gray-400">
                   <MapPinIcon className="w-5 h-5 mr-2" />
                   <span>
@@ -299,18 +299,18 @@ const RecruiterJobsDetails = () => {
           {/* Job Desc */}
           <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-200 border-b-2 border-gray-200 dark:border-gray-700 pb-2">
+              <h2 className="text-xl md:text-2xl font-semibold text-gray-900 dark:text-gray-200 border-b-2 border-gray-200 dark:border-gray-700 pb-2">
                 Job Description
               </h2>
-              <p className="mt-4 text-gray-700 dark:text-gray-300">
+              <p className="text-sm md:text-base mt-4 text-gray-700 dark:text-gray-300">
                 {job.description}
               </p>
 
               {/* Job Requirements */}
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-200 mt-8 border-b-2 border-gray-200 dark:border-gray-700 pb-2">
+              <h2 className="text-xl md:text-2xl font-semibold text-gray-900 dark:text-gray-200 mt-8 border-b-2 border-gray-200 dark:border-gray-700 pb-2">
                 Requirements
               </h2>
-              <ul className="mt-4 space-y-2">
+              <ul className="text-sm md:text-base mt-4 space-y-2">
                 {job.requirements.map((requirement, index) => (
                   <li
                     key={index}
@@ -325,13 +325,13 @@ const RecruiterJobsDetails = () => {
 
             {/* Company Info */}
             <div>
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-200 border-b-2 border-gray-200 dark:border-gray-700 pb-2">
+              <h2 className="text-xl md:text-2xl font-semibold text-gray-900 dark:text-gray-200 border-b-2 border-gray-200 dark:border-gray-700 pb-2">
                 Company Information
               </h2>
-              <p className="mt-4 text-gray-700 dark:text-gray-300">
+              <p className="text-sm md:text-base mt-4 text-gray-700 dark:text-gray-300">
                 {job.company.description}
               </p>
-              <div className="mt-4 space-y-2">
+              <div className="text-sm md:text-base mt-4 space-y-2">
                 <p className="text-gray-700 dark:text-gray-400">
                   <span className="font-semibold">Location:</span>{" "}
                   {job.company.location}
@@ -362,10 +362,10 @@ const RecruiterJobsDetails = () => {
               </div>
 
               {/* Job Info */}
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-200 mt-8 border-b-2 border-gray-200 dark:border-gray-700 pb-2">
+              <h2 className="text-xl md:text-2xl font-semibold text-gray-900 dark:text-gray-200 mt-8 border-b-2 border-gray-200 dark:border-gray-700 pb-2">
                 Job Details
               </h2>
-              <div className="mt-4 space-y-2">
+              <div className="text-sm md:text-base mt-4 space-y-2">
                 <p className="text-gray-700 dark:text-gray-400">
                   <span className="font-semibold">Number of Vacancies:</span>{" "}
                   {job.numberOfVacancies}

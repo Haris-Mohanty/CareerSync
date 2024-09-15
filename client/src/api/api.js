@@ -375,7 +375,7 @@ export const deleteJobApi = async (id) => {
 export const applyJobApi = async (id) => {
   try {
     const response = await axios.post(
-      `application/apply-job/${id}`,
+      `/application/apply-job/${id}`,
       {},
       {
         withCredentials: true,
@@ -383,6 +383,26 @@ export const applyJobApi = async (id) => {
     );
 
     if (response.status === 201) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};
+
+//********** GET ALL APPLICATION OF A JOB **************/
+export const getAllApplicationsOfAJobApi = async (id) => {
+  try {
+    const response = await axios.get(
+      `/application/get-all-applications/${id}`,
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 200) {
       return response.data;
     } else {
       throw new Error(`Unexpected Error: ${response.statusText}`);
