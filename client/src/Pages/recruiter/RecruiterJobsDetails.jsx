@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   BriefcaseIcon,
   MapPinIcon,
@@ -27,13 +27,13 @@ import {
 } from "@/api/api";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const RecruiterJobsDetails = () => {
-  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
-  const { job } = location.state || {};
+  const [job, setJob] = useState(null);
   const { id } = useParams();
   const [company, setCompany] = useState([]);
 
@@ -58,6 +58,7 @@ const RecruiterJobsDetails = () => {
     } catch (err) {
       dispatch(hideLoading());
       console.log(err);
+      showErrorToast("Failed to fetch company details.");
     }
   };
 
@@ -68,7 +69,7 @@ const RecruiterJobsDetails = () => {
       const res = await getJobDetailsApi(id);
       dispatch(hideLoading());
       if (res.success) {
-        setCompany(res.data);
+        setJob(res.data);
       }
     } catch (err) {
       dispatch(hideLoading());
@@ -98,15 +99,82 @@ const RecruiterJobsDetails = () => {
     }
   };
 
-  if (!job) {
-    return <div>No job data available</div>;
-  }
-
   // Handle the form of post job and update job
   const handleAddOrEditJob = (job = null) => {
     setSelectedJob(job);
     setShowForm(true);
   };
+
+  // Show Skeleton
+  if (!job) {
+    return (
+      <div className="max-w-7xl mx-auto mt-8 md:mt-16">
+        {/* Skeleton Container */}
+        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 md:p-8">
+          {/* Skeleton Avatar */}
+          <div className="flex flex-col md:flex-row items-center md:items-start pb-3 relative">
+            <Skeleton className="h-44 w-44 rounded-full mb-6 md:mb-0 md:mr-8" />
+
+            <div>
+              {/* Job Title Skeleton */}
+              <Skeleton className="h-8 w-48 mb-4" />
+
+              {/* Company Name Skeleton */}
+              <Skeleton className="h-6 w-32 mb-4" />
+
+              {/* Job Meta Info Skeleton (Location, Job Type, etc.) */}
+              <div className="flex space-x-4">
+                <Skeleton className="h-5 w-20" />
+                <Skeleton className="h-5 w-20" />
+                <Skeleton className="h-5 w-20" />
+              </div>
+            </div>
+          </div>
+
+          {/* Job Status Skeleton */}
+          <div className="mt-4">
+            <Skeleton className="h-6 w-24" />
+          </div>
+
+          {/* Job Description and Company Info Skeleton */}
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              {/* Job Description Heading Skeleton */}
+              <Skeleton className="h-6 w-40 mb-4" />
+              {/* Job Description Text Skeleton */}
+              <Skeleton className="h-4 w-full mb-2" />
+              <Skeleton className="h-4 w-full mb-2" />
+              <Skeleton className="h-4 w-3/4" />
+
+              {/* Requirements Heading Skeleton */}
+              <Skeleton className="h-6 w-40 mt-8 mb-4" />
+              {/* Requirements List Skeleton */}
+              <Skeleton className="h-4 w-full mb-2" />
+              <Skeleton className="h-4 w-full mb-2" />
+              <Skeleton className="h-4 w-3/4" />
+            </div>
+
+            <div>
+              {/* Company Info Heading Skeleton */}
+              <Skeleton className="h-6 w-40 mb-4" />
+              {/* Company Info Text Skeleton */}
+              <Skeleton className="h-4 w-full mb-2" />
+              <Skeleton className="h-4 w-2/3 mb-2" />
+              <Skeleton className="h-4 w-full mb-2" />
+              <Skeleton className="h-4 w-1/2 mb-2" />
+
+              {/* Job Details Heading Skeleton */}
+              <Skeleton className="h-6 w-40 mt-8 mb-4" />
+              {/* Job Details Text Skeleton */}
+              <Skeleton className="h-4 w-full mb-2" />
+              <Skeleton className="h-4 w-3/4 mb-2" />
+              <Skeleton className="h-4 w-full" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto md:mt-16 px-4 md:px-8 py-4">
@@ -124,7 +192,7 @@ const RecruiterJobsDetails = () => {
         <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 md:p-8">
           <div className="flex flex-col md:flex-row items-center md:items-start pb-3 relative">
             {/* Edit and Delete Buttons */}
-            {user?._id === job?.createdBy && (
+            {user?._id === job?.createdBy?._id && (
               <div className="absolute -top-4 -right-3  flex space-x-2">
                 <button
                   onClick={() => handleAddOrEditJob(job)}
@@ -148,10 +216,10 @@ const RecruiterJobsDetails = () => {
               <DialogOverlay />
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Delete Company</DialogTitle>
+                  <DialogTitle>Delete Job</DialogTitle>
                   <DialogDescription>
-                    Are you sure you want to delete this company? This action
-                    cannot be undone.
+                    Are you sure you want to delete this job? This action cannot
+                    be undone.
                   </DialogDescription>
                 </DialogHeader>
                 <div className="flex justify-end space-x-4 mt-4">

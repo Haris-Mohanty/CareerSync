@@ -72,7 +72,7 @@ const RecruiterJobs = () => {
   };
 
   const handleViewDetails = (job) => {
-    navigate(`/recruiter/view-job-details/${job._id}`, { state: { job } });
+    navigate(`/recruiter/view-job-details/${job._id}`);
   };
 
   return (

@@ -28,7 +28,6 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
 import { createJobAPi, updateJobDetailsApi } from "@/api/api";
-import { useNavigate } from "react-router-dom";
 
 // Form Validation Schema
 const formSchema = z.object({
@@ -59,7 +58,6 @@ const formSchema = z.object({
 
 const JobForm = ({ setShowForm, onRefresh, job, buttonName, company }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   // Requirement
   const [requirementsList, setRequirementsList] = useState(
@@ -119,10 +117,6 @@ const JobForm = ({ setShowForm, onRefresh, job, buttonName, company }) => {
         );
         onRefresh();
         setShowForm(false);
-
-        if (job) {
-          navigate("/recruiter/job");
-        }
       }
     } catch (err) {
       dispatch(hideLoading());

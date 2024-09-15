@@ -97,7 +97,7 @@ export const applyJobController = async (req, res) => {
       type: "newApplication",
       message: `A new application has been submitted for your job: ${jobExists.title}.`,
       createdAt: new Date(),
-      onClickPath: "view-profile",
+      onClickPath: `recruiter/view-job-details/${jobExists._id}`,
     };
     recruiter.unSeenNotifications.push(notification);
     await recruiter.save();

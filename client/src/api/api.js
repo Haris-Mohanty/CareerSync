@@ -370,3 +370,24 @@ export const deleteJobApi = async (id) => {
     throw err;
   }
 };
+
+//*************** APPLY JOB API *****************/
+export const applyJobApi = async (id) => {
+  try {
+    const response = await axios.post(
+      `application/apply-job/${id}`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 201) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};

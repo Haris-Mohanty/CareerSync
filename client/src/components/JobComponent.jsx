@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
-import { saveJobForLaterApi } from "@/api/api";
+import { applyJobApi, saveJobForLaterApi } from "@/api/api";
 import { setUser } from "@/redux/userSlice";
 
 const buttonVariants = {
@@ -52,12 +52,23 @@ const JobComponent = ({ job }) => {
   };
 
   // Handle Apply Now click
-  const handleApplyNow = () => {
+  const handleApplyNow = async (id) => {
     if (!user) {
       showErrorToast("Please login to apply for the job");
       navigate("/login");
     } else {
-      showSuccessToast("Applied"); // Just for msg code remain...
+      try {
+        dispatch(showLoading());
+        const res = await applyJobApi(id);
+        dispatch(hideLoading());
+        if (res.success) {
+          showSuccessToast(res.message);
+          window.location.reload();
+        }
+      } catch (err) {
+        dispatch(hideLoading());
+        showErrorToast(err?.response?.data?.message);
+      }
     }
   };
 
@@ -157,7 +168,7 @@ const JobComponent = ({ job }) => {
           </button>
         ) : (
           <motion.button
-            onClick={handleApplyNow}
+            onClick={() => handleApplyNow(job?._id)}
             variants={buttonVariants}
             initial="initial"
             whileHover="hover"

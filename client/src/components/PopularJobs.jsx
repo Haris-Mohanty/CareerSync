@@ -7,7 +7,7 @@ import {
   RssIcon,
 } from "@heroicons/react/24/outline";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { getAllJobsApi } from "@/api/api";
+import { applyJobApi, getAllJobsApi } from "@/api/api";
 import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { useEffect, useState } from "react";
@@ -56,12 +56,23 @@ const PopularJobs = () => {
   }, []);
 
   // Handle Apply Now click
-  const handleApplyNow = () => {
+  // Handle Apply Now click
+  const handleApplyNow = async (id) => {
     if (!user) {
       showErrorToast("Please login to apply for the job");
       navigate("/login");
     } else {
-      showSuccessToast("Applied"); // Just for msg code remain...
+      try {
+        dispatch(showLoading());
+        const res = await applyJobApi(id);
+        dispatch(hideLoading());
+        if (res.success) {
+          showSuccessToast(res.message);
+        }
+      } catch (err) {
+        dispatch(hideLoading());
+        showErrorToast(err?.response?.data?.message);
+      }
     }
   };
 
@@ -139,7 +150,7 @@ const PopularJobs = () => {
             </div>
             <motion.button
               className="text-white text-sm px-3 md:px-5 py-2 md:py-3 text-base rounded-lg bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 hover:from-indigo-600 hover:via-indigo-700 hover:to-indigo-800 transition-colors font-raleway font-medium w-full md:w-auto"
-              onClick={handleApplyNow}
+              onClick={() => handleApplyNow(job?._id)}
               variants={buttonVariants}
               initial="initial"
               whileHover="hover"

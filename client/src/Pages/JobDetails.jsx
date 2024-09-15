@@ -1,4 +1,4 @@
-import { getJobDetailsApi, saveJobForLaterApi } from "@/api/api";
+import { applyJobApi, getJobDetailsApi, saveJobForLaterApi } from "@/api/api";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -87,12 +87,23 @@ const JobDetails = () => {
   }, [id]);
 
   // Handle Apply Now click
-  const handleApplyNow = () => {
+  const handleApplyNow = async (id) => {
     if (!user) {
       showErrorToast("Please login to apply for the job");
       navigate("/login");
     } else {
-      showSuccessToast("Applied"); // Just for msg code remain...
+      try {
+        dispatch(showLoading());
+        const res = await applyJobApi(id);
+        dispatch(hideLoading());
+        if (res.success) {
+          showSuccessToast(res.message);
+          window.location.reload();
+        }
+      } catch (err) {
+        dispatch(hideLoading());
+        showErrorToast(err?.response?.data?.message);
+      }
     }
   };
 
@@ -226,7 +237,7 @@ const JobDetails = () => {
                 </button>
               ) : (
                 <motion.button
-                  onClick={handleApplyNow}
+                  onClick={() => handleApplyNow(jobDetails?._id)}
                   variants={buttonVariants}
                   initial="initial"
                   whileHover="hover"
