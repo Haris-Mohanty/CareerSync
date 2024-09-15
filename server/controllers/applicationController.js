@@ -123,38 +123,39 @@ export const getAllApplicationsOfAJob = async (req, res) => {
     // Extract Job id from params
     const jobId = req.params.id;
 
-    //  Fetch all applications
-    const job = await JobModel.findById(jobId).populate({
-      path: "applications",
-      populate: {
-        path: "applicant",
-        model: "User",
-        select:
-          "-password -appliedJobs -savedJobs -seenNotifications -unSeenNotifications",
-      },
-    });
-
-    // Check if job exists
+    // Check if the job exists
+    const job = await JobModel.findById(jobId);
     if (!job || job.isDeleted) {
       return res.status(404).json({
         success: false,
-        message: "Job not found",
+        message: "Job not found or has been deleted",
       });
     }
 
-    // Check if applications array is empty
-    if (job.applications.length === 0) {
+    // Fetch all applications related to the job and populate applicant details
+    const applications = await ApplicationModel.find({ job: jobId }).populate({
+      path: "applicant",
+      model: "User",
+      select:
+        "-password -appliedJobs -savedJobs -seenNotifications -unSeenNotifications",
+    });
+
+    // Check if applications exist for this job
+    if (!applications || applications.length === 0) {
       return res.status(404).json({
         success: false,
         message: "No applications found for this job",
       });
     }
 
+    // Respond with job applications data
     return res.status(200).json({
       success: true,
-      data: job,
+      message: "Applications fetched successfully",
+      data: applications,
     });
   } catch (err) {
+    // Handle server error
     return res.status(500).json({
       success: false,
       message: "Internal Server Error!",
