@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 import JobForm from "@/components/JobForm";
 import {
   deleteJobApi,
+  getAllApplicationsOfAJobApi,
   getCompanyDetailsByRecruiterApi,
   getJobDetailsApi,
 } from "@/api/api";
@@ -41,6 +42,8 @@ const RecruiterJobsDetails = () => {
   const [selectedJob, setSelectedJob] = useState(null);
 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  const [applications, setApplications] = useState([]);
 
   // Job Status change (using deadline)
   const isDeadlinePassed = moment().isAfter(moment(job?.deadline));
@@ -62,7 +65,7 @@ const RecruiterJobsDetails = () => {
     }
   };
 
-  // Fetch Company Details by Company ID
+  //********  Fetch Company Details by Company ID *****/
   const fetchJobDetailsById = async () => {
     try {
       dispatch(showLoading());
@@ -77,9 +80,25 @@ const RecruiterJobsDetails = () => {
     }
   };
 
+  //******** Fetch all applications of a job *****/
+  const fetchAllApplicationsOfAJob = async () => {
+    try {
+      dispatch(showLoading());
+      const res = await getAllApplicationsOfAJobApi(id);
+      dispatch(hideLoading());
+      if (res.success) {
+        setApplications(res.data);
+      }
+    } catch (err) {
+      dispatch(hideLoading());
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchCompanyDetails();
     fetchJobDetailsById();
+    fetchAllApplicationsOfAJob();
   }, []);
 
   // ******* DELTE JOB *********/
@@ -104,6 +123,8 @@ const RecruiterJobsDetails = () => {
     setSelectedJob(job);
     setShowForm(true);
   };
+
+  console.log(applications);
 
   // Show Skeleton
   if (!job) {
@@ -239,7 +260,7 @@ const RecruiterJobsDetails = () => {
               </DialogContent>
             </Dialog>
 
-            <Avatar className="h-44 w-44 border-4 border-gray-300 dark:border-gray-600 transition-transform transform hover:scale-105 mr-8 mt-6 md:mt-0">
+            <Avatar className="h-28 md:h-44 w-28 md:w-44 border-4 border-gray-300 dark:border-gray-600 transition-transform transform hover:scale-105 mr-8 mt-6 md:mt-0">
               <AvatarImage
                 src={job.company.logo}
                 alt={job.company.companyName}
@@ -249,11 +270,11 @@ const RecruiterJobsDetails = () => {
               </AvatarFallback>
             </Avatar>
 
-            <div className="mt-4 md:mt-0">
-              <h1 className="text-xl md:text-3xl font-bold text-gray-900 dark:text-gray-200">
+            <div className="mt-4">
+              <h1 className="text-lg md:text-3xl font-bold text-gray-900 dark:text-gray-200">
                 {job.title}
               </h1>
-              <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mt-2">
+              <p className="text-base md:text-xl text-gray-600 dark:text-gray-400 md:mt-2">
                 {job.company.companyName}
               </p>
               <div className="flex flex-wrap mt-4 space-x-4 text-xs md:text-base">
