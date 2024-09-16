@@ -239,9 +239,7 @@ export const createCompanyApi = async (data) => {
 //******** GET COMPANY DETAILS BY COMPANY ID (ALL) *************/
 export const getCompanyDetailsByIdApi = async (id) => {
   try {
-    const response = await axios.get(`/company/get-company-by-id/${id}`, {
-      withCredentials: true,
-    });
+    const response = await axios.get(`/company/get-company-by-id/${id}`);
 
     if (response.status === 200) {
       return response.data;
@@ -401,6 +399,21 @@ export const getAllApplicationsOfAJobApi = async (id) => {
         withCredentials: true,
       }
     );
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};
+
+//******** GET USER INFO BY USER ID ***********/
+export const getUserInfoById = async (id) => {
+  try {
+    const response = await axios.get(`/user/get-user-info-by-id/${id}`);
 
     if (response.status === 200) {
       return response.data;

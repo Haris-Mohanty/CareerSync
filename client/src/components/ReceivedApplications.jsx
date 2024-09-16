@@ -20,11 +20,13 @@ import {
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const ReceivedApplications = ({ jobId }) => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Fetch all applications of a job
   const fetchApplications = async () => {
@@ -159,7 +161,15 @@ const ReceivedApplications = ({ jobId }) => {
                 {/* Actions */}
                 <TableCell className="px-6 py-4 text-center">
                   <div className="flex justify-center space-x-2">
-                    <Button variant="outline" size="sm">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        navigate(
+                          `/view-user-details/${application.applicant._id}`
+                        )
+                      }
+                    >
                       <EyeIcon
                         className="h-5 w-5 text-gray-600 dark:text-gray-300"
                         title="View Profile"

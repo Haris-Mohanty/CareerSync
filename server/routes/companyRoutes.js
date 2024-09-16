@@ -18,7 +18,7 @@ router.post("/create-company", authMiddleware, createCompanyController);
 router.get("/get-company-details", authMiddleware, getCompanyDetailsController);
 
 // Get Company By Id
-router.get("/get-company-by-id/:id", authMiddleware, getCompanyByIdController);
+router.get("/get-company-by-id/:id", getCompanyByIdController);
 
 // Update Company
 router.put(
