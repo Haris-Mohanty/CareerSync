@@ -687,3 +687,34 @@ export const getUserInfoController = async (req, res) => {
     });
   }
 };
+
+//******** GET USER INFORMATION (LOGGEDIN USER) ***********/
+export const getUserInfoByIdController = async (req, res) => {
+  try {
+    // Extract company id from params
+    const { id } = req.params;
+
+    const user = await UserModel.findById(id).select("-password");
+
+    // Check if user exists
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found!",
+      });
+    }
+
+    // Success response with user data
+    return res.status(200).json({
+      success: true,
+      message: "User information retrieved successfully.",
+      data: user,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!",
+      error: err.message,
+    });
+  }
+};

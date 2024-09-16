@@ -8,6 +8,7 @@ import {
   deleteAllSeenNotifications,
   getUserInfoController,
   updateProfilePhotoController,
+  getUserInfoByIdController,
 } from "../controllers/userController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
@@ -49,6 +50,9 @@ router.get(
 
 // Get user info (logged in user)
 router.get("/get-user-info", authMiddleware, getUserInfoController);
+
+// Get user info by ID (User ID)
+router.get("/get-user-info-by-id/:id", getUserInfoByIdController);
 
 // Export
 export default router;
