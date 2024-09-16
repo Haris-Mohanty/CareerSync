@@ -94,10 +94,10 @@ const ReceivedApplications = ({ jobId }) => {
                 Experience
               </TableHead>
               <TableHead className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Phone Number
+                Applied On
               </TableHead>
               <TableHead className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Applied On
+                Status
               </TableHead>
               <TableHead className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Actions
@@ -148,25 +148,29 @@ const ReceivedApplications = ({ jobId }) => {
                   {application.applicant.totalExperienceYears || 0} Years
                 </TableCell>
 
-                {/* Phone Number */}
-                <TableCell className="px-6 py-4 text-gray-900 dark:text-gray-300">
-                  {application.applicant.phoneNumber || "Not Specified"}
-                </TableCell>
-
                 {/* Applied On */}
                 <TableCell className="px-6 py-4 text-gray-900 dark:text-gray-300">
                   {moment(application.createdAt).format("DD/MM/YYYY")}
                 </TableCell>
 
+                {/* Status */}
+                <TableCell className="px-6 py-4 text-gray-900 dark:text-gray-300 capitalize">
+                  {application.status}
+                </TableCell>
+
                 {/* Actions */}
                 <TableCell className="px-6 py-4 text-center">
                   <div className="flex justify-center space-x-2">
+                    {/* Always show the View button */}
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() =>
                         navigate(
-                          `/view-user-details/${application.applicant._id}`
+                          `/view-user-details/${application.applicant._id}`,
+                          {
+                            state: { isCreator: true },
+                          }
                         )
                       }
                     >
@@ -176,18 +180,48 @@ const ReceivedApplications = ({ jobId }) => {
                       />
                     </Button>
 
-                    <Button variant="outline" size="sm">
-                      <XCircleIcon
-                        className="h-5 w-5 text-red-500"
-                        title="Reject"
-                      />
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <CheckCircleIcon
-                        className="h-5 w-5 text-green-500"
-                        title="Accept"
-                      />
-                    </Button>
+                    {application.status === "processing" && (
+                      <>
+                        {/* Show Reject button if status is processing */}
+                        <Button variant="outline" size="sm">
+                          <XCircleIcon
+                            className="h-5 w-5 text-red-500"
+                            title="Reject"
+                          />
+                        </Button>
+                        {/* Show Accept button if status is processing */}
+                        <Button variant="outline" size="sm">
+                          <CheckCircleIcon
+                            className="h-5 w-5 text-green-500"
+                            title="Accept"
+                          />
+                        </Button>
+                      </>
+                    )}
+
+                    {application.status === "accepted" && (
+                      <>
+                        {/* Show Reject button if status is accepted */}
+                        <Button variant="outline" size="sm">
+                          <XCircleIcon
+                            className="h-5 w-5 text-red-500"
+                            title="Reject"
+                          />
+                        </Button>
+                      </>
+                    )}
+
+                    {application.status === "rejected" && (
+                      <>
+                        {/* Show Accept button if status is rejected */}
+                        <Button variant="outline" size="sm">
+                          <CheckCircleIcon
+                            className="h-5 w-5 text-green-500"
+                            title="Accept"
+                          />
+                        </Button>
+                      </>
+                    )}
                   </div>
                 </TableCell>
               </TableRow>

@@ -445,7 +445,14 @@ const JobDetails = () => {
                       </p>
                       <div className="flex justify-end">
                         {jobDetails?.createdBy && (
-                          <button className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs md:text-sm font-medium px-4 py-2 rounded-lg shadow-md transition">
+                          <button
+                            onClick={() =>
+                              navigate(
+                                `/view-user-details/${jobDetails?.createdBy?._id}`
+                              )
+                            }
+                            className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs md:text-sm font-medium px-4 py-2 rounded-lg shadow-md transition"
+                          >
                             View Recruiter
                           </button>
                         )}
