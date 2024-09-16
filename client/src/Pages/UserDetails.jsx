@@ -9,8 +9,6 @@ import {
   EnvelopeIcon,
   PhoneIcon,
   DocumentIcon,
-  CheckCircleIcon,
-  XCircleIcon,
   BriefcaseIcon,
   MapPinIcon,
 } from "@heroicons/react/24/outline";
@@ -21,7 +19,7 @@ const UserDetails = () => {
   const { id } = useParams();
   const [user, setUser] = useState(null);
   const location = useLocation();
-  const isCreator = location.state?.isCreator || false;
+  const { isCreator, status } = location.state || {};
 
   // Fetch user details by ID
   const fetchUserDetails = async () => {
@@ -172,17 +170,31 @@ const UserDetails = () => {
           </div>
         </div>
 
-        {/* Accept and Reject Buttons */}
+        {/* Application Status Message */}
         {isCreator && (
           <div className="flex gap-4 mt-4 md:mt-20">
-            <button className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-              <CheckCircleIcon className="h-5 w-5" />
-              Accept
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
-              <XCircleIcon className="h-5 w-5" />
-              Reject
-            </button>
+            {status === "accepted" ? (
+              <div className="px-4 py-2 bg-green-500 text-white rounded-lg">
+                <p className="text-lg font-semibold">Application Accepted</p>
+                <p className="text-sm">
+                  You have accepted this candidates application.
+                </p>
+              </div>
+            ) : status === "rejected" ? (
+              <div className="px-4 py-2 bg-red-500 text-white rounded-lg">
+                <p className="text-lg font-semibold">Application Rejected</p>
+                <p className="text-sm">
+                  You have rejected this candidates application.
+                </p>
+              </div>
+            ) : status === "processing" ? (
+              <div className="px-4 py-2 bg-yellow-500 text-white rounded-lg">
+                <p className="text-lg font-semibold">Application Processing</p>
+                <p className="text-sm">
+                  This candidates application is currently under review.
+                </p>
+              </div>
+            ) : null}
           </div>
         )}
       </div>

@@ -1,7 +1,10 @@
 import PropTypes from "prop-types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
-import { getAllApplicationsOfAJobApi } from "@/api/api";
+import {
+  getAllApplicationsOfAJobApi,
+  updateApplicationStatusApi,
+} from "@/api/api";
 import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "@/redux/spinnerSlice";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -21,6 +24,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { showErrorToast, showSuccessToast } from "@/helper/toastHelper";
 
 const ReceivedApplications = ({ jobId }) => {
   const [applications, setApplications] = useState([]);
@@ -48,6 +52,22 @@ const ReceivedApplications = ({ jobId }) => {
   useEffect(() => {
     fetchApplications();
   }, [jobId]);
+
+  //****** HANDLE UPDATE STATUS (ACCEPT || REJECT) ******/
+  const handleUpdateStatus = async (id, status) => {
+    try {
+      dispatch(showLoading());
+      const res = await updateApplicationStatusApi(id, status);
+      dispatch(hideLoading());
+      if (res.success) {
+        showSuccessToast(res.message);
+        fetchApplications();
+      }
+    } catch (err) {
+      dispatch(hideLoading());
+      showErrorToast(err?.response?.data?.message);
+    }
+  };
 
   // Show skeleton if loading
   if (loading) {
@@ -169,7 +189,10 @@ const ReceivedApplications = ({ jobId }) => {
                         navigate(
                           `/view-user-details/${application.applicant._id}`,
                           {
-                            state: { isCreator: true },
+                            state: {
+                              isCreator: true,
+                              status: application.status,
+                            },
                           }
                         )
                       }
@@ -180,48 +203,44 @@ const ReceivedApplications = ({ jobId }) => {
                       />
                     </Button>
 
-                    {application.status === "processing" && (
-                      <>
-                        {/* Show Reject button if status is processing */}
-                        <Button variant="outline" size="sm">
-                          <XCircleIcon
-                            className="h-5 w-5 text-red-500"
-                            title="Reject"
-                          />
-                        </Button>
-                        {/* Show Accept button if status is processing */}
-                        <Button variant="outline" size="sm">
-                          <CheckCircleIcon
-                            className="h-5 w-5 text-green-500"
-                            title="Accept"
-                          />
-                        </Button>
-                      </>
-                    )}
+                    {/* Accept and Reject buttons are always shown */}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        handleUpdateStatus(application._id, "rejected")
+                      } // Handle reject logic
+                      disabled={application.status === "rejected"}
+                      className={`${
+                        application.status === "rejected"
+                          ? "cursor-not-allowed opacity-50"
+                          : "cursor-pointer text-red-500"
+                      }`}
+                    >
+                      <XCircleIcon
+                        className="h-5 w-5 text-red-500"
+                        title="Reject"
+                      />
+                    </Button>
 
-                    {application.status === "accepted" && (
-                      <>
-                        {/* Show Reject button if status is accepted */}
-                        <Button variant="outline" size="sm">
-                          <XCircleIcon
-                            className="h-5 w-5 text-red-500"
-                            title="Reject"
-                          />
-                        </Button>
-                      </>
-                    )}
-
-                    {application.status === "rejected" && (
-                      <>
-                        {/* Show Accept button if status is rejected */}
-                        <Button variant="outline" size="sm">
-                          <CheckCircleIcon
-                            className="h-5 w-5 text-green-500"
-                            title="Accept"
-                          />
-                        </Button>
-                      </>
-                    )}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        handleUpdateStatus(application._id, "accepted")
+                      } // Handle accept logic
+                      disabled={application.status === "accepted"}
+                      className={`${
+                        application.status === "accepted"
+                          ? "cursor-not-allowed opacity-50"
+                          : "cursor-pointer"
+                      }`}
+                    >
+                      <CheckCircleIcon
+                        className="h-5 w-5 text-green-500"
+                        title="Accept"
+                      />
+                    </Button>
                   </div>
                 </TableCell>
               </TableRow>

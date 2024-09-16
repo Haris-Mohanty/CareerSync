@@ -424,3 +424,22 @@ export const getUserInfoById = async (id) => {
     throw err;
   }
 };
+
+//*** UPDATE APPLICATION STATUS (ACCEPT || REJECT) *******/
+export const updateApplicationStatusApi = async (applicationId, status) => {
+  try {
+    const response = await axios.put(
+      `/application/update-application-status/${applicationId}`,
+      { status },
+      { withCredentials: true }
+    );
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Unexpected Error: ${response.statusText}`);
+    }
+  } catch (err) {
+    throw err;
+  }
+};
