@@ -78,9 +78,7 @@ const AppliedJobs = ({ jobs }) => {
                     {job?.workType === "Remote"
                       ? "Remote"
                       : job?.workType === "Hybrid"
-                      ? `${
-                          job?.location || "Location not specified"
-                        } (Hybrid)`
+                      ? `${job?.location || "Location not specified"} (Hybrid)`
                       : job?.location || "India"}
                   </TableCell>
                   <TableCell className="py-4 px-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
@@ -110,7 +108,13 @@ const AppliedJobs = ({ jobs }) => {
                     <EyeIcon
                       className="h-6 w-6 text-gray-500 cursor-pointer hover:text-indigo-500"
                       title="View Details"
-                      onClick={() => navigate(`/jobs/details/${job._id}`)}
+                      onClick={() =>
+                        navigate(`/jobs/details/${job._id}`, {
+                          state: {
+                            status: application.status,
+                          },
+                        })
+                      }
                     />
                   </TableCell>
                 </TableRow>

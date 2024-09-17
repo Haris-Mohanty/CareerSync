@@ -2,7 +2,7 @@ import { applyJobApi, getJobDetailsApi, saveJobForLaterApi } from "@/api/api";
 import { hideLoading, showLoading } from "@/redux/spinnerSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   BriefcaseIcon,
   CurrencyRupeeIcon,
@@ -32,6 +32,9 @@ const JobDetails = () => {
 
   const [jobDetails, setJobDetails] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const location = useLocation();
+  const { status } = location.state || {};
 
   // FETCH JOB DETAILS BY JOB ID
   const fetchJobDetails = async () => {
@@ -253,9 +256,46 @@ const JobDetails = () => {
           <div className="w-full md:w-[68%] mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border border-gray-200 dark:border-gray-700 mt-4 md:mt-0 md:ml-4 max-h-[40rem] overflow-y-auto order-2 md:order-2">
             {/* Job Description Section */}
             <section className="mb-4">
-              <h4 className="text-xl font-semibold text-gray-800 dark:text-white dark:border-gray-600 pb-2">
-                Job Description
-              </h4>
+              <div className="flex flex-col md:flex-row justify-between">
+                <h4 className="text-xl md:text-3xl font-semibold text-gray-800 dark:text-white dark:border-gray-600 mt-2">
+                  Job Description
+                </h4>
+                <div>
+                  {/* Application Status Message */}
+                  {status && (
+                    <div className="mb-4">
+                      {status === "accepted" ? (
+                        <div className="px-4 py-2 bg-green-500 text-white rounded-lg">
+                          <p className="text-lg font-semibold">
+                            Application Accepted
+                          </p>
+                          <p className="text-sm">
+                            We are excited to work with you!
+                          </p>
+                        </div>
+                      ) : status === "rejected" ? (
+                        <div className="px-4 py-2 bg-red-500 text-white rounded-lg">
+                          <p className="text-lg font-semibold">
+                            Application Rejected
+                          </p>
+                          <p className="text-sm">
+                            Thank you for your interest.
+                          </p>
+                        </div>
+                      ) : status === "processing" ? (
+                        <div className="px-4 py-2 bg-yellow-500 text-white rounded-lg">
+                          <p className="text-lg font-semibold">
+                            Application Processing
+                          </p>
+                          <p className="text-sm">
+                            Your application is under review.
+                          </p>
+                        </div>
+                      ) : null}
+                    </div>
+                  )}
+                </div>
+              </div>
               <p className="text-sm text-gray-600 dark:text-gray-300 ml-4">
                 {jobDetails?.description || "No description available."}
               </p>
