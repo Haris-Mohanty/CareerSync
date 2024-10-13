@@ -199,11 +199,11 @@ export const userLoginController = async (req, res) => {
 
     // Login Success
     return res
-      .status(200)
+      .status(201)
       .cookie("token", token, {
-        maxAge: 1 * 24 * 60 * 60 * 1000, // 1 Day
         httpOnly: true,
-        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production", // Ensure secure flag is set in production
+        sameSite: "None", // Required for cross-site cookie
       })
       .json({
         success: true,
