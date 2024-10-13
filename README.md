@@ -28,7 +28,7 @@
 
 ## Deployment
 
-The application is deployed on Netlify and can be accessed at [CareerSync]().
+The application is deployed on Netlify and can be accessed at [CareerSync](https://career-syncs.netlify.app/).
 
 ## Tech Stack
  **Frontend:**
